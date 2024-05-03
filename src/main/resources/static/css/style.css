@@ -1,0 +1,50 @@
+.main_header{
+    background-color: #1d1d1f;
+    border: 1px solid red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /*margin: auto;*/
+}
+
+@font-face {
+    font-family: "spagheti";
+    src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
+}
+
+@font-face {
+    font-family: 'spagheti-extrude';
+    src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');
+}
+
+.header-logo-extrude{
+    font-family: 'spagheti-extrude';
+    color: red;
+    text-decoration: none;
+}
+
+.header-logo{
+    font-family: 'spagheti';
+    color: yellow;
+    text-decoration: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.header-logo-prova{
+    font-family: 'spagheti';
+    color: yellow;
+    text-decoration: none;
+    position:fixed;
+    left: 0;
+}
+
+.header-logo-extrude-prova{
+    font-family: 'spagheti-extrude';
+    color: red;
+    text-decoration: none;
+    position: absolute;
+    left: 0;
+}
