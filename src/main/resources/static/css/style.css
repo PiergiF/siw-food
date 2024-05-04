@@ -29,7 +29,8 @@
 @font-face {
     font-family: "spagheti";
     /*src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');*/
-    src: url(../fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
+    /*src: url(../fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');*/
+    src: url(/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
 }
 
 @font-face {
@@ -106,6 +107,7 @@
 .header_logo img {
     height: 70px;
     border: 1px solid blue;
+    padding: 5px;
 }
 
 .header_search{
@@ -116,6 +118,11 @@
     padding: 14px;
     border-radius: 28px;
     background: #f6f6f6;
+    transition: background 0.25s;
+}
+
+.header_search:focus-within{
+    background: #f1f1f1;
 }
 
 .header_search_input{
@@ -126,12 +133,28 @@
     border: none;
     background: transparent;
     width: 300px;
+    height: 50px;
 }
 
-.header_search_input::placeholder{
-    color: rgba(0, 0, 0, 0.5);
-}
-
+.header_search_input::placeholder,
 .header_search_icon{
     color: rgba(0, 0, 0, 0.5);
+}
+
+.header_account{
+    display: flex;
+    width: max-content;
+    border: 1px solid rgb(9, 207, 238);
+    align-items: center;
+    /*padding: 14px;*/
+    border-radius: 28px;
+    background: yellow;
+    /*height: 50px;*/
+}
+
+.header_account_text{
+    font-family: 'spagheti';
+    color: #333333;
+    margin-left: 14px;
+    width: 100px;
 }

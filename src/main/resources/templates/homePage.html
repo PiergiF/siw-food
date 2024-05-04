@@ -4,7 +4,7 @@
         <title>SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="../static/css/style.css"/> <!-- href="/css/style.css?version=3"/> type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/>-->
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/> <!-- href="../static/css/style.css"/> href="/css/style.css?version=3"/> type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/>-->
     </head>
 
     <body>
@@ -15,14 +15,19 @@
                     <!--<a class="header-logo" href="/"><h3>SiwFood</h3></a>-->
                 <!--</div>-->
                 <!--<a class="header_logo" href="/"><img src="../static/images/Opera_senza_titolo.png" width="20%"/></a>-->
-                <a href="/" class="header_logo"><img src="../static/images/Opera_senza_titolo.svg"/></a> <!--width="40%"/></a>-->
+                <a href="/" class="header_logo"> <img src="/images/Opera_senza_titolo.svg"/></a> <!--<img src="../static/images/Opera_senza_titolo.svg"/></a> width="40%"/></a>-->
                 <!--<img src="../static/images/Opera_senza_titolo.png" width="20%" class="header_logo"/>-->
                 <form>
                     <div class="header_search">
-                        <span class="header_search_icon"><img src="../static/images/search_image.svg"/></span>
+                        <span class="header_search_icon"> <img src="/images/search_image.svg"/> </span> <!--<img src="../static/images/search_image.svg"/></span>-->
+                        <!--<span class="header_search_icon"> <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 -960 960 960" width="24"><path d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"/></svg> </span>-->
                         <input type="search" name="" id="" class="header_search_input" th:placeholder="#{header.search}">
                     </div>
                 </form>
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <h4 class="header_account_text">Login</h4>
+                </div>
             </div>
         </header>
         <!--
