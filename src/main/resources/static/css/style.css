@@ -1,27 +1,49 @@
-.main_header{
-    background-color: #1d1d1f;
+/*
+.header{
+    background-color: #d5d5da;
     border: 1px solid red;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    /*margin: auto;*/
 }
 
+.header_navbar{
+    width: 100%;
+    max-width: 1200px;
+    border: 1px solid rgb(122, 25, 25);
+    margin: 0 auto;
+    display: flex;
+}
+
+.header_logo{
+    padding-left: 3%;
+    border: 1px solid blue;
+}
+
+.header_logo a{
+    padding-left: 3%;
+    border: 1px solid rgb(255, 0, 221);
+}
+*/
 @font-face {
     font-family: "spagheti";
-    src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
+    /*src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');*/
+    src: url(../fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
 }
 
 @font-face {
     font-family: 'spagheti-extrude';
-    src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');
+    /*src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');*/
+    src: url(../fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');
 }
 
+/*
 .header-logo-extrude{
     font-family: 'spagheti-extrude';
     color: red;
     text-decoration: none;
+    border: 1px solid rgb(10, 51, 0);
 }
 
 .header-logo{
@@ -30,7 +52,8 @@
     text-decoration: none;
     position: absolute;
     left: 0;
-    top: 0;
+    top: 5px;
+    border: 1px solid blue;
 }
 
 .header-logo-prova{
@@ -38,7 +61,8 @@
     color: yellow;
     text-decoration: none;
     position:fixed;
-    left: 0;
+    
+    border: 1px solid blue;
 }
 
 .header-logo-extrude-prova{
@@ -47,4 +71,67 @@
     text-decoration: none;
     position: absolute;
     left: 0;
+    border: 1px solid rgb(10, 51, 0);
+}*/
+
+
+
+/*
+.header_logo img{
+    padding-left: 3%;
+    border: 1px solid rgb(0, 255, 64);
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+*/
+.header{
+    /*background-color: #d5d5da;*/
+    border: 1px solid red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.header_navbar{
+    width: 100%;
+    max-width: 1200px;
+    border: 1px solid rgb(122, 25, 25);
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+}
+
+.header_logo img {
+    height: 70px;
+    border: 1px solid blue;
+}
+
+.header_search{
+    display: flex;
+    width: max-content;
+    border: 1px solid blueviolet;
+    align-items: center;
+    padding: 14px;
+    border-radius: 28px;
+    background: #f6f6f6;
+}
+
+.header_search_input{
+    font-family: 'spagheti';
+    color: #333333;
+    margin-left: 14px;
+    outline: none;
+    border: none;
+    background: transparent;
+    width: 300px;
+}
+
+.header_search_input::placeholder{
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.header_search_icon{
+    color: rgba(0, 0, 0, 0.5);
 }

@@ -4,19 +4,33 @@
         <title>SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/> <!--href="/css/style.css?version=3"/> type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/>-->
+        <link rel="stylesheet" type="text/css" href="../static/css/style.css"/> <!-- href="/css/style.css?version=3"/> type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/>-->
     </head>
 
     <body>
-        <header class="main_header">
-            <div class="main_navbar">
-                <a class="header-logo-extrude" href="/">SiwFood</a>
-                <a class="header-logo" href="/">SiwFood</a>
+        <header class="header">
+            <div class="header_navbar">
+                <!--<div class="header-logo-extrude"><h3>SiwFood</h3>-->
+                <!--<a class="header-logo-extrude" href="/"><h1>SiwFood</h1></a>-->
+                    <!--<a class="header-logo" href="/"><h3>SiwFood</h3></a>-->
+                <!--</div>-->
+                <!--<a class="header_logo" href="/"><img src="../static/images/Opera_senza_titolo.png" width="20%"/></a>-->
+                <a href="/" class="header_logo"><img src="../static/images/Opera_senza_titolo.svg"/></a> <!--width="40%"/></a>-->
+                <!--<img src="../static/images/Opera_senza_titolo.png" width="20%" class="header_logo"/>-->
+                <form>
+                    <div class="header_search">
+                        <span class="header_search_icon"><img src="../static/images/search_image.svg"/></span>
+                        <input type="search" name="" id="" class="header_search_input" th:placeholder="#{header.search}">
+                    </div>
+                </form>
             </div>
         </header>
-        <br><br><br>
-        <a class="header-logo-extrude-prova" href="/">SiwFood</a>
-        <a class="header-logo-prova" href="/">SiwFood</a>
+        <!--
+        <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        <a href="/" class="prova"><img src="../static/images/Opera_senza_titolo.svg" width="40%"/></a>
+        <div class="header-logo-extrude"><h1>S</h1>
+            <a class="header-logo-prova" href="/"><h1>S</h1></a>
+        </div>-->
     </body>    
 </html>
 
