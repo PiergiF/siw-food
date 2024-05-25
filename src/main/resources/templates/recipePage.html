@@ -1,7 +1,7 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>SiwFood</title>
+        <title>Chef-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
@@ -20,16 +20,14 @@
                 </div>
             </form>
 
-            <!--<a href="/loginPage" th:if="${userRole==ANONYMOUS}">-->
-            <a href="/loginPage" th:unless="${accountRole}">
+            <a href="/loginPage" th:if="${userRole==ANONYMOUS}">
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
                 </div>
             </a>
 
-            <!--<nav th:if="${userRole}">-->
-            <nav th:if="${accountRole}">
+            <nav th:if="${userRole!=ANONYMOUS}">
                 <ul class="header_account_menu">
                     <li>
                         <div class="header_account">
@@ -42,19 +40,19 @@
                             <li>
                                 <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
-                            <li th:if="${accountRole != 'CUSTOMER'}">
+                            <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
                             </li>
-                            <li th:if="${accountRole != 'CUSTOMER'}">
+                            <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
                             </li>
-                            <li th:if="${accountRole == 'CHEF'}">
+                            <li th:if="${userRole == 'CHEF'}">
                                 <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
                             </li>
                             <li>
@@ -66,8 +64,14 @@
             </nav>
         </header>
 
-        <div>prova</div>
-        <div><a href="/prova">aaaaaa</a></div>
-    
+        <div class="recipeInformations" th:if="${chef}">
+            <h1 th:text="#{recipe.details}">_chefDetails</h1>
+            <div>
+                <span th:text="${recipe.name}">_recipeName_</span>
+                <span th:text="${recipe.description}">_recipeDescription_</span>
+                <!--<span><img width="5%" th:src=${movie.urlImage} /></span>-->
+            </div>
+            <div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>
+        </div>
     </body>
 </html>

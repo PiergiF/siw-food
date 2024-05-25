@@ -1,3 +1,4 @@
+/*
 package it.uniroma3.siw.siwfood.model;
 
 import jakarta.persistence.Column;
@@ -39,3 +40,4 @@ public class Role {
         return this.getName().hashCode();
     }
 }
+*/

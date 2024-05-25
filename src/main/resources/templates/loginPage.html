@@ -4,22 +4,47 @@
         <title>Login-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/> <!--href="/css/style.css?version=3"/> type="text/css" href="/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/css/style.css?version=3"/>-->
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
     </head>
 
     <body>
-        <header class="main_header">
-            <div class="main_navbar">
-                <a class="header-logo-extrude" href="/">SiwFood</a>
-                <a class="header-logo" href="/">SiwFood</a>
-            </div>
+        <header class="header_navbar">
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
         </header>
-        <form th:action="@{/login_into}" method="POST" >
-            <input type="text" placeholder="email"/>
-            <br><br>
-            <input type="text" placeholder="password"/>
-            <br><br>
-            <button type="button">Login</button>
-        </form>
+
+        <div class="registrationText" th:if="${RegistrationCompleted}">Complimenti, ti sei registrato</div>
+        <div th:text="${RegistrationCompleted}"></div>
+
+        <div class="container_accountBox">
+            <div class="row justify-content-center mt-5">
+                <div class="col-md-4">
+                    <div class="accountBox">
+                        <div class="accountBox_header">
+                            <h3 class="text-center" th:text="#{header.account.login}">_Login_</h3>
+                        </div>
+                        <div class="accountBox_body">
+                            <form th:action="@{/loginPage}" method="POST">
+                                
+                                <div class="accountBox_data">
+                                    <label for="username">Username:</label>
+                                    <input type="text" id="username" name="username" class="form-control" required/>
+                                </div>
+
+                                <div class="accountBox_data">
+                                    <label for="password">Password:</label>
+                                    <input type="password" id="password" name="password" class="form-control" required/>
+                                </div>
+                                
+                                <button type="submit" class="accountBox_button" th:text="#{header.account.login}">_Login_</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div><span th:if="${param.error != null}">Username o password errati</span></div>
+        <div> <a href="/registrationPage">registrationPage</a></div>
+
     </body>
 </html>

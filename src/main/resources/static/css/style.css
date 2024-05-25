@@ -1,160 +1,216 @@
-/*
-.header{
-    background-color: #d5d5da;
-    border: 1px solid red;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-}
+/*#### Fonts ####*/
 
-.header_navbar{
-    width: 100%;
-    max-width: 1200px;
-    border: 1px solid rgb(122, 25, 25);
-    margin: 0 auto;
-    display: flex;
-}
-
-.header_logo{
-    padding-left: 3%;
-    border: 1px solid blue;
-}
-
-.header_logo a{
-    padding-left: 3%;
-    border: 1px solid rgb(255, 0, 221);
-}
-*/
 @font-face {
     font-family: "spagheti";
-    /*src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');*/
-    /*src: url(../fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');*/
     src: url(/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
 }
 
-@font-face {
-    font-family: 'spagheti-extrude';
-    /*src: url(/Users/piergiorgiofornaro/Programmazione/SIW/siw-food/src/main/resources/static/fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');*/
-    src: url(../fonts/spagheti-script-font/Spaghetixtrudepersonaluse-ywYre.otf) format('opentype');
-}
+/*#### Global elements ####*/
 
-/*
-.header-logo-extrude{
-    font-family: 'spagheti-extrude';
-    color: red;
+a{
     text-decoration: none;
-    border: 1px solid rgb(10, 51, 0);
+    color: currentColor;
 }
 
-.header-logo{
-    font-family: 'spagheti';
-    color: yellow;
-    text-decoration: none;
-    position: absolute;
-    left: 0;
-    top: 5px;
-    border: 1px solid blue;
-}
+/*#### Header site ####*/
 
-.header-logo-prova{
-    font-family: 'spagheti';
-    color: yellow;
-    text-decoration: none;
-    position:fixed;
-    
-    border: 1px solid blue;
-}
-
-.header-logo-extrude-prova{
-    font-family: 'spagheti-extrude';
-    color: red;
-    text-decoration: none;
-    position: absolute;
-    left: 0;
-    border: 1px solid rgb(10, 51, 0);
-}*/
-
-
-
-/*
-.header_logo img{
-    padding-left: 3%;
-    border: 1px solid rgb(0, 255, 64);
-    display: block;
-    max-width: 100%;
-    height: auto;
-}
-*/
-.header{
-    /*background-color: #d5d5da;*/
+/* main container */
+.header_navbar {
     border: 1px solid red;
-    position: fixed;
+    border-bottom: 1px solid #d1d1d1;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    /*position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100%;*/
 }
+/*
+.header_navbar a{
+    text-decoration: none;
+    color: currentColor;
+}*/
 
-.header_navbar{
+/* container for max stratch. Here stay all items */
+/*.header_navbar {
+    border: 1px solid rgb(46, 122, 25);
     width: 100%;
     max-width: 1200px;
-    border: 1px solid rgb(122, 25, 25);
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
-}
-
-.header_logo img {
-    height: 70px;
-    border: 1px solid blue;
-    padding: 5px;
-}
-
-.header_search{
-    display: flex;
-    width: max-content;
-    border: 1px solid blueviolet;
+    justify-content: space-around;
     align-items: center;
-    padding: 14px;
-    border-radius: 28px;
-    background: #f6f6f6;
-    transition: background 0.25s;
-}
+}*/
+/*### Header site logo ###*/
+    .header_logo {
+        border: 1px solid blue;
+        height: 70px;
+    }
 
-.header_search:focus-within{
-    background: #f1f1f1;
-}
+/*### Header search ###*/
 
-.header_search_input{
-    font-family: 'spagheti';
-    color: #333333;
-    margin-left: 14px;
-    outline: none;
-    border: none;
-    background: transparent;
-    width: 300px;
-    height: 50px;
-}
+    /* main class of search */
+    .header_search{
+        border: 1px solid blueviolet;
+        display: flex;
+       /*width: max-content;*/
+        align-items: center;
+        border-radius: 28px;
+        background: #f6f6f6;
+        transition: background 0.25s;
+    }
 
-.header_search_input::placeholder,
-.header_search_icon{
-    color: rgba(0, 0, 0, 0.5);
-}
+    .header_search:focus-within{
+        background: #f1f1f1;
+    }
 
-.header_account{
-    display: flex;
-    width: max-content;
-    border: 1px solid rgb(9, 207, 238);
-    align-items: center;
-    /*padding: 14px;*/
-    border-radius: 28px;
-    background: yellow;
-    /*height: 50px;*/
-}
+    /* Header search icon */
+    .header_search_icon{
+        padding-left: 2px;
+        /*color: rgba(255, 0, 0, 0.5);*/
+    }
 
-.header_account_text{
-    font-family: 'spagheti';
-    color: #333333;
-    margin-left: 14px;
-    width: 100px;
-}
+    /* Header search input */
+    .header_search_input{
+        font-family: sans-serif;
+        color: #333333;
+        margin-left: 14px;
+        outline: none;
+        border: none;
+        background: transparent;
+        width: 300px;
+        height: 40px;
+    }
+    
+    .header_search_input::placeholder{
+        color: rgba(0, 0, 0, 0.5);
+    }
+
+/*### Header account ###*/
+
+    /* main class of search */
+    .header_account {
+        border: 1px solid rgb(9, 207, 238);
+        display: flex;
+        width: max-content;
+        align-items: center;
+        border-radius: 28px;
+        background: rgb(227, 212, 56);
+        height: 40px;
+        list-style: none;
+        cursor: pointer;
+    }
+
+    /* Header account icon */
+    .header_account_icon{
+        margin-left: 14px;
+    }
+
+    /* Header account text */
+    .header_account_text{
+        font-family: sans-serif;
+        color: #333333;
+        margin-left: 14px;
+        width: 100px;
+    }
+
+    /*### Header account drop down menu ###*/
+
+        /* Stili di base per il menu */
+        .header_account_menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .header_account_menu > li {
+            position: relative;
+        }
+
+        .header_account_dropDownMenu {
+            list-style: none;
+            padding: 10px;
+            margin: 0;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #ffffff; /* Colore di sfondo bianco */
+            border-radius: 8px; /* Bordi arrotondati */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
+            display: none; /* Nasconde il menu */
+            opacity: 0; /* Imposta opacità a 0 per animazione */
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Animazione di transizione */
+            transform: translateY(-10px); /* Sposta leggermente verso l'alto per animazione */
+            z-index: 1000; /* Imposta l'indice z per il menu a tendina */
+        }
+
+        .header_account_menu > li:hover .header_account_dropDownMenu {
+            display: block; /* Mostra il menu al passaggio del mouse */
+            opacity: 1; /* Imposta opacità a 1 per animazione */
+            transform: translateY(0); /* Ripristina la posizione per animazione */
+        }
+
+        .header_account_dropDownMenu li {
+            padding: 10px;
+        }
+
+        .header_account_dropDownMenu li a {
+            text-decoration: none; /* Rimuove la sottolineatura */
+            color: #333; /* Colore del testo */
+            display: block; /* Imposta l'ancora come blocco */
+            transition: background-color 0.3s, color 0.3s; /* Animazione di transizione per colore e sfondo */
+        }
+
+        .header_account_dropDownMenu li a:hover {
+            background-color: #f0f0f0; /* Colore di sfondo al passaggio del mouse */
+            color: #007bff; /* Colore del testo al passaggio del mouse */
+        }
+
+        .header_account_dropDownMenu form {
+            margin: 0;
+        }
+
+        .header_account_dropDownMenu form input[type="submit"]:hover {
+            background-color: #f0f0f0;
+            color: #007bff;
+        }
+
+/*#### Box Login ####*/
+
+    .container_accountBox {
+        margin-top: 80px;
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        text-align: center; /* Centra il contenuto */
+    }
+
+    .accountBox {
+        border: 1px solid #d1d1d1;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .accountBox_header {
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #d1d1d1;
+        text-align: center; /* Centra il contenuto */
+    }
+    
+    .accountBox_body {
+        padding: 30px;
+    }
+
+    .accountBox_button{
+        background-color: #ff9900;
+        border-color: #ff9900;
+    }
+
+    .accountBox_button:hover {
+        background-color: #ff7a00;
+        border-color: #ff7a00;
+    }

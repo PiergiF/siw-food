@@ -1,11 +1,23 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>prova</title>
+        <title>FOTO-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
     </head>
 
     <body>
-        <a href="/">VAI A HOME PAGE</a>
-        <h3>ciaoooooo prova</h3>
+            <h1>Aggiungi immagine</h1>
+            <form th:action="@{/provaData}" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label th:text="#{selectImage}">_selectImage_</label>
+                    <span><input type="file" id="image" name="image" accept="image/png, image/jpeg"></span>
+                    <!--<span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>-->
+                </div>
+                <div>
+                    <span><button type="submit">Conferma</button></span>
+                </div>
+            </form>
     </body>
 </html>

@@ -1,14 +1,13 @@
-<!Doctype html>
+<!DOCTYPE html>
 <html>
     <head>
-        <title>SiwFood</title>
+        <title>AddChef-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
     </head>
 
     <body>
-
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -20,16 +19,14 @@
                 </div>
             </form>
 
-            <!--<a href="/loginPage" th:if="${userRole==ANONYMOUS}">-->
-            <a href="/loginPage" th:unless="${accountRole}">
+            <a href="/loginPage" th:if="${userRole==ANONYMOUS}">
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
                 </div>
             </a>
 
-            <!--<nav th:if="${userRole}">-->
-            <nav th:if="${accountRole}">
+            <nav th:if="${userRole!=ANONYMOUS}">
                 <ul class="header_account_menu">
                     <li>
                         <div class="header_account">
@@ -42,19 +39,19 @@
                             <li>
                                 <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
-                            <li th:if="${accountRole != 'CUSTOMER'}">
+                            <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
                             </li>
-                            <li th:if="${accountRole != 'CUSTOMER'}">
+                            <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
                             </li>
-                            <li th:if="${accountRole == 'CHEF'}">
+                            <li th:if="${userRole == 'CHEF'}">
                                 <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
                             </li>
                             <li>
@@ -66,8 +63,42 @@
             </nav>
         </header>
 
-        <div>prova</div>
-        <div><a href="/prova">aaaaaa</a></div>
-    
+        <div class="upload-container">
+            <h1>Aggiungi uno Chef</h1>
+            <form th:action="@{/admin/addChefData}" method="POST" th:object="${newChef}" enctype="multipart/form-data">
+                <div th:if="${#fields.hasGlobalErrors()}">
+                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
+                </div>
+                
+                <div class="form-group">
+                    <label th:text="#{name}">_name_</label> 
+                    <span><input type="text" th:field="${newChef.name}" required/></span>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{surname}">_surname_</label>
+                    <span><input type="text" th:field="${newChef.surname}" required/></span>
+                    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
+                    <span><input type="date" th:field="${newChef.dateOfBirth}" required/></span>
+                    <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="image" th:text="#{selectImage}">_selectImage_</label>
+                    <span><input type="file" id="image" name="image" accept="image/png, image/jpeg"></span>
+                    <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+                </div>
+                
+                <div>
+                    <span><button type="submit">Conferma</button></span>
+                </div>
+            </form>
+            <p th:if="${failImage}">Errore immagine</p>
+        </div>
     </body>
 </html>

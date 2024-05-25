@@ -1,0 +1,1 @@
+insert into chef (id, name, surname, date_of_birth) values(nextval('chef_seq'), 'Bruno', 'Barbieri','1962-01-12');
