@@ -1,10 +1,11 @@
+/*
 package it.uniroma3.siw.siwfood.model;
 
-public enum UnitOfMeasurament {
+public enum UnitOfMeasuramentEnum {
     g,
     Kg,
     L,
     dl,
     mm;
 }
-
+*/

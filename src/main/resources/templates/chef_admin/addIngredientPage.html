@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>AllChefs-SiwFood</title>
+        <title>AddIngredient-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
     </head>
 
     <body>
+
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -40,16 +41,16 @@
                                 <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${userRole != 'CUSTOMER'}">
-                                <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
-                            </li>
-                            <li th:if="${userRole != 'CUSTOMER'}">
-                                <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
                             </li>
                             <li th:if="${userRole == 'CHEF'}">
-                                <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                            </li>
+                            <li th:if="${userRole == 'ADMIN'}">
+                                <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
                             </li>
                             <li>
                                 <a href="/logout">Logout</a>
@@ -60,21 +61,16 @@
             </nav>
         </header>
 
-        <!--<div th:text="${userDetails.getAuthorities()}">_autority_</div>
-        <div th:text="${userDetails.authorities[0]}">_autority_</div>-->
-
-        <div>
-            <h1>Chef</h1>
-	        <div th:if="${chefs==null || chefs.isEmpty()}">Non ci sono chef nel sistema</div>
-	        <ul>
-                <li th:each="chef : ${chefs}">
-                    <a th:href="@{'/chefPage' + '/' + ${chef.id}}"
-                        th:text="${chef.name} + ' ' + ${chef.surname} + ' (' + ${chef.dateOfBirth} + ')'">_chefData_</a>
-                </li>
-            </ul>
-            <!--<span th:if="${param}">ERRORE</span>-->
+        <h1>Create Ingredient</h1>
+        <div class="form-group">
+            <form th:action="@{/chef_admin/ingredientData}" th:object="${newIngredient}" method="POST" id="formNewIngredient">
+                <label for="name" th:text="#{ingredientName} + ':'">_name_</label>
+                <input type="text" th:field="${newIngredient.name}" th:placeholder="#{ingredientName}" required/>
+                <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                <div><button type="submit">Conferma</button></div>
+            </form>
         </div>
-        <div><a href="/admin/addChefPage" th:text="#{addChef}">_add Chef_</a></div>
-
+        <div th:if="${duplicateError != null}"><span th:text="${duplicateError}"></span></div>
+        <div th:if="${genericError != null}"><span>Errore nell'inserimento dell'ingrediente</span></div>
     </body>
 </html>

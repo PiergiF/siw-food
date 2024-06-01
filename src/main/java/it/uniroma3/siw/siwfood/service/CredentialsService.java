@@ -32,8 +32,13 @@ public class CredentialsService {
     }
 
     @Transactional
-    public Credentials saveCredentials(Credentials credentials) {
-        credentials.setRole(Credentials.CUSTOMER_ROLE);
+    public Credentials saveCredentials(Credentials credentials, String role) {
+        if(role.equals("customer")){
+            credentials.setRole(Credentials.CUSTOMER_ROLE);
+        }
+        else if(role.equals("chef")){
+            credentials.setRole(Credentials.CHEF_ROLE);
+        }
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
     }

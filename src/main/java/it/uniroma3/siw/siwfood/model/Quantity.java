@@ -3,29 +3,26 @@ package it.uniroma3.siw.siwfood.model;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
+
 
 @Entity
-public class Ingredient {
+public class Quantity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
-    @NotNull
-    private String name;
+    private double amount;
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "quantity", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> recipeIngredients = new HashSet<>();
 
     public Long getId() {
@@ -36,12 +33,12 @@ public class Ingredient {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     
@@ -52,13 +49,14 @@ public class Ingredient {
     public void setRecipeIngredients(Set<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
-    
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        long temp;
+        temp = Double.doubleToLongBits(amount);
+        result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
 
@@ -70,12 +68,10 @@ public class Ingredient {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Ingredient other = (Ingredient) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
+        Quantity other = (Quantity) obj;
+        if (Double.doubleToLongBits(amount) != Double.doubleToLongBits(other.amount))
             return false;
         return true;
     }
+    
 }

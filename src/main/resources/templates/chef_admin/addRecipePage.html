@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>addRecipe-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
+
+        
+
+    </head>
+    
+    <body>
+
+        <header class="header_navbar">
+
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+
+            <form>
+                <div class="header_search">
+                    <span> <img src="/images/search_image.svg" class="header_search_icon"/> </span>
+                    <input type="search" class="header_search_input" th:placeholder="#{header.search}">
+                </div>
+            </form>
+
+            <a href="/loginPage" th:if="${userRole==ANONYMOUS}">
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+                </div>
+            </a>
+
+            <nav th:if="${userRole!=ANONYMOUS}">
+                <ul class="header_account_menu">
+                    <li>
+                        <div class="header_account">
+                        <span class="header_account_icon">
+                            <img src="/images/person_img.svg" alt="User Icon"/>
+                        </span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                        </div>
+                        <ul class="header_account_dropDownMenu">
+                            <li>
+                                <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
+                            </li>
+                            <li th:if="${userRole != 'CUSTOMER'}">
+                                <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
+                            </li>
+                            <li th:if="${userRole != 'CUSTOMER'}">
+                                <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
+                            </li>
+                            <li th:if="${userRole == 'CHEF'}">
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                            </li>
+                            <li th:if="${userRole == 'ADMIN'}">
+                                <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                            </li>
+                            <li th:if="${userRole == 'ADMIN'}">
+                                <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                            </li>
+                            <li>
+                                <a href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>Create Recipe</h1>
+        <form th:action="@{/chef_admin/recipeData}" th:object="${recipe}" method="POST" id="formNewRecipe">
+            <div>
+                <label for="name" th:text="#{recipeName}">_recipeName_</label>
+                <input type="text" id="name" name="name" th:field="${recipe.name}"/>
+            </div>
+            <div th:switch="${userRole}">
+                <label for="chef" th:text="#{chef} + ':' ">_chef_</label>
+                <select th:case="'CHEF'" th:field="${recipe.chef}"> <!--non prende chef.name, perché?-->
+                    <option th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}" selected>_ChefName&Surname_</option>
+                </select>
+
+                <select th:case="'ADMIN'" th:field="${recipe.chef}">
+                    <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}">_ChefName&Surname_</option>
+                </select>
+            </div>
+            <label >Ingredients:</label>
+            <div id="ingredientsContainer">
+                <div id="ingredients">
+                    <span>
+                        <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
+                        <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)">
+                            <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
+                            <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
+                        </select>
+                    </span>
+                    <!--<input type="text" id="ingredient0Name" name="ingredient0Name" />-->
+
+                    <label>Quantity:</label>
+                    <input type="number" name="quantities" required/>
+
+                    <span>
+                        <label>Unit:</label>
+                        <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)">
+                            <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
+                            <option value="add" id="addUnitOption">_AggiungiUnit_</option>
+                        </select>
+                    </span>
+
+                    <button type="button" onclick="removeIngredientField(this)">Remove</button>
+                    <!--<select class="ingredientUnits" id="ingredientUnits">
+                        <option id="ingredient0Unit" name="ingredient0Unit" th:each="unit : ${units}" th:value="${unit.unit}" th:text="${unit.unit}">_unit_</option>
+                    </select>-->
+                </div>
+            </div>
+
+            <button type="button" onclick="addIngredientField()">Add Ingredient</button>
+            <br/><br/>
+
+            <input type="submit" value="Create Recipe" />
+        </form>
+
+    <!--<script th:inline="javascript">
+
+        /*<![CDATA[*/
+            var units = /*[[${units2}]];*/ '[]';
+        /*]]>*/
+
+
+        var ingredientCount = 1;
+
+        function addIngredient() {
+            var container = document.getElementById("ingredientsBox");
+
+            var newDiv = document.createElement("div");
+            newDiv.className = "ingredientBox";
+
+            var nameLabel = document.createElement("label");
+            nameLabel.setAttribute("for", "ingredient" + ingredientCount + "Name");
+            nameLabel.textContent = "Ingredient Name:";
+            newDiv.appendChild(nameLabel);
+
+            var nameInput = document.createElement("input");
+            nameInput.type = "text";
+            nameInput.id = "ingredient" + ingredientCount + "Name";
+            nameInput.name = "ingredient" + ingredientCount + "Name";
+            newDiv.appendChild(nameInput);
+
+            var amountLabel = document.createElement("label");
+            amountLabel.setAttribute("for", "ingredient" + ingredientCount + "Amount");
+            amountLabel.textContent = "Amount:";
+            newDiv.appendChild(amountLabel);
+
+            var amountInput = document.createElement("input");
+            amountInput.type = "number";
+            amountInput.id = "ingredient" + ingredientCount + "Amount";
+            amountInput.name = "ingredient" + ingredientCount + "Amount";
+            newDiv.appendChild(amountInput);
+
+            //gpt
+            var unitLabel = document.createElement("label");
+            unitLabel.setAttribute("for", "ingredient" + ingredientCount + "Unit");
+            unitLabel.textContent = "Unit:";
+            newDiv.appendChild(unitLabel);
+
+            var unitSelect = document.createElement("select");
+            unitSelect.id = "ingredient" + ingredientCount + "Unit";
+            unitSelect.name = "ingredient" + ingredientCount + "Unit";
+            
+
+            /* //mio
+            var unitSelect = document.createElement("select");
+            unitSelect.setAttribute("for", "ingredient" + ingredientCount + "Unit");
+            unitSelect.textContent = "Unit:";
+            newDiv.appendChild(unitSelect);
+
+            var unitOption = document.createElement("option");
+            unitOption.id = "ingredient" + ingredientCount + "Unit";
+            unitOption.name = "ingredient" + ingredientCount + "Unit";
+            */
+
+            /* Assuming units are passed to the view as a list of strings (unit names) */
+            /* This part may vary depending on how the units are passed to the view */
+            //var units = /*[[${units}]];*/ [];
+            units.forEach(function(unit) {
+                var option = document.createElement("option");
+                option.value = unit;
+                option.textContent = unit;
+                unitSelect.appendChild(option);
+            });
+
+            newDiv.appendChild(unitSelect);
+
+            container.appendChild(newDiv);
+
+            ingredientCount++;
+        }
+        /*
+        function addUnit() {
+            const unitSelect = document.getElementById('ingredientUnits');
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'unit';
+            input.id = 'unitInput';
+            input.placeholder = 'Inserisci nuova unità';
+            unitSelect.parentNode.replaceChild(input, unitSelect);
+            input.focus();
+        }
+        */
+    </script>-->
+
+    </body>
+</html>

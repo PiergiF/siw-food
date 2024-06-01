@@ -25,7 +25,9 @@ public class Chef {
     private String name;
     @NotBlank
     private String surname;
+    private String email;
     private LocalDate dateOfBirth;
+    
     
     /*
     //tutta l'immagine
@@ -40,6 +42,8 @@ public class Chef {
     */
 
     
+    
+
     //sito
     //@Column(nullable = true) //, length = 64)
     private String image;
@@ -49,6 +53,17 @@ public class Chef {
     @OneToMany(mappedBy = "chef", fetch=FetchType.EAGER)
     private List<Recipe> recipes;
 
+    
+
+    public Chef() {
+    }
+    
+    public Chef(String name, String surname, String email, LocalDate dateOfBirth) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
     public Long getId() {
         return id;
     }
@@ -67,12 +82,20 @@ public class Chef {
     public void setSurname(String surname) {
         this.surname = surname;
     }
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
     public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
+    
 
     
     //sito

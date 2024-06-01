@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Login-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
+    </head>
+
+    <body>
+
+        <header class="header_navbar">
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+        </header>
+
+        <h1 th:text="#{registration.title}">_registrationTitle_</h1>
+        <form th:action="@{/registrationData}" method="POST" >
+            <div>
+                <label th:text="#{registration.insertName}">_yourName_</label>
+                <input class="inputRegistration" type="text" name="name" th:placeholder="#{form.namePlaceholder}"/> <!--th:field="${user.name}"/>-->
+                <input class="inputRegistration" type="text" name="surname" th:placeholder="#{form.surnamePlaceholder}"/>
+                <!--<span th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" th:style="'color:red'"></span>-->
+            </div>
+
+            <!--<div>-->
+                <!--<input class="inputRegistration" type="text" name="surname" th:placeholder="#{form.surnamePlaceholder}"/>--> <!--th:field="${user.surname}"/>-->
+                <!--<span th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}" th:style="'color:red'"></span>-->
+            <!--</div>-->
+
+            <div>
+                <label th:text="#{registration.insertEmail}">_insertEmail_</label>
+                <input class="inputRegistration" type="text" name="email" th:placeholder="#{form.emailPlaceholder}"/> <!--th:field="${user.email}"/>-->
+                <!--<span th:if="${#fields.hasErrors('user.email')}" th:errors="${user.email}" th:style="'color:red'"></span>-->
+            </div>
+
+            <div>
+                <label th:text="#{registration.insertDateOfBirth}">_insertDateOfBitrh_</label>
+                <input class="inputRegistration" type="date" name="dateOfBirth" th:placeholder="#{form.dateOfBirthPlaceholder}"/> <!--th:field="${user.dateOfBirth}"/>-->
+                <!--<span th:if="${#fields.hasErrors('user.dateOfBirth')}" th:errors="${user.dateOfBirth}" th:style="'color:red'"></span>-->
+            </div>
+
+            <div>
+                <label th:text="#{registration.insertUsername}">_yourUsername</label>
+                <input type="text" th:placeholder="#{form.usernamePlaceholder}" required th:field="${credentials.username}"/>
+                <span th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label th:text="#{registration.insertPassword}">_insertPassword_</label>
+                <input type="password" th:placeholder="#{form.passwordPlaceholder}" required th:field="${credentials.password}"/>
+                <span th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label>Registrati come:</label>
+                <label th:text="#{customer}">_customer_</label> <input type="radio" name="role" value="customer" checked onclick="updateRegistrationForm(this)"/>
+                <label th:text="#{chef}">_chef_</label> <input type="radio" name="role" value="chef" onclick="updateRegistrationForm(this)"/>
+            </div>
+            
+            <button type="submit" th:text="#{registration.buttonRegistration}">_Registration_</button>
+        </form>
+
+    </body>
+</html>

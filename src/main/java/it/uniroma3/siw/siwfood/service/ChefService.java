@@ -1,6 +1,7 @@
 package it.uniroma3.siw.siwfood.service;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwfood.model.Chef;
+import it.uniroma3.siw.siwfood.model.Quantity;
+import it.uniroma3.siw.siwfood.model.User;
 //import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siw.siwfood.repository.ChefRepository;
 //import it.uniroma3.siwfood.repository.ImageRepository;
@@ -21,6 +24,18 @@ public class ChefService {
 
     public boolean existsByNameAndSurname(String name, String surname){
         return chefRepository.existsByNameAndSurname(name, surname);
+    }
+
+    public Chef saveChef(Chef chef) {
+        return this.chefRepository.save(chef);
+    }
+
+    public List<Chef> findAll() {
+        return chefRepository.findAll();
+    }
+
+    public Chef findById(Long id){
+        return chefRepository.findById(id).orElse(null);
     }
 
     /*

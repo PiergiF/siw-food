@@ -26,7 +26,7 @@ public class Credentials {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Chef chef;
-	
+
 	public String getUsername() {
 		return username;
 	}
@@ -45,6 +45,14 @@ public class Credentials {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Chef getChef() {
+		return chef;
+	}
+
+	public void setChef(Chef chef) {
+		this.chef = chef;
 	}
 	
 	public void setUsername(String username) {

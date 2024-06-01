@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Chef-SiwFood</title>
+        <title th:text="${recipe.name}">Recipe-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
@@ -47,7 +47,7 @@
                                 <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
                             </li>
                             <li th:if="${userRole == 'CHEF'}">
-                                <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
@@ -64,10 +64,20 @@
             </nav>
         </header>
 
-        <div class="recipeInformations" th:if="${chef}">
-            <h1 th:text="#{recipe.details}">_chefDetails</h1>
+        <div class="recipeInformations" th:if="${recipe}"> <!--th:if="${chef}">  che volevo fare?--> 
+            <!--<h1 th:text="${recipe.details}"></h1> come sopra. che avevo copiato dalla pagina dello chef?-->
             <div>
-                <span th:text="${recipe.name}">_recipeName_</span>
+                <h1 th:text="${recipe.name}">_recipeName_</h1>
+                <h3 th:text="${recipe.chef.name}">_recipeChef_</h3>
+
+                <ul>
+                    <li th:each="ri : ${recipeIngredients}">
+                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
+                        <span th:text="${ri.quantity.amount}">Quantity</span> 
+                        <span th:text="${ri.unit.name}">Unit</span>
+                    </li>
+                </ul>
+
                 <span th:text="${recipe.description}">_recipeDescription_</span>
                 <!--<span><img width="5%" th:src=${movie.urlImage} /></span>-->
             </div>

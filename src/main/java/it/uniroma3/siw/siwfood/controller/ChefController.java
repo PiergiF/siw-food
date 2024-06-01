@@ -97,7 +97,8 @@ public class ChefController {
             image.setImage(blob);
             imageService.create(image);
             return "chefPage.html";
-                
+            //model.addAttribute("chef",this.chefRepository.findById(chef.getId()).get())
+            //return "redirect:/chefPage.html/"+ chef.getId() ;
         }else{
             return "admin/addChefPage.html";
         }

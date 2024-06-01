@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login-SiwFood</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+        }
+
+        .header_navbar {
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .header_logo {
+            height: 50px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"], input[type="password"], input[type="date"] {
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        button {
+            background-color: #28a745;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .radio-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .radio-group label {
+            margin: 0 10px 0 0;
+        }
+
+        .radio-group input {
+            margin-left: 10px;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+
+        .centered {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+    </style>
+    <script>
+        function updateRegistrationForm(radio) {
+            // JavaScript function to update the form if needed
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="header_navbar">
+        <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+    </header>
+
+    <div class="centered">
+        <h1 th:text="#{registration.title}">_registrationTitle_</h1>
+        <form th:action="@{/registrationData}" method="POST">
+            <div class="input-group">
+                <label th:text="#{registration.insertName}">_yourName_</label>
+                <input class="inputRegistration" type="text" name="name" th:placeholder="#{form.namePlaceholder}"/> 
+                <input class="inputRegistration" type="text" name="surname" th:placeholder="#{form.surnamePlaceholder}"/>
+            </div>
+
+            <div class="input-group">
+                <label th:text="#{registration.insertEmail}">_insertEmail_</label>
+                <input class="inputRegistration" type="text" name="email" th:placeholder="#{form.emailPlaceholder}"/>
+            </div>
+
+            <div class="input-group">
+                <label th:text="#{registration.insertDateOfBirth}">_insertDateOfBirth_</label>
+                <input class="inputRegistration" type="date" name="dateOfBirth" th:placeholder="#{form.dateOfBirthPlaceholder}"/>
+            </div>
+
+            <div class="input-group">
+                <label th:text="#{registration.insertUsername}">_yourUsername</label>
+                <input type="text" th:placeholder="#{form.usernamePlaceholder}" required th:field="${credentials.username}"/>
+                <span class="error" th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}"></span>
+            </div>
+
+            <div class="input-group">
+                <label th:text="#{registration.insertPassword}">_insertPassword_</label>
+                <input type="password" th:placeholder="#{form.passwordPlaceholder}" required th:field="${credentials.password}"/>
+                <span class="error" th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}"></span>
+            </div>
+
+            <div class="radio-group">
+                <label>Registrati come:</label>
+                <label th:text="#{customer}">_customer_</label>
+                <input type="radio" name="role" value="customer" checked onclick="updateRegistrationForm(this)"/>
+                <label th:text="#{chef}">_chef_</label>
+                <input type="radio" name="role" value="chef" onclick="updateRegistrationForm(this)"/>
+            </div>
+
+            <button type="submit" th:text="#{registration.buttonRegistration}">_Registration_</button>
+        </form>
+    </div>
+
+</body>
+</html>

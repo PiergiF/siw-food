@@ -44,5 +44,24 @@ public class GlobalController {
         }
         return "ANONYMOUS";
     }
+
+    @ModelAttribute("loggedId")
+
+    public Long getLoggedId(){
+        Credentials credentials = null;
+        UserDetails ud=getUser();
+        if(ud!=null){
+            credentials = credentialsService.getCredentials(ud.getUsername());
+            if(getUserRole().equals("USER")){
+                return credentials.getUser().getId();
+            }else if(getUserRole().equals("CHEF")){
+                System.out.println("AOOOOO SEMO CHEF");
+                System.out.println(credentials.getChef().getId());
+                return credentials.getChef().getId();
+            }
+            return null;
+        }
+        return null;
+    }
 }
 

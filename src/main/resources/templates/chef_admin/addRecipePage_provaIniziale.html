@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>addRecipe-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    </head>
+
+    <body>
+        <h1>prova add recipe</h1>
+        <form th:action="@{/chef_admin/recipeData}" method="POST" >
+            <div>
+                <label >nome</label>
+                <input type="text" th:field="${recipe.name}"/>
+                <span th:if="${#fields.hasErrors('recipe.name')}" th:errors="${recipe.name}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label >ingrediente1</label>
+                <input type="text" th:field="${ingredient1.name}"/>
+                <span th:if="${#fields.hasErrors('ingredient1.name')}" th:errors="${ingredient1.name}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label >ingrediente2</label>
+                <input type="text" required th:field="${ingredient2.name}"/>
+                <span th:if="${#fields.hasErrors('ingredient2.name')}" th:errors="${ingredient2.name}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label >amount1</label>
+                <input type="number"  required th:field="${amount1.amount}"/>
+                <span th:if="${#fields.hasErrors('amount1.amount')}" th:errors="${amount1.amount}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label >amount2</label>
+                <input type="number"  required th:field="${amount2.amount}"/>
+                <span th:if="${#fields.hasErrors('amount2.amount')}" th:errors="${amount2.amount}" th:style="'color:red'"></span>
+            </div>
+            
+            <div>
+                <label >unit1</label>
+                <input type="text"  th:field="${unit1.unit}"/>
+                <span th:if="${#fields.hasErrors('unit1.unit')}" th:errors="${unit1.unit}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
+                <label >unit2</label>
+                <input type="text"  required th:field="${unit2.unit}"/>
+                <span th:if="${#fields.hasErrors('unit2.unit')}" th:errors="${unit2.unit}" th:style="'color:red'"></span>
+            </div>
+            
+            <button type="submit" >conferma</button>
+        </form>
+    </body>
+</html>

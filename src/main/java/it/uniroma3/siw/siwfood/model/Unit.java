@@ -1,9 +1,8 @@
 package it.uniroma3.siw.siwfood.model;
 
 import java.util.HashSet;
-import java.util.Set;
 
-import org.hibernate.validator.constraints.UniqueElements;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,22 +10,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+
 import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
-public class Ingredient {
+public class Unit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
-    @NotNull
-    private String name;
+    private String name; // e.g., grammi, millilitri
 
-    @OneToMany(mappedBy = "ingredient", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "unit", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RecipeIngredient> recipeIngredients = new HashSet<>();
+
+    
 
     public Long getId() {
         return id;
@@ -52,7 +52,6 @@ public class Ingredient {
     public void setRecipeIngredients(Set<RecipeIngredient> recipeIngredients) {
         this.recipeIngredients = recipeIngredients;
     }
-    
 
     @Override
     public int hashCode() {
@@ -70,7 +69,7 @@ public class Ingredient {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Ingredient other = (Ingredient) obj;
+        Unit other = (Unit) obj;
         if (name == null) {
             if (other.name != null)
                 return false;

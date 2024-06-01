@@ -47,7 +47,7 @@
                                 <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
                             </li>
                             <li th:if="${userRole == 'CHEF'}">
-                                <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>

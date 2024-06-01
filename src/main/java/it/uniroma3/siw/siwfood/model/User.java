@@ -1,5 +1,7 @@
 package it.uniroma3.siw.siwfood.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +17,19 @@ public class User {
     private String name;
     private String surname;
     private String email;
+    private LocalDate dateOfBirth;
+
+    
+    
+    public User() {
+    }
+
+    public User(String name, String surname, String email, LocalDate dateOfBirth) {
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.dateOfBirth = dateOfBirth;
+    }
 
     public Long getId() {
         return id;
@@ -40,6 +55,12 @@ public class User {
     }
     public void setEmail(String email) {
         this.email = email;
+    }
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

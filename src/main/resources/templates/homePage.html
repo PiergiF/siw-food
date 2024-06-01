@@ -43,13 +43,10 @@
                                 <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${accountRole != 'CUSTOMER'}">
-                                <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
-                            </li>
-                            <li th:if="${accountRole != 'CUSTOMER'}">
-                                <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
                             </li>
                             <li th:if="${accountRole == 'CHEF'}">
-                                <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${accountRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
@@ -68,6 +65,8 @@
 
         <div>prova</div>
         <div><a href="/prova">aaaaaa</a></div>
+        <div><a href="/chef_admin/addRecipePage">addRecipe</a></div>
+        <a href="/registrationPageGPT">regGPT</a>
     
     </body>
 </html>

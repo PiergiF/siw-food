@@ -6,11 +6,12 @@
 }
 
 /*#### Global elements ####*/
-
+/*
 a{
     text-decoration: none;
     color: currentColor;
 }
+*/
 
 /*#### Header site ####*/
 
@@ -26,11 +27,11 @@ a{
     left: 0;
     width: 100%;*/
 }
-/*
+
 .header_navbar a{
     text-decoration: none;
     color: currentColor;
-}*/
+}
 
 /* container for max stratch. Here stay all items */
 /*.header_navbar {

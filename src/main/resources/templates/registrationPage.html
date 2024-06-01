@@ -33,6 +33,12 @@
             </div>
 
             <div>
+                <label th:text="#{registration.insertDateOfBirth}">_insertEmail_</label>
+                <input type="data" th:placeholder="#{form.dateOfBirthPlaceholder}" th:field="${user.dateOfBirth}"/>
+                <span th:if="${#fields.hasErrors('user.dateOfBirth')}" th:errors="${user.dateOfBirth}" th:style="'color:red'"></span>
+            </div>
+
+            <div>
                 <label th:text="#{registration.insertUsername}">_yourUsername</label>
                 <input type="text" th:placeholder="#{form.usernamePlaceholder}" required th:field="${credentials.username}"/>
                 <span th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}" th:style="'color:red'"></span>
