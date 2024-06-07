@@ -12,10 +12,10 @@ public class Credentials {
 
     public static final String CUSTOMER_ROLE = "CUSTOMER";
     public static final String CHEF_ROLE = "CHEF";
-    public static final String ADMIN_ROLE = "ADMIN";
+    public static final String ADMINISTRATOR_ROLE = "ADMINISTRATOR";
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	private String username;
 	private String password;
@@ -26,6 +26,10 @@ public class Credentials {
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Chef chef;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	private Administrator administrator;
+	
 
 	public String getUsername() {
 		return username;
@@ -53,6 +57,14 @@ public class Credentials {
 
 	public void setChef(Chef chef) {
 		this.chef = chef;
+	}
+
+	public Administrator getAdministrator() {
+		return administrator;
+	}
+
+	public void setAdministrator(Administrator administrator) {
+		this.administrator = administrator;
 	}
 	
 	public void setUsername(String username) {

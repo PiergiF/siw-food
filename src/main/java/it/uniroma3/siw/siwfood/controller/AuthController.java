@@ -13,9 +13,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
+import it.uniroma3.siw.siwfood.model.Administrator;
 import it.uniroma3.siw.siwfood.model.Chef;
 import it.uniroma3.siw.siwfood.model.Credentials;
 import it.uniroma3.siw.siwfood.model.User;
+import it.uniroma3.siw.siwfood.service.AdministratorService;
 import it.uniroma3.siw.siwfood.service.ChefService;
 import it.uniroma3.siw.siwfood.service.CredentialsService;
 import it.uniroma3.siw.siwfood.service.UserService;
@@ -36,6 +38,9 @@ public class AuthController {
 
     @Autowired
     private ChefService chefService;
+
+    @Autowired
+    private AdministratorService administratorService;
 
     /*
     @GetMapping(value = "/")
@@ -106,18 +111,26 @@ public class AuthController {
                                 @Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult,
                                 @RequestParam("role") String role,
                                 Model model) {
+
+        //se name è presente nell'invio al controller ma senza valore equivale ad una stringa vuota, se non è proprio presente equivale a NULL
+        
         // se user e credential hanno entrambi contenuti validi, memorizza User e the Credentials nel DB
         if(!credentialsBindingResult.hasErrors()) {
-            if(role.equals("customer")){
+            if(role.equals("CUSTOMER")){
                 User user = new User(name, surname, email, dateOfBirth);
                 userService.saveUser(user);
                 credentials.setUser(user);
             }
-            else if(role.equals("chef")){
+            else if(role.equals("CHEF")){
                 Chef chef = new Chef(name, surname, email, dateOfBirth);
                 chefService.saveChef(chef);
                 credentials.setChef(chef);
             }
+            /*else if(role.equals("ADMINISTRATOR")){
+                Administrator administrator = new Administrator(name, surname, email, dateOfBirth);
+                administratorService.saveAdministrator(administrator);
+                credentials.setAdministrator(administrator);
+            }*/
             //userService.saveUser(user);
             //credentials.setUser(user);
             credentialsService.saveCredentials(credentials, role);

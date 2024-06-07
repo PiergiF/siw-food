@@ -10,6 +10,7 @@ import it.uniroma3.siw.siwfood.model.Recipe;
 import it.uniroma3.siw.siwfood.model.RecipeIngredient;
 import it.uniroma3.siw.siwfood.repository.RecipeIngredientRepository;
 import it.uniroma3.siw.siwfood.repository.RecipeRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class RecipeService {
@@ -43,8 +44,36 @@ public class RecipeService {
         return recipeIngredientRepository.findAllByRecipeId(recipeId);
     }
 
+    @Transactional
+    public void deleteRecipeIngredientsByRecipeId(Long recipeId) {
+        recipeIngredientRepository.deleteByRecipeId(recipeId);
+    }
+
+    /*
+    public boolean existByRecipeId(Long recipeId) {
+        return recipeIngredientRepository.existsByRecipeId(recipeId);
+    }
+    */
+
     public List<Recipe> findAllByChefId(Long chefId){
         Chef chef = chefService.findById(chefId);
         return recipeRepository.findAllByChef(chef);
+    }
+
+    public void deleteById(Long id){
+        recipeRepository.deleteById(id);
+    }
+
+    public void deleteRecipesByChefId(Long chefId){
+        List<Recipe> recipes = findAllByChefId(chefId);
+        for(Recipe recipe : recipes){
+            this.deleteRecipeIngredientsByRecipeId(recipe.getId());
+            this.deleteById(recipe.getId());
+        }
+    }
+
+    @Transactional
+    public void deleteRecipeIngredientsByIngredientId(Long ingredientId){
+        recipeIngredientRepository.deleteByIngredientId(ingredientId);
     }
 }

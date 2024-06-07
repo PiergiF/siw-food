@@ -38,7 +38,7 @@
                         </div>
                         <ul class="header_account_dropDownMenu">
                             <li>
-                                <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
+                                <a th:href="@{'/savedRecipesPage/' + ${loggedId} + '/' + ${userRole}}" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
@@ -69,7 +69,9 @@
             <div>
                 <span th:text="${chef.name} + ' ' + ${chef.surname}">_nameAndSurname_</span>
                 <span th:text="'(' + ${chef.dateOfBirth} + ')'">_dateOfBirth_</span>
-                <!--<span><img width="5%" th:src=${movie.urlImage} /></span>-->
+                <div class="chef-image">
+                    <img th:src=" 'data:image/;base64,' + ${chef.imageBase64}" alt="Chef Image">
+                </div>
             </div>
             <div th:unless="${chef}" th:text="#{dosent.exist}">_dosentExist_</div>
         </div>

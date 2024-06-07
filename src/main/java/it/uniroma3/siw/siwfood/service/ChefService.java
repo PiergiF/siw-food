@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwfood.model.Chef;
 import it.uniroma3.siw.siwfood.model.Quantity;
+import it.uniroma3.siw.siwfood.model.Recipe;
 import it.uniroma3.siw.siwfood.model.User;
 //import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siw.siwfood.repository.ChefRepository;
@@ -36,6 +37,24 @@ public class ChefService {
 
     public Chef findById(Long id){
         return chefRepository.findById(id).orElse(null);
+    }
+
+    public void deleteById(Long id){
+        chefRepository.deleteById(id);
+    }
+
+    public void saveRecipeForChef(Chef chef, Recipe recipe) {
+        chef.getSavedRecipes().add(recipe);
+        chefRepository.save(chef);
+    }
+
+    public List<Recipe> getSavedRecipes(Chef chef) {
+        return chef.getSavedRecipes();
+    }
+
+    public void removeRecipeForChef(Chef chef, Recipe recipe) {
+        chef.getSavedRecipes().remove(recipe);
+        chefRepository.save(chef);
     }
 
     /*

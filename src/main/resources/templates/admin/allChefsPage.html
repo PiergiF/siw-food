@@ -70,6 +70,9 @@
                 <li th:each="chef : ${chefs}">
                     <a th:href="@{'/chefPage' + '/' + ${chef.id}}"
                         th:text="${chef.name} + ' ' + ${chef.surname} + ' (' + ${chef.dateOfBirth} + ')'">_chefData_</a>
+                        <span>(<a th:href="@{'/admin/editChefPage/' + ${chef.id}}" th:text="#{edit}"></a>)</span>
+                        <a th:href="@{'/admin/removeCredentialsChef/' + ${chef.id}}" class="removeButton" id="removeChefCredentialsButton"><button type="submit" >Remove access</button></a>
+                        <a th:href="@{'/admin/removeTotalChef/' + ${chef.id}}" class="removeButton" id="removeChefButton"><button type="submit" >Remove all</button></a>
                 </li>
             </ul>
             <!--<span th:if="${param}">ERRORE</span>-->

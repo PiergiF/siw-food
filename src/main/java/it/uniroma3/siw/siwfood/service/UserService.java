@@ -5,6 +5,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.uniroma3.siw.siwfood.model.Recipe;
 import it.uniroma3.siw.siwfood.model.User;
 import it.uniroma3.siw.siwfood.repository.UserRepository;
 
@@ -55,6 +56,24 @@ public class UserService {
         for(User user : iterable)
             result.add(user);
         return result;
+    }
+
+    public User findById(Long id){
+        return userRepository.findById(id).orElse(null);
+    }
+
+    public void saveRecipeForUser(User user, Recipe recipe) {
+        user.getSavedRecipes().add(recipe);
+        userRepository.save(user);
+    }
+
+    public List<Recipe> getSavedRecipes(User user) {
+        return user.getSavedRecipes();
+    }
+
+    public void removeRecipeForUser(User user, Recipe recipe) {
+        user.getSavedRecipes().remove(recipe);
+        userRepository.save(user);
     }
 }
 

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>addRecipe-SiwFood</title>
+        <title>editRecipe-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
@@ -10,6 +10,7 @@
         <div class="referenceForJSClone">
             <div id="ingredientsContainerReference">
                 <div id="ingredientsReference">
+                    
                     <span>
                         <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
                         <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)">
@@ -72,10 +73,7 @@
                                 <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${userRole != 'CUSTOMER'}">
-                                <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
-                            </li>
-                            <li th:if="${userRole != 'CUSTOMER'}">
-                                <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
                             </li>
                             <li th:if="${userRole == 'CHEF'}">
                                 <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
@@ -95,70 +93,85 @@
             </nav>
         </header>
 
-        <h1>Create Recipe</h1>
-        <form th:action="@{/chef_admin/recipeData}" th:object="${recipe}" method="POST" id="formNewRecipe" enctype="multipart/form-data">
+        <h1>Edit Recipe</h1>
+        <form th:action="@{'/chef_admin/recipeEditData/' + ${recipe.id}}" th:object="${recipe}" method="POST" id="formEditRecipe" enctype="multipart/form-data">
             <div>
                 <label for="name" th:text="#{recipeName}">_recipeName_</label>
-                <input type="text" id="name" name="name" th:field="${recipe.name}" required/>
+                <input type="text" id="name" name="name" th:field="${recipe.name}"/>
+            </div>
+
+            
+            <div>
+                <h3>Immagini correnti:</h3>
+                <div>
+                    <div th:each="base64, iterStat : ${recipe.imagesBase64}">
+                        <div>
+                            <img th:src=" 'data:image/;base64,' + ${base64}" alt="Recipe Image"/>
+                            <!--<div>-->
+                                <button type="button" th:onclick=" 'removeImageFromRecipe(this, ' + ${iterStat.index} + ')' ">Remove</button>
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group">
                 <label for="image">Select Image:</label>
-                <input type="file" id="image" name="images" multiple required>
+                <input type="file" id="images" name="newImages" multiple>
             </div>
+            
 
             <div th:switch="${userRole}">
                 <label for="chef" th:text="#{chef} + ':' ">_chef_</label>
                 <select th:case="'CHEF'" th:field="${recipe.chef}" disabled class="disabledChefChoise">
-                    <option th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}" selected>_ChefName&Surname_</option>
-                    <input type="hidden" th:field="${recipe.chef}" th:value="${chef.id}" />
+                    <option th:value="${recipe.chef.id}" th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" selected>_ChefName&Surname_</option>
+                    <input type="hidden" th:field="${recipe.chef}" th:value="${recipe.chef.id}" />
                 </select>
 
-                <select th:case="'ADMIN'" th:field="${recipe.chef}" required>
-                    <option value="" selected disabled>Seleziona uno chef</option>
-                    <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}">_ChefName&Surname_</option>
+                <select th:case="'ADMIN'" th:field="${recipe.chef}">
+                    <option th:value="${recipe.chef.id}" th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" selected>_OldChefName&Surname_</option>
+                    <option th:each="c : ${chefs}" th:unless="${recipe.chef.id} == ${c.id}" th:value="${c.id}" th:text="${c.name} + ' ' + ${c.surname}">_ChefName&Surname_</option>
                 </select>
             </div>
 
             <div>
                 <label for="courseRecipe" th:text="#{course} + ':' ">_course_</label>
                 <select th:field="${recipe.course}" required>
-                    <option value="" selected disabled>Seleziona la portata</option>
-                    <option th:each="course : ${courses}" th:value="${course}" th:text="${course}"></option>
+                    <option th:value="${recipe.course}" th:text="${recipe.course}" selected>_OldCourse_</option>
+                    <option th:each="c : ${courses}" th:unless="${recipe.course} == ${c}" th:value="${c}" th:text="${c}"></option>
                 </select>
             </div>
 
             <label >Ingredients:</label>
             <div id="ingredientsContainer">
-                <div id="ingredients">
+
+                <div id="ingredients" th:each="ri : ${recipeIngredients}">
+
                     <span>
                         <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
-                        <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" required>
-                            <option value="" selected disabled>Seleziona un ingrediente</option>
-                            <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
+                        <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)">
+                            <option th:value="${ri.ingredient.name}" th:text="${ri.ingredient.name}" selected></option>
+                            <option th:each="ingredient : ${ingredients}" th:unless="${ri.ingredient.id} == ${ingredient.id}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option> <!--th:unless="${#strings.equals('${ri.ingredient.name}', '${ingredient.name}')}"-->
                             <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
                         </select>
                     </span>
 
                     <label>Quantity:</label>
-                    <input type="number" name="quantities" required/>
+                    <input type="number" name="quantities" th:value="${ri.quantity.amount}" required/>
 
                     <span>
                         <label>Unit:</label>
-                        <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)" required>
-                            <option value="" selected disabled>Seleziona un'unità</option>
-                            <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
+                        <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)">
+                            <option th:value="${ri.unit.name}" th:text="${ri.unit.name}" selected></option>
+                            <option th:each="unit : ${units}" th:unless="${ri.unit.id} == ${unit.id}" th:value="${unit.name}" th:text="${unit.name}"></option>
                             <option value="add" id="addUnitOption">_AggiungiUnit_</option>
                         </select>
                     </span>
 
                     <button type="button" onclick="removeIngredientField(this)">Remove</button>
-                    <!--<select class="ingredientUnits" id="ingredientUnits">
-                        <option id="ingredient0Unit" name="ingredient0Unit" th:each="unit : ${units}" th:value="${unit.unit}" th:text="${unit.unit}">_unit_</option>
-                    </select>-->
+
                 </div>
             </div>
-
             <button type="button" onclick="addIngredientField()">Add Ingredient</button>
             <br/><br/>
 
@@ -167,98 +180,7 @@
                 <textarea id="description" name="description" th:field="${recipe.description}"></textarea>
             </div>
 
-            <input type="submit" value="Create Recipe" />
+            <input type="submit" value="Edit Recipe" />
         </form>
-
-    <!--<script th:inline="javascript">
-
-        /*<![CDATA[*/
-            var units = /*[[${units2}]];*/ '[]';
-        /*]]>*/
-
-
-        var ingredientCount = 1;
-
-        function addIngredient() {
-            var container = document.getElementById("ingredientsBox");
-
-            var newDiv = document.createElement("div");
-            newDiv.className = "ingredientBox";
-
-            var nameLabel = document.createElement("label");
-            nameLabel.setAttribute("for", "ingredient" + ingredientCount + "Name");
-            nameLabel.textContent = "Ingredient Name:";
-            newDiv.appendChild(nameLabel);
-
-            var nameInput = document.createElement("input");
-            nameInput.type = "text";
-            nameInput.id = "ingredient" + ingredientCount + "Name";
-            nameInput.name = "ingredient" + ingredientCount + "Name";
-            newDiv.appendChild(nameInput);
-
-            var amountLabel = document.createElement("label");
-            amountLabel.setAttribute("for", "ingredient" + ingredientCount + "Amount");
-            amountLabel.textContent = "Amount:";
-            newDiv.appendChild(amountLabel);
-
-            var amountInput = document.createElement("input");
-            amountInput.type = "number";
-            amountInput.id = "ingredient" + ingredientCount + "Amount";
-            amountInput.name = "ingredient" + ingredientCount + "Amount";
-            newDiv.appendChild(amountInput);
-
-            //gpt
-            var unitLabel = document.createElement("label");
-            unitLabel.setAttribute("for", "ingredient" + ingredientCount + "Unit");
-            unitLabel.textContent = "Unit:";
-            newDiv.appendChild(unitLabel);
-
-            var unitSelect = document.createElement("select");
-            unitSelect.id = "ingredient" + ingredientCount + "Unit";
-            unitSelect.name = "ingredient" + ingredientCount + "Unit";
-            
-
-            /* //mio
-            var unitSelect = document.createElement("select");
-            unitSelect.setAttribute("for", "ingredient" + ingredientCount + "Unit");
-            unitSelect.textContent = "Unit:";
-            newDiv.appendChild(unitSelect);
-
-            var unitOption = document.createElement("option");
-            unitOption.id = "ingredient" + ingredientCount + "Unit";
-            unitOption.name = "ingredient" + ingredientCount + "Unit";
-            */
-
-            /* Assuming units are passed to the view as a list of strings (unit names) */
-            /* This part may vary depending on how the units are passed to the view */
-            //var units = /*[[${units}]];*/ [];
-            units.forEach(function(unit) {
-                var option = document.createElement("option");
-                option.value = unit;
-                option.textContent = unit;
-                unitSelect.appendChild(option);
-            });
-
-            newDiv.appendChild(unitSelect);
-
-            container.appendChild(newDiv);
-
-            ingredientCount++;
-        }
-        /*
-        function addUnit() {
-            const unitSelect = document.getElementById('ingredientUnits');
-
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = 'unit';
-            input.id = 'unitInput';
-            input.placeholder = 'Inserisci nuova unità';
-            unitSelect.parentNode.replaceChild(input, unitSelect);
-            input.focus();
-        }
-        */
-    </script>-->
-
     </body>
 </html>

@@ -65,33 +65,47 @@
 
         <div class="upload-container">
             <h1>Aggiungi uno Chef</h1>
-            <form th:action="@{/admin/addChefData}" method="POST" th:object="${newChef}" enctype="multipart/form-data">
-                <div th:if="${#fields.hasGlobalErrors()}">
-                    <p th:each="err : ${#fields.globalErrors()}" th:text="${err}">...</p> 
-                </div>
+            <form th:action="@{/admin/addChefData}" method="POST" enctype="multipart/form-data"> <!--th:object="${newChef}" enctype="multipart/form-data">-->
                 
                 <div class="form-group">
                     <label th:text="#{name}">_name_</label> 
                     <span><input type="text" th:field="${newChef.name}" required/></span>
-                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                    <span th:if="${#fields.hasErrors('newChef.name')}" th:errors="${newChef.name}"></span>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{surname}">_surname_</label>
                     <span><input type="text" th:field="${newChef.surname}" required/></span>
-                    <span th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></span>
+                    <span th:if="${#fields.hasErrors('newChef.surname')}" th:errors="${newChef.surname}"></span>
                 </div>
 
                 <div class="form-group">
                     <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
                     <span><input type="date" th:field="${newChef.dateOfBirth}" required/></span>
-                    <span th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}"></span>
+                    <span th:if="${#fields.hasErrors('newChef.dateOfBirth')}" th:errors="${newChef.dateOfBirth}"></span>
                 </div>
 
                 <div class="form-group">
-                    <label for="image" th:text="#{selectImage}">_selectImage_</label>
-                    <span><input type="file" id="image" name="image" accept="image/png, image/jpeg"></span>
-                    <span th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></span>
+                    <label th:text="#{email}">_Email_</label>
+                    <input type="text" th:placeholder="#{email}" th:field="${newChef.email}"/>
+                    <span th:if="${#fields.hasErrors('newChef.email')}" th:errors="${newChef.email}"></span>
+                </div>
+
+                <div>
+                    <label th:text="#{insertUsername}">_Username</label>
+                    <input type="text" th:placeholder="#{form.usernamePlaceholder}" required th:field="${newCredentials.username}"/>
+                    <span th:if="${#fields.hasErrors('newCredentials.username')}" th:errors="${newCredentials.username}"></span>
+                </div>
+    
+                <div>
+                    <label th:text="#{insertPassword}">_insertPassword_</label>
+                    <input type="password" th:placeholder="#{form.passwordPlaceholder}" required th:field="${newCredentials.password}"/>
+                    <span th:if="${#fields.hasErrors('newCredentials.password')}" th:errors="${newCredentials.password}"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="image">Select Image:</label>
+                    <input type="file" id="image" name="image" required>
                 </div>
                 
                 <div>

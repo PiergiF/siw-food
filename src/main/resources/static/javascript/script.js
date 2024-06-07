@@ -1,5 +1,5 @@
 function addIngredientField() {
-    const divIngredients = document.getElementById('ingredients');
+    const divIngredients = document.getElementById('ingredientsReference');
     let htmlForm = divIngredients.cloneNode(true);
     document.getElementById('ingredientsContainer').appendChild(htmlForm);
 }
@@ -79,21 +79,58 @@ function changeToSelect(input, select) {
     if (backButton) {
         parent.removeChild(backButton);
     }
-    //select.value = ''; // Reset the select value
+    select.value = ''; // Reset the select value
 }
 
 function updateRegistrationForm(radioInput){
     var listClass = document.getElementsByClassName("inputRegistration");
-    if(radioInput.value === 'customer'){
+    if(radioInput.value === 'CUSTOMER'){
         for(i=0; i< listClass.length;i++){
             listClass[i].required = false;
         }
     }
-    else if(radioInput.value === 'chef'){
+    else if(radioInput.value === 'CHEF'){
         for(i=0; i< listClass.length;i++){
             listClass[i].required = true;
         }
     }
+    /*else if(radioInput.value === 'ADMINISTRATOR'){
+        for(i=0; i< listClass.length;i++){
+            listClass[i].required = false;
+        }
+    }*/
+}
+
+function removeImageFromChef(divImage){
+
+    while (divImage.firstChild) {
+        divImage.removeChild(divImage.firstChild);
+    }
+
+    const inputHidden = document.createElement('input');
+    inputHidden.type = 'hidden';
+    inputHidden.name = 'removeImage';
+    inputHidden.value = 'true';
+
+    const inputIMG = document.createElement('input');
+    inputIMG.type = 'file';
+    inputIMG.name = 'image';
+    inputIMG.required = true;
+
+    divImage.appendChild(inputHidden);
+    divImage.appendChild(inputIMG);
+
+}
+
+function removeImageFromRecipe(button, index){
+
+    const inputHidden = document.createElement('input');
+    inputHidden.type = 'hidden';
+    inputHidden.name = 'removeImageIndexes';
+    inputHidden.value = index;
+    button.parentElement.parentElement.appendChild(inputHidden);
+
+    button.parentElement.remove();
 }
     
             /*

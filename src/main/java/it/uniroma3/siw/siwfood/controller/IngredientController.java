@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import it.uniroma3.siw.siwfood.controller.validator.IngredientValidator;
 import it.uniroma3.siw.siwfood.model.Ingredient;
 import it.uniroma3.siw.siwfood.service.IngredientService;
+import it.uniroma3.siw.siwfood.service.RecipeService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class IngredientController {
 
     @Autowired
     private IngredientValidator ingredientValidator;
+
+    @Autowired
+    private RecipeService recipeService;
 
     @GetMapping("/chef_admin/allIngredientsPage")
     public String getAllIngredientsPage(Model model) {
@@ -64,6 +68,14 @@ public class IngredientController {
         }
     }
     
+    @GetMapping("/chef_admin/removeIngredient/{id}")
+    public String removeIngredient(@PathVariable("id") Long ingredientId) {
+        
+        recipeService.deleteRecipeIngredientsByIngredientId(ingredientId);
+        ingredientService.deleteById(ingredientId);
+
+        return "redirect:/chef_admin/allIngredientsPage";
+    }
     
     
 }

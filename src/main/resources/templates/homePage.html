@@ -40,7 +40,7 @@
                         </div>
                         <ul class="header_account_dropDownMenu">
                             <li>
-                                <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
+                                <a th:href="@{'/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${accountRole != 'CUSTOMER'}">
                                 <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
@@ -48,10 +48,10 @@
                             <li th:if="${accountRole == 'CHEF'}">
                                 <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
                             </li>
-                            <li th:if="${accountRole == 'ADMIN'}">
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
                                 <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
                             </li>
                             <li>
@@ -67,6 +67,8 @@
         <div><a href="/prova">aaaaaa</a></div>
         <div><a href="/chef_admin/addRecipePage">addRecipe</a></div>
         <a href="/registrationPageGPT">regGPT</a>
+       <div th:if="${#strings.equals('${userDetails.username}', '${userDetails.username}')}">ciao</div>
+       id:<div th:text="${loggedId}"></div>
     
     </body>
 </html>

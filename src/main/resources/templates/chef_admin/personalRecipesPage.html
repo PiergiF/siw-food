@@ -62,7 +62,11 @@
         <h1 th:text="'Ricette di ' + ${userDetails.username}">_usernameChef_</h1>
         <div class="recipes_list">
             <ul>
-                <li th:each="recipe : ${recipes}"><a th:href="@{'/recipePage/' + ${recipe.id}}" th:text="${recipe.name}">_nomeRicetta_</a></li>
+                <li th:each="recipe : ${recipes}">
+                    <a th:href="@{'/recipePage/' + ${recipe.id}}" th:text="${recipe.name}">_nomeRicetta_</a>
+                    <span>(<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" th:text="#{edit}"></a>)</span>
+                    <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="removeButton" id="removeRecipeButton"><button type="submit" >Remove</button></a>
+                </li>
             </ul>
         </div>
         <div><a href="/chef_admin/addRecipePage">addRecipe</a></div>

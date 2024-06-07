@@ -42,6 +42,10 @@ public class IngredientService {
         return ingredientRepository.save(ingredient);
     }
 
+    public void deleteById(Long id){
+        this.ingredientRepository.deleteById(id);
+    }
+
     /*
     public Ingredient addIngredientToRecipe(Recipe recipe, String ingredientName, double amount, String unitUnit) {
         Unit unit = unitRepository.findByUnit(unitUnit)

@@ -1,5 +1,5 @@
-insert into chef (id, name, surname, date_of_birth) values(nextval('chef_seq'), 'Bruno', 'Barbieri','1962-01-12');
-insert into chef (id, name, surname, date_of_birth) values(nextval('chef_seq'), 'Alessandro', 'Borghese','1976-11-19');
+insert into chef (id, name, surname, date_of_birth) values(nextval('chef_id_seq'), 'Bruno', 'Barbieri','1962-01-12');
+--insert into chef (id, name, surname, date_of_birth) values(nextval('chef_seq'), 'Alessandro', 'Borghese','1976-11-19');
 
 INSERT INTO ingredient (name) VALUES ('Pasta');
 INSERT INTO ingredient (name) VALUES ('Pomodoro');
@@ -11,7 +11,7 @@ INSERT INTO unit (name) VALUES ('millilitri');
 INSERT INTO quantity (amount) VALUES (200);
 INSERT INTO quantity (amount) VALUES (300);
 
-INSERT INTO recipe (name) VALUES ('Pasta al Pomodoro');
+INSERT INTO recipe (name, chef_id) VALUES ('Pasta al Pomodoro',1);
 
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) VALUES (1, 1, 1, 1);
 INSERT INTO recipe_ingredient (recipe_id, ingredient_id, quantity_id, unit_id) VALUES (1, 2, 2, 1);

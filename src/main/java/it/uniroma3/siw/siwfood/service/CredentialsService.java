@@ -33,14 +33,20 @@ public class CredentialsService {
 
     @Transactional
     public Credentials saveCredentials(Credentials credentials, String role) {
-        if(role.equals("customer")){
+        if(role.equals("CUSTOMER")){
             credentials.setRole(Credentials.CUSTOMER_ROLE);
         }
-        else if(role.equals("chef")){
+        else if(role.equals("CHEF")){
             credentials.setRole(Credentials.CHEF_ROLE);
+        }else if(role.equals("ADMINISTRATOR")){
+            credentials.setRole(Credentials.ADMINISTRATOR_ROLE);
         }
         credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
         return this.credentialsRepository.save(credentials);
+    }
+
+    public void deleteByChefId(Long chefId){
+        this.credentialsRepository.deleteByChefId(chefId);
     }
 }
 

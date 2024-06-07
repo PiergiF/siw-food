@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title th:text="${recipe.name}">Recipe-SiwFood</title>
+        <title>EditChef-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
     </head>
 
     <body>
-
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -47,7 +47,7 @@
                                 <a href="/addIngredientForm" th:text="#{addIngredient}">_addIngredient_</a>
                             </li>
                             <li th:if="${userRole == 'CHEF'}">
-                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                                <a href="/personalRecipesPage/{id}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${userRole == 'ADMIN'}">
                                 <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
@@ -64,43 +64,45 @@
             </nav>
         </header>
 
-        <div class="recipeInformations" th:if="${recipe}"> <!--th:if="${chef}">  che volevo fare?--> 
-            <!--<h1 th:text="${recipe.details}"></h1> come sopra. che avevo copiato dalla pagina dello chef?-->
-            <div>
-                <h1 th:text="${recipe.name}">_recipeName_</h1>
-                <h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3>
+        <div class="upload-container">
+            <h1>Modifica uno Chef</h1>
 
+            <form th:action="@{'/admin/editChefData/' + ${chef.id}}" method="POST" th:object="${chef}" enctype="multipart/form-data">
                 
+                <div id="imageSpace">
+                    <img th:src=" 'data:image/;base64,' + ${chef.imageBase64}" alt="Chef Image"/>
+                    <input type="hidden" name="removeImage" value="false"/>
+                    <button type="button" onclick="removeImageFromChef(this.parentElement)">Remove</button>
+                </div>
 
-                <ul>
-                    <li th:each="ri : ${recipeIngredients}">
-                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
-                        <span th:text="${ri.quantity.amount}">Quantity</span> 
-                        <span th:text="${ri.unit.name}">Unit</span>
-                    </li>
-                </ul>
+                <div class="form-group">
+                    <label th:text="#{name}">_name_</label> 
+                    <span><input type="text" th:field="${chef.name}" required/></span>
+                    <!--<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>-->
+                </div>
 
-                <div th:unless="${#strings.isEmpty(recipe.description)}">
-                    <b th:text="#{recipeDescription}">_recipeDescription_</b>
-                    <p th:text="${recipe.description}">_recipeDescription_</p>
+                <div class="form-group">
+                    <label th:text="#{surname}">_surname_</label>
+                    <span><input type="text" th:field="${chef.surname}" required/></span>
+                    <!--<span th:if="${#fields.hasErrors('chef.surname')}" th:errors="${chef.surname}"></span>-->
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
+                    <span><input type="date" th:field="${chef.dateOfBirth}" required/></span>
+                    <!--<span th:if="${#fields.hasErrors('chef.dateOfBirth')}" th:errors="${chef.dateOfBirth}"></span>-->
+                </div>
+
+                <div class="form-group">
+                    <label th:text="#{email}">_Email_</label>
+                    <input type="text" th:placeholder="#{email}" th:field="${chef.email}"/>
+                    <!--<span th:if="${#fields.hasErrors('chef.email')}" th:errors="${chef.email}"></span>-->
                 </div>
 
                 <div>
-                    <b th:text="#{course}">_course_</b>
-                    <span th:text="${recipe.course}">_courseName_</span> <!--ci va .name?-->
+                    <span><button type="submit">Conferma</button></span>
                 </div>
-
-                <div class="recipe-image">
-                    <img th:each="photo : ${photos}" th:src=" 'data:image/;base64,' + ${photo}" alt="Recipe Image">
-                </div>
-
-            </div>
-            <div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>
+            </form>
         </div>
-
-        <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${userRole}}" method="post">
-            <button type="submit" value="saveButton" class="saveButton">Salva ricetta</button>
-        </form>
-
     </body>
 </html>

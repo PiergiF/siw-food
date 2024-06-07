@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Transient;
@@ -19,7 +20,7 @@ import jakarta.validation.constraints.NotBlank;
 @Entity
 public class Chef {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
     private String name;
@@ -27,32 +28,16 @@ public class Chef {
     private String surname;
     private String email;
     private LocalDate dateOfBirth;
-    
-    
-    /*
-    //tutta l'immagine
-    @OneToOne //(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "image_id", referencedColumnName = "id")
-    private Image image;
-    */
 
-    /*
-    //gpt boh
-    private byte[] image;
-    */
-
+    @Column(length = 10000000)
+    private String imageBase64;
     
-    
-
-    //sito
-    //@Column(nullable = true) //, length = 64)
-    private String image;
-    
-
 
     @OneToMany(mappedBy = "chef", fetch=FetchType.EAGER)
     private List<Recipe> recipes;
 
+    @ManyToMany
+    private List<Recipe> savedRecipes;
     
 
     public Chef() {
@@ -95,53 +80,66 @@ public class Chef {
         this.dateOfBirth = dateOfBirth;
     }
 
-    
-
-    
-    //sito
-    public String getImage() {
-        return image;
-    }
-    public void setImage(String image) {
-        this.image = image;
+    public List<Recipe> getRecipes() {
+        return recipes;
     }
 
-    /*
-    //tutta l'immagine
-    public Image getImage() {
-        return image;
+    public void setRecipes(List<Recipe> recipes) {
+        this.recipes = recipes;
     }
-    public void setImage(Image image) {
-        this.image = image;
+
+    public List<Recipe> getSavedRecipes() {
+        return savedRecipes;
     }
-    */
-    
-    /*
-    //gpt boh
-    public byte[] getImage() {
-        return image;
+
+    public void setSavedRecipes(List<Recipe> savedRecipes) {
+        this.savedRecipes = savedRecipes;
     }
-    public void setImage(byte[] image) {
-        this.image = image;
+
+    public String getImageBase64() {
+        return imageBase64;
     }
-    */
-    
-    
-    @Override
-    public boolean equals(Object c){
-        Chef chef = (Chef)c;
-        return this.name.equals(chef.getName()) && this.surname.equals(chef.getSurname()) && this.dateOfBirth.equals(chef.getDateOfBirth());
+
+    public void setImageBase64(String imageBase64) {
+        this.imageBase64 = imageBase64;
     }
 
     @Override
-    public int hashCode(){
-        return this.name.hashCode() + this.surname.hashCode() + this.dateOfBirth.hashCode();
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+        result = prime * result + ((dateOfBirth == null) ? 0 : dateOfBirth.hashCode());
+        return result;
     }
 
-    @Transient
-    public String getImagePath() {
-        if (image == null || id == null) return null;
-         
-        return "/image/chefImage/" + id + "/" + image;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Chef other = (Chef) obj;
+        if (name == null) {
+            if (other.name != null)
+                return false;
+        } else if (!name.equals(other.name))
+            return false;
+        if (surname == null) {
+            if (other.surname != null)
+                return false;
+        } else if (!surname.equals(other.surname))
+            return false;
+        if (dateOfBirth == null) {
+            if (other.dateOfBirth != null)
+                return false;
+        } else if (!dateOfBirth.equals(other.dateOfBirth))
+            return false;
+        return true;
     }
+
+    
 }

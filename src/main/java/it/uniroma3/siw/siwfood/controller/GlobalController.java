@@ -52,12 +52,12 @@ public class GlobalController {
         UserDetails ud=getUser();
         if(ud!=null){
             credentials = credentialsService.getCredentials(ud.getUsername());
-            if(getUserRole().equals("USER")){
+            if(getUserRole().equals("CUSTOMER")){
                 return credentials.getUser().getId();
             }else if(getUserRole().equals("CHEF")){
-                System.out.println("AOOOOO SEMO CHEF");
-                System.out.println(credentials.getChef().getId());
                 return credentials.getChef().getId();
+            }else if(getUserRole().equals("ADMINISTRATOR")){
+                return credentials.getAdministrator().getId();
             }
             return null;
         }

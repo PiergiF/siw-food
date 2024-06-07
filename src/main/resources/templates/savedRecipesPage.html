@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title th:text="${recipe.name}">Recipe-SiwFood</title>
+        <title>SavedRecipe-SiwFood</title>
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
@@ -37,9 +37,6 @@
                         <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
                         </div>
                         <ul class="header_account_dropDownMenu">
-                            <li>
-                                <a href="/savedRecipesPage" th:text="#{savedRecipes}">_savedRecipes_</a>
-                            </li>
                             <li th:if="${userRole != 'CUSTOMER'}">
                                 <a href="/addRecipeForm" th:text="#{addRecipe}">_addRecipe_</a>
                             </li>
@@ -64,43 +61,16 @@
             </nav>
         </header>
 
-        <div class="recipeInformations" th:if="${recipe}"> <!--th:if="${chef}">  che volevo fare?--> 
-            <!--<h1 th:text="${recipe.details}"></h1> come sopra. che avevo copiato dalla pagina dello chef?-->
-            <div>
-                <h1 th:text="${recipe.name}">_recipeName_</h1>
-                <h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3>
-
-                
-
-                <ul>
-                    <li th:each="ri : ${recipeIngredients}">
-                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
-                        <span th:text="${ri.quantity.amount}">Quantity</span> 
-                        <span th:text="${ri.unit.name}">Unit</span>
-                    </li>
-                </ul>
-
-                <div th:unless="${#strings.isEmpty(recipe.description)}">
-                    <b th:text="#{recipeDescription}">_recipeDescription_</b>
-                    <p th:text="${recipe.description}">_recipeDescription_</p>
-                </div>
-
-                <div>
-                    <b th:text="#{course}">_course_</b>
-                    <span th:text="${recipe.course}">_courseName_</span> <!--ci va .name?-->
-                </div>
-
-                <div class="recipe-image">
-                    <img th:each="photo : ${photos}" th:src=" 'data:image/;base64,' + ${photo}" alt="Recipe Image">
-                </div>
-
-            </div>
-            <div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>
+        <div>
+        <h1>Le tue ricette salvate</h1>
+        <div th:if="${savedRecipes==null || savedRecipes.isEmpty()}">Non hai salvato nessuna ricetta</div>
+	        <ul>
+                <li th:each="savedRecipe : ${savedRecipes}">
+                    <a th:href="@{'/recipePage' + '/' + ${savedRecipe.id}}" th:text="${savedRecipe.name}">_recipeName_</a>
+                    <a th:href="@{'/removeSavedRecipe/' + ${savedRecipe.id} + '/' + ${loggedId} + '/' + ${userRole}}" class="removeButton" id="removeRecipeButton"><button type="submit" >Remove</button></a>
+                </li>
+            </ul>
         </div>
-
-        <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${userRole}}" method="post">
-            <button type="submit" value="saveButton" class="saveButton">Salva ricetta</button>
-        </form>
 
     </body>
 </html>

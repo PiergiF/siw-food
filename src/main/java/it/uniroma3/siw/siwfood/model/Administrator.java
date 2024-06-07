@@ -1,18 +1,15 @@
 package it.uniroma3.siw.siwfood.model;
 
 import java.time.LocalDate;
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
-public class User {
+public class Administrator {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,20 +18,19 @@ public class User {
     private String email;
     private LocalDate dateOfBirth;
 
-    @ManyToMany
-    private List<Recipe> savedRecipes;
-
-
-    public User() {
+    
+    //constructors
+    public Administrator() {
     }
 
-    public User(String name, String surname, String email, LocalDate dateOfBirth) {
+    public Administrator(String name, String surname, String email, LocalDate dateOfBirth) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.dateOfBirth = dateOfBirth;
     }
 
+    //getters and setters
     public Long getId() {
         return id;
     }
@@ -53,7 +49,6 @@ public class User {
     public void setSurname(String surname) {
         this.surname = surname;
     }
-
     public String getEmail() {
         return email;
     }
@@ -67,14 +62,7 @@ public class User {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public List<Recipe> getSavedRecipes() {
-        return savedRecipes;
-    }
-
-    public void setSavedRecipes(List<Recipe> savedRecipes) {
-        this.savedRecipes = savedRecipes;
-    }
-
+    //hashCode and Equals
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -84,6 +72,7 @@ public class User {
         result = prime * result + ((email == null) ? 0 : email.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -92,7 +81,7 @@ public class User {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        User other = (User) obj;
+        Administrator other = (Administrator) obj;
         if (name == null) {
             if (other.name != null)
                 return false;
@@ -114,4 +103,3 @@ public class User {
     
     
 }
-
