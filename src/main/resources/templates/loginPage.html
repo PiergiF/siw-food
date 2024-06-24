@@ -5,47 +5,63 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
 
-    <body>
-        <header class="header_navbar">
+    <body class="login-background">
+        
+        <header class="header_navbar" style="background: transparent;">
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
         </header>
+        
+        
+        <!--
+        <div id="containerLoginRegistrationForm">
+            <div class="loginRegistrationForm">
+                <form th:action="@{/loginPage}" method="POST">
 
-        <div class="registrationText" th:if="${RegistrationCompleted}">Complimenti, ti sei registrato</div>
-        <div th:text="${RegistrationCompleted}"></div>
-
-        <div class="container_accountBox">
-            <div class="row justify-content-center mt-5">
-                <div class="col-md-4">
-                    <div class="accountBox">
-                        <div class="accountBox_header">
-                            <h3 class="text-center" th:text="#{header.account.login}">_Login_</h3>
-                        </div>
-                        <div class="accountBox_body">
-                            <form th:action="@{/loginPage}" method="POST">
-                                
-                                <div class="accountBox_data">
-                                    <label for="username">Username:</label>
-                                    <input type="text" id="username" name="username" class="form-control" required/>
-                                </div>
-
-                                <div class="accountBox_data">
-                                    <label for="password">Password:</label>
-                                    <input type="password" id="password" name="password" class="form-control" required/>
-                                </div>
-                                
-                                <button type="submit" class="accountBox_button" th:text="#{header.account.login}">_Login_</button>
-                            </form>
-                        </div>
+                    <h1 class="text-center" th:text="#{header.account.login}">_Login_</h1>
+                                        
+                    <div class="accountBox_data">
+                        <input type="text" id="username" name="username" class="form-control" placeholder="Username" required/>
                     </div>
-                </div>
+
+                    <div class="accountBox_data">
+                        <input type="password" id="password" name="password" class="form-control" placeholder="Password" required/>
+                    </div>
+                    
+                    <button type="submit" class="accountBox_button" th:text="#{header.account.login}">_Login_</button>
+                </form>
             </div>
         </div>
 
         <div><span th:if="${param.error != null}">Username o password errati</span></div>
         <div> <a href="/registrationPage">registrationPage</a></div>
-        <div> <a href="/registrationPage2">registrationPage2</a></div>
+        -->
+        <div class="loginRegistrationDiv">
+            <form class="form-signin" th:action="@{/loginPage}" method="post">
+                <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{header.account.login}">_PleaseSignIn_</h1>
+
+                <label for="inputEmail" class="sr-only">Email address</label>
+                <input type="text" id="username" name="username" class="form-control mb-3" placeholder="Username" required autofocus/>
+
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="password" name="password" class="form-control mb-3" placeholder="Password" required>
+
+                <button class="btn btn-lg btn-primary btn-block custom-btn" type="submit" th:text="#{header.account.login}">_Login_</button>
+
+                <div><span th:if="${param.error != null}" style="color: red;">Username o password errati</span></div>
+
+                <p class="mt-2 text-center">
+                    <spna th:text="#{login.register}" class="text-white"></spna>
+                    <a href="/registrationPage" class="custom-link" th:text="#{registration.title}">_Register_</a>
+                </p>
+            </form>
+        </div>
 
     </body>
 </html>

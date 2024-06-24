@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SavedRecipe-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    </head>
+
+    <body class="backgroundColorSite">
+
+        <header class="header_navbar">
+
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+
+            <form th:action="@{/search}" method="get">
+                <div class="header_search">
+                    <span> <button type="submit" style="background-color: transparent; border: none;"> <img src="/images/search_image.svg" class="header_search_icon"/> </button> </span>
+                    <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+                </div>
+            </form>
+
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}">
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+                </div>
+            </a>
+
+            <nav th:if="${accountRole != 'ROLE_ANONYMOUS' }">
+                <ul class="header_account_menu">
+                    <li>
+                        <div class="header_account">
+                        <span class="header_account_icon">
+                            <img src="/images/person_img.svg" alt="User Icon"/>
+                        </span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                        </div>
+                        <ul class="header_account_dropDownMenu">
+                            <li>
+                                <a th:href="@{'/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{settings}">_settings_</a>
+                            </li>   
+                            <li th:if="${accountRole != 'CUSTOMER'}">
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
+                            </li>
+                            <li th:if="${accountRole == 'CHEF'}">
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a href="/logout" id="logout">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!--
+        <div>
+        <h1>Le tue ricette salvate</h1>
+        <div th:if="${savedRecipes==null || savedRecipes.isEmpty()}">Non hai salvato nessuna ricetta</div>
+	        <ul>
+                <li th:each="savedRecipe : ${savedRecipes}">
+                    <a th:href="@{'/all/recipePage' + '/' + ${savedRecipe.id}}" th:text="${savedRecipe.name}">_recipeName_</a>
+                    <a th:href="@{'/removeSavedRecipe/' + ${savedRecipe.id} + '/' + ${loggedId} + '/' + ${accountRole}}" class="removeButton" id="removeRecipeButton"><button type="submit" >Remove</button></a>
+                </li>
+            </ul>
+        </div>
+        -->
+        <!--
+        <div class="courses-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div th:if="${savedRecipes==null || savedRecipes.isEmpty()}" th:text="#{savedRecipe.none}" class="text-white">_savedRecipe.none_</div>
+                    <div class="col-lg-2 col-md-4 col-sm-6" th:each="savedRecipe : ${savedRecipes}">-->
+                        <!--<div class="course-icon mx-auto"></div>--> <!--commento nel commento-->
+                        <!--<a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }"><img th:src=" 'data:image/;base64,' + ${savedRecipe.imagesBase64[0]} " class="course-icon mx-auto"/></a>-->
+                        <!--<h2>Heading</h2>
+                        <p>Some representative placeholder content for the first column.</p>--> <!--commento nel commento-->
+                        <!--<a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }" class="btn course-btn" th:text="${savedRecipe.name}" >_recipe_</a>--> <!--style="color: white;"--> <!--commento nel commento-->
+                    <!--</div>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Le tue ricette salvate</h1>
+            <div class="courses-section">
+                <div class="container">
+                    <div class="row text-center">
+                        <div th:if="${savedRecipes==null || savedRecipes.isEmpty()}"  class="text-white">
+                            <span th:text="#{savedRecipe.none} + ':' ">_savedRecipe.none_</span>
+                            <a href="/all/allRecipesPage" th:text="#{savedRecipe.findRecipe}" style="color: rgb(223,205,54);"></a>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="savedRecipe : ${savedRecipes}">
+                            <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }"><img th:src=" 'data:image/;base64,' + ${savedRecipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>
+                            <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }" class="btn course-btn btn-block mt-2" th:text="${savedRecipe.name}" >_recipe_</a>
+                            <a th:href="@{'/removeSavedRecipe/' + ${savedRecipe.id} + '/' + ${loggedId} + '/' + ${accountRole}}" class="btn btn-danger btn-block mt-2 removeButton" id="removeRecipeButton" th:text="#{remove}">_remove_</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

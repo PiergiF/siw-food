@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import it.uniroma3.siw.siwfood.model.Credentials;
-import it.uniroma3.siw.siwfood.model.User;
+import it.uniroma3.siw.siwfood.model.Customer;
 import it.uniroma3.siw.siwfood.repository.CredentialsRepository;
 import it.uniroma3.siw.siwfood.service.CredentialsService;
 
@@ -21,39 +21,39 @@ public class GlobalController {
 
     @ModelAttribute("userDetails")
 
-    public UserDetails getUser() {
-        UserDetails user = null;
+    static public UserDetails getUserDetails() {
+        UserDetails userDetails = null;
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (!(authentication instanceof AnonymousAuthenticationToken)) {
-            user = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
-        return user;
+        return userDetails;
     }
 
-    @ModelAttribute("userRole")
+    @ModelAttribute("accountRole")
 
     public String getUserRole(){
         Credentials credentials = null;
-        UserDetails ud;
-        ud=getUser();
-        if(ud!=null){
-            UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails userDetails = getUserDetails();
+        if(userDetails!=null){
+            //UserDetails userDetails = (UserDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            //UserDetails userDetails = ud;
             credentials = credentialsService.getCredentials(userDetails.getUsername());
             return credentials.getRole();
         }
-        return "ANONYMOUS";
+        return "ROLE_ANONYMOUS";
     }
 
     @ModelAttribute("loggedId")
 
     public Long getLoggedId(){
         Credentials credentials = null;
-        UserDetails ud=getUser();
+        UserDetails ud=getUserDetails();
         if(ud!=null){
             credentials = credentialsService.getCredentials(ud.getUsername());
             if(getUserRole().equals("CUSTOMER")){
-                return credentials.getUser().getId();
+                return credentials.getCustomer().getId();
             }else if(getUserRole().equals("CHEF")){
                 return credentials.getChef().getId();
             }else if(getUserRole().equals("ADMINISTRATOR")){

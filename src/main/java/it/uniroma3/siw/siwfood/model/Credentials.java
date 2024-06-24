@@ -22,7 +22,7 @@ public class Credentials {
 	private String role;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	private User user;
+	private Customer customer;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	private Chef chef;
@@ -43,12 +43,12 @@ public class Credentials {
 		this.id = id;
 	}
 
-	public User getUser() {
-		return user;
+	public Customer getCustomer() {
+		return customer;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public Chef getChef() {

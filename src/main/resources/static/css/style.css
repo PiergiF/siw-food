@@ -20,17 +20,37 @@ a{
 
 /*#### Header site ####*/
 
+body {
+    padding-top: 70px; /* Spazio per il header fisso */
+}
+
 /* main container */
 .header_navbar {
-    border: 1px solid red;
-    border-bottom: 1px solid #d1d1d1;
+    /*border: 1px solid red;*/
+    /*border-bottom: 1px solid #d1d1d1;*/
     display: flex;
     justify-content: space-around;
     align-items: center;
-    /*position: fixed;
+
+    /*border: solid red;*/
+    /*border: 5px rgb(41, 41, 41);*/
+    /*box-shadow: 0 0 0 .25rem rgba(255, 255, 255, .25);*/
+    
+    /*background-color: rgb(41, 41, 41);*/
+
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030; /* Più alto di altri elementi della pagina */
+    
+            background-color: rgb(21,30,39);
+            /*position: fixed;
     top: 0;
     left: 0;
     width: 100%;*/
+
+
+    /*background-color: #343a40;*/ /*altro possibile colore*/
 }
 
 .header_navbar a{
@@ -48,9 +68,10 @@ a{
     justify-content: space-around;
     align-items: center;
 }*/
+
 /*### Header site logo ###*/
     .header_logo {
-        border: 1px solid blue;
+        /*border: 1px solid blue;*/
         height: 70px;
     }
 
@@ -58,7 +79,7 @@ a{
 
     /* main class of search */
     .header_search{
-        border: 1px solid blueviolet;
+        /*border: 1px solid blueviolet;*/
         display: flex;
        /*width: max-content;*/
         align-items: center;
@@ -97,12 +118,13 @@ a{
 
     /* main class of search */
     .header_account {
-        border: 1px solid rgb(9, 207, 238);
+        /*border: 1px solid rgb(9, 207, 238);*/
         display: flex;
         width: max-content;
         align-items: center;
         border-radius: 28px;
-        background: rgb(227, 212, 56);
+        /*background: rgb(227, 212, 56);*/
+        background: rgb(223,205,54);
         height: 40px;
         list-style: none;
         cursor: pointer;
@@ -144,7 +166,11 @@ a{
             position: absolute;
             top: 100%;
             left: 0;
-            background-color: #ffffff; /* Colore di sfondo bianco */
+            /*background-color: #ffffff; /* Colore di sfondo bianco */
+            /*background-color: rgb(41, 41, 41);*/
+
+            background-color: rgb(21,30,39);
+
             border-radius: 8px; /* Bordi arrotondati */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
             display: none; /* Nasconde il menu */
@@ -166,15 +192,30 @@ a{
 
         .header_account_dropDownMenu li a {
             text-decoration: none; /* Rimuove la sottolineatura */
-            color: #333; /* Colore del testo */
+            /*color: #333; /* Colore del testo */
+            color: white;
+
             display: block; /* Imposta l'ancora come blocco */
             transition: background-color 0.3s, color 0.3s; /* Animazione di transizione per colore e sfondo */
         }
 
         .header_account_dropDownMenu li a:hover {
-            background-color: #f0f0f0; /* Colore di sfondo al passaggio del mouse */
-            color: #007bff; /* Colore del testo al passaggio del mouse */
+            /*background-color: #f0f0f0;*/ /* Colore di sfondo al passaggio del mouse */
+            /*color: #007bff;*/ /* Colore del testo al passaggio del mouse */
+
+            /*background-color: rgb(223,205,54);
+            color: white;
+            */
+            color: rgb(223,205,54);
+            /*border-radius: 5px;*/ /* Bordi arrotondati */
         }
+
+        #logout:hover {
+            color: red;
+            /*color: white;*/
+            /*border-radius: 5px;*/ /* Bordi arrotondati */
+        }
+
 
         .header_account_dropDownMenu form {
             margin: 0;
@@ -185,14 +226,56 @@ a{
             color: #007bff;
         }
 
-/*#### Box Login ####*/
+/*#### Courosel Home Page ####*/
 
+    .carousel-image {
+        height: 500px; /* Puoi modificare questa altezza secondo necessità */
+        width: 100%;
+        object-fit: cover; /* Questo mantiene le proporzioni dell'immagine e riempie l'elemento */
+    }
+
+/*#### Courses homePage ####*/
+    .courses-section {
+        /*background-color: #343a40;*/
+
+        /*background-color: rgb(41, 41, 41);*/
+
+        background-color: rgb(21,30,39);
+
+        padding: 40px 0;
+        /*color: #ffffff;*/
+    }
+    /*
+    .course-section h2 {
+        color: #ffffff;
+    }
+    */
+    .course-icon {
+        height: 100px; /* Altezza desiderata per le icone */
+        width: 100px; /* Larghezza desiderata per le icone */
+        background-color: #6c757d;
+        border-radius: 50%;
+        margin-bottom: 20px;
+    }
+    .course-btn {
+        /*background-color: #6c757d;*/
+        border: none;
+        color: white !important;
+    }
+    .course-btn:hover {
+        /*background-color: #5a6268;*/
+        background: rgb(223,205,54);
+        color: black !important;
+    }
+
+/*#### Box Login ####*/
+/*
     .container_accountBox {
         margin-top: 80px;
         width: 20%;
         display: flex;
         justify-content: center;
-        text-align: center; /* Centra il contenuto */
+        text-align: center; /* Centra il contenuto
     }
 
     .accountBox {
@@ -204,7 +287,7 @@ a{
     .accountBox_header {
         background-color: #f8f9fa;
         border-bottom: 1px solid #d1d1d1;
-        text-align: center; /* Centra il contenuto */
+        text-align: center; /* Centra il contenuto 
     }
     
     .accountBox_body {
@@ -220,6 +303,199 @@ a{
         background-color: #ff7a00;
         border-color: #ff7a00;
     }
+*/
+
+/*#### Box Login Mio####*/
+/*
+#containerLoginRegistrationForm{
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    margin-top: 100px;
+    background-color: green;
+}
+
+.loginRegistrationForm{
+    
+    
+    background-color: rgb(255, 105, 115);
+    border: grey;
+    border-radius: 28px;
+    width: 450px;
+    /*box-sizing: border-box;
+    /*min-height: 100vh;
+}
+
+.loginRegistrationForm .accountBox_data{
+    width: 100%;
+    height: 50px;
+    background-color: salmon;
+    margin: 30px 0;
+ }
+
+ .accountBox_data input{
+    width: 80%;
+    height: 80%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid rgba(255, 255, 255, .2);
+    border-radius: 28px;
+ }
+
+ .accountBox_data input::placeholder{
+    color: black;
+ }
+*/
+
+
+/*#### box login gpt ####*/
+
+/*
+.loginRegistrationFormProva{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #343a40;
+}
+*/
+body.login-background {
+    background-image: url(/images/background/pizza.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    /*transition: background-image 0.3s ease-in-out; /* serve davvero? */
+}
+.loginRegistrationDiv{
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: Add a semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 100%;
+}
+
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+}
+.form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+.form-signin .form-control:focus {
+    z-index: 2;
+}
+/*
+.form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+*/
+/*
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+*/
+
+.form-control {
+    margin-bottom: 1rem;
+}
+
+
+.form-control-file {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    color: white;
+}
+
+
+.custom-control-input:checked~.custom-control-label::before {
+    background-color: rgb(223, 205, 54) !important;
+    border: none !important;
+}
+
+
+.custom-btn {
+    background-color: rgb(223, 205, 54) !important;
+    border: none !important;
+    color: #000 !important;
+}
+
+.custom-btn:hover {
+    background-color: #c4b23c !important; /* Darker shade for hover effect */
+}
+
+.custom-link {
+    color: rgb(223, 205, 54);
+}
+
+.custom-link:hover {
+    color: #c4b23c; /* Darker shade for hover effect */
+    text-decoration: none;
+}
+
+
+
+
+body.backgroundColorSite {
+    background-color: rgb(21,30,39); /* Colore uniforme di sfondo */
+    color: white;
+
+    /*background-color: rgb(41, 41, 41);*/
+    /*background-color: rgb(4,4,4);*/
+}
+
+/*
+.container {
+    background-color: rgba(0, 0, 0, 0.5); /* Sfondo semi-trasparente per il contenitore */
+    /*padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+*/
+
+.form-control-plaintext {
+    border: none;
+    color: #fff;
+    background-color: transparent;
+    padding-left: 0;
+}
+
+/*
+.custom-btn {
+    background-color: rgb(223, 205, 54) !important;
+    border: none !important;
+    color: #000 !important;
+}
+
+.custom-btn:hover {
+    background-color: #c4b23c !important; /* Darker shade for hover effect */
+/*}*/
+
+.text-white {
+    color: white !important;
+}
+
+
+
 
 /*#### Add & Modify recipe ####*/
 .disabledChefChoise{

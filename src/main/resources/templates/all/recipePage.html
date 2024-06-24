@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title th:text="${recipe.name}">Recipe-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    </head>
+
+    <body>
+
+        <header class="header_navbar">
+
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+
+            <form th:action="@{/search}" method="get">
+                <div class="header_search">
+                    <span> <button type="submit" style="background-color: transparent; border: none;"> <img src="/images/search_image.svg" class="header_search_icon"/> </button> </span>
+                    <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+                </div>
+            </form>
+
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}">
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+                </div>
+            </a>
+
+            <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+                <ul class="header_account_menu">
+                    <li>
+                        <div class="header_account">
+                        <span class="header_account_icon">
+                            <img src="/images/person_img.svg" alt="User Icon"/>
+                        </span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                        </div>
+                        <ul class="header_account_dropDownMenu">
+                            <li>
+                                <a th:href="@{'/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{settings}">_settings_</a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/logged/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{savedRecipes}">_savedRecipes_</a>
+                            </li>
+                            
+                            <li th:if="${accountRole != 'CUSTOMER'}">
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
+                            </li>
+                            <li th:if="${accountRole == 'CHEF'}">
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a href="/logout" id="logout">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <div class="recipeInformations" th:if="${recipe}"> <!--th:if="${chef}">  che volevo fare?--> 
+            <!--<h1 th:text="${recipe.details}"></h1> come sopra. che avevo copiato dalla pagina dello chef?-->
+            <div>
+                <h1 th:text="${recipe.name}">_recipeName_</h1>
+                <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }"><h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3></a>
+
+                
+
+                <ul>
+                    <li th:each="ri : ${recipeIngredients}">
+                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
+                        <span th:text="${ri.quantity.amount}">Quantity</span> 
+                        <span th:text="${ri.unit.name}">Unit</span>
+                    </li>
+                </ul>
+
+                <div th:unless="${#strings.isEmpty(recipe.description)}">
+                    <b th:text="#{recipeDescription}">_recipeDescription_</b>
+                    <p th:text="${recipe.description}">_recipeDescription_</p>
+                </div>
+
+                <div>
+                    <b th:text="#{course}">_course_</b>
+                    <span th:text="${recipe.course}">_courseName_</span> <!--ci va .name?-->
+                </div>
+
+                <div class="recipe-image">
+                    <img th:each="photo : ${photos}" th:src=" 'data:image/;base64,' + ${photo}" alt="Recipe Image">
+                </div>
+
+            </div>
+            <div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>
+        </div>
+
+        <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post">
+            <button type="submit" value="saveButton" class="saveButton">Salva ricetta</button>
+        </form>
+
+    </body>
+</html>

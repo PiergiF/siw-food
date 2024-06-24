@@ -5,6 +5,13 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <!--prova bootstrap-->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    
     </head>
 
     <body>
@@ -13,23 +20,23 @@
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
 
-            <form>
+            <form th:action="@{/search}" method="get">
                 <div class="header_search">
-                    <span> <img src="/images/search_image.svg" class="header_search_icon"/> </span>
-                    <input type="search" class="header_search_input" th:placeholder="#{header.search}">
+                    <span> <button type="submit" style="background-color: transparent; border: none;"> <img src="/images/search_image.svg" class="header_search_icon"/> </button> </span>
+                    <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
                 </div>
             </form>
 
-            <!--<a href="/loginPage" th:if="${userRole==ANONYMOUS}">-->
-            <a href="/loginPage" th:unless="${accountRole}">
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}" style="text-decoration: none;">
+            <!--<a href="/loginPage" th:unless="${accountRole}">-->
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
                 </div>
             </a>
 
-            <!--<nav th:if="${userRole}">-->
-            <nav th:if="${accountRole}">
+            <nav th:if="${accountRole != 'ROLE_ANONYMOUS'}">
+            <!--<nav th:if="${accountRole}">-->
                 <ul class="header_account_menu">
                     <li>
                         <div class="header_account">
@@ -40,7 +47,10 @@
                         </div>
                         <ul class="header_account_dropDownMenu">
                             <li>
-                                <a th:href="@{'/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{savedRecipes}">_savedRecipes_</a>
+                                <a th:href="@{'/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{settings}">_settings_</a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/logged/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole}}" th:text="#{savedRecipes}">_savedRecipes_</a>
                             </li>
                             <li th:if="${accountRole != 'CUSTOMER'}">
                                 <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
@@ -49,13 +59,19 @@
                                 <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
                             </li>
                             <li th:if="${accountRole == 'ADMINISTRATOR'}">
-                                <a href="/admin/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                                <a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
                             </li>
                             <li th:if="${accountRole == 'ADMINISTRATOR'}">
-                                <a href="/admin/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                                <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
                             </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/admin/creationPage" th:text="#{addUser}">_addUser_</a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
                             <li>
-                                <a href="/logout">Logout</a>
+                                <a href="/logout" id="logout">Logout</a>
                             </li>
                         </ul>
                     </li>
@@ -63,12 +79,118 @@
             </nav>
         </header>
 
-        <div>prova</div>
-        <div><a href="/prova">aaaaaa</a></div>
-        <div><a href="/chef_admin/addRecipePage">addRecipe</a></div>
-        <a href="/registrationPageGPT">regGPT</a>
-       <div th:if="${#strings.equals('${userDetails.username}', '${userDetails.username}')}">ciao</div>
-       id:<div th:text="${loggedId}"></div>
+        <!--prova bootstrap-->
+        <!--<div class="container mt-5">-->
+            <!--<h1 class="text-center">Benvenuto nel Mio Sito di Ricette</h1>-->
+    
+            <div id="recipeCarousel" class="carousel slide" data-ride="carousel">
+                <ol class="carousel-indicators">
+                    <li data-target="#recipeCarousel" data-slide-to="0" class="active"></li>
+                    <li th:each="recipe, iterStat : ${recipes}" th:if="${iterStat.index > 0}" data-target="#recipeCarousel" th:data-slide-to="${iterStat.index}"></li>
+                </ol>
+                <div class="carousel-inner">
+                    <div th:each="recipe, iterStat : ${recipes}" th:class="${iterStat.index == 0} ? 'carousel-item active' : 'carousel-item'">
+                        <a th:href="@{'/all/recipePage/' + ${recipe.id} }">
+                            <img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]}" class="d-block w-100 carousel-image" th:alt="${recipe.name}"/>
+                        </a>
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5 th:text="${recipe.name}">Nome Ricetta</h5>
+                        </div>
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#recipeCarousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#recipeCarousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+            </div>
+        <!--</div>-->
+
+        <!--
+        <div class="courses-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Some representative placeholder content for the first column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Placeholder content for the second column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Placeholder content for the third column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Placeholder content for the fourth column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Placeholder content for the fifth column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6">
+                        <div class="course-icon mx-auto"></div>
+                        <h2>Heading</h2>
+                        <p>Placeholder content for the sixth column.</p>
+                        <a href="#" class="btn course-btn">View details »</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        -->
+        <!--fine prova bootstrap-->
+        
+        <!--
+        <div><a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a></div>
+
+        <div >
+            <b th:each="course : ${courses}">&nbsp &nbsp<a th:href="@{'/all/coursePage/' + ${course} }" th:text="#{ ${course} }">_course_</a></span>&nbsp &nbsp</b>
+        </div>
+        -->
+
+        <div class="courses-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-2 col-md-4 col-sm-6" th:each="course : ${courses}">
+                        <!--<div class="course-icon mx-auto"></div>-->
+                        <a th:href="@{'/all/coursePage/' + ${course} }"><img th:src="@{'/images/courses/' + ${course} + '.jpeg'}" class="course-icon mx-auto"/></a>
+                        <!--<h2>Heading</h2>
+                        <p>Some representative placeholder content for the first column.</p>-->
+                        <a th:href="@{'/all/coursePage/' + ${course} }" class="btn course-btn" th:text="#{ ${course} }" >_course_</a> <!--style="color: white;"-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="courses-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <a href="/all/allChefsPage" th:text="#{allChefs}" class="btn course-btn" style="color: white;">_allChefs_</a>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <a href="/all/allRecipesPage" th:text="#{allRecipes}" class="btn course-btn" style="color: white;">_allRecipes_</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div><a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a></div>-->
     
     </body>
 </html>

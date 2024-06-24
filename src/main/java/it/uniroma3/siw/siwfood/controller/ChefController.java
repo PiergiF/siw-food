@@ -55,51 +55,18 @@ public class ChefController {
     @Autowired
     private RecipeService recipeService;
 
-    @GetMapping(value = "/admin/allChefsPage")
+    @GetMapping(value = "/all/allChefsPage")
     public String getAllChefsPage(Model model){
         model.addAttribute("chefs", this.chefRepository.findAll());
-        return "admin/allChefsPage.html";
+        return "all/allChefsPage.html";
     }
 
-    @GetMapping("/chefPage/{id}")
+    @GetMapping("/all/chefPage/{id}")
 	public String getChefPage(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("chef", this.chefRepository.findById(id).get());
-		return "chefPage.html";
+		return "all/chefPage.html";
 	}
     
-
-    
-    @GetMapping("/admin/addChefPage")
-    public String getAddChefPage(Model model) {
-        model.addAttribute("newChef", new Chef());
-        model.addAttribute("newCredentials", new Credentials());
-        //model.addAttribute("newImage", new Image());
-        return "admin/addChefPage.html";
-    }
-
-    @PostMapping("admin/addChefData")
-    public String newChef(@Valid @ModelAttribute("newChef") Chef chef, BindingResult chefBindingResult, 
-                            @Valid @ModelAttribute("newCredentials") Credentials credentials, BindingResult credentialsBindingResult,
-                            @RequestParam("image") MultipartFile file, Model model) {
-        
-        this.chefValidator.validate(chef, chefBindingResult);
-        if(!chefBindingResult.hasErrors()){
-            try {
-                byte[] byteFoto = file.getBytes();
-                chef.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));
-                chefService.saveChef(chef);
-                credentials.setChef(chef);
-                credentialsService.saveCredentials(credentials, "chef");
-                model.addAttribute("message", "Chef uploaded successfully!");
-                return "redirect:/admin/allChefsPage";
-            } catch (IOException e) {
-                model.addAttribute("message", "Chef upload failed!");
-                return "uploadChef.html";
-            }
-        }
-        
-        return "admin/addChefData.html";
-    }
 
     @GetMapping("/admin/editChefPage/{id}")
     public String getEditChefPage(@PathVariable("id") Long chefId, Model model) {
@@ -110,7 +77,7 @@ public class ChefController {
     @PostMapping("/admin/editChefData/{id}")
     public String postMethodName(@PathVariable("id") Long id, @Valid @ModelAttribute("chef") Chef chef, BindingResult chefBindingResult,
                                     @RequestParam("removeImage") String remove,
-                                    @RequestParam("image") MultipartFile file, Model model) {
+                                    @RequestParam(required = false, value = "image") MultipartFile file, Model model) {
         
         if (chefBindingResult.hasErrors()) {
             return "/admin/editChefPage/" + id;
@@ -134,7 +101,7 @@ public class ChefController {
 
         chefService.saveChef(existingChef);
         
-        return "redirect:/chefPage/" + existingChef.getId();
+        return "redirect:/all/chefPage/" + existingChef.getId();
     }
     
     
@@ -144,7 +111,7 @@ public class ChefController {
         
         credentialsService.deleteByChefId(chefId);
 
-        return "redirect:/admin/allChefsPage";
+        return "redirect:/all/allChefsPage";
     }
 
     @GetMapping("/admin/removeTotalChef/{id}")
@@ -154,7 +121,7 @@ public class ChefController {
         recipeService.deleteRecipesByChefId(chefId);
         chefService.deleteById(chefId);
 
-        return "redirect:/admin/allChefsPage";
+        return "redirect:/all/allChefsPage";
     }
     
     

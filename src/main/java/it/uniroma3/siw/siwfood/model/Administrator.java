@@ -1,11 +1,13 @@
 package it.uniroma3.siw.siwfood.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 
 @Entity
 public class Administrator {
@@ -18,7 +20,9 @@ public class Administrator {
     private String email;
     private LocalDate dateOfBirth;
 
-    
+    @ManyToMany
+    private List<Recipe> savedRecipes;
+
     //constructors
     public Administrator() {
     }
@@ -60,6 +64,12 @@ public class Administrator {
     }
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+    public List<Recipe> getSavedRecipes() {
+        return savedRecipes;
+    }
+    public void setSavedRecipes(List<Recipe> savedRecipes) {
+        this.savedRecipes = savedRecipes;
     }
 
     //hashCode and Equals

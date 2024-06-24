@@ -19,6 +19,10 @@ public class CredentialsService {
     @Autowired
     protected CredentialsRepository credentialsRepository;
 
+    public Credentials saveCredentialsNoPassword(Credentials credentials){
+        return this.credentialsRepository.save(credentials);
+    }
+
     @Transactional
     public Credentials getCredentials(Long id) {
         Optional<Credentials> result = this.credentialsRepository.findById(id);

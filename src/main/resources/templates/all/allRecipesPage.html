@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>AllRecipe-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    </head>
+
+    <body>
+        <header class="header_navbar">
+
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+
+            <form th:action="@{/search}" method="get">
+                <div class="header_search">
+                    <span> <button type="submit" style="background-color: transparent; border: none;"> <img src="/images/search_image.svg" class="header_search_icon"/> </button> </span>
+                    <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+                </div>
+            </form>
+
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+                </div>
+            </a>
+
+            <nav th:if="${accountRole != 'ROLE_ANONYMOUS' }">
+                <ul class="header_account_menu">
+                    <li>
+                        <div class="header_account">
+                        <span class="header_account_icon">
+                            <img src="/images/person_img.svg" alt="User Icon"/>
+                        </span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                        </div>
+                        <ul class="header_account_dropDownMenu">
+                            <li>
+                                <a th:href="@{'/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{settings}">_settings_</a>
+                            </li>
+                            <li>
+                                <a th:href="@{'/logged/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{savedRecipes}">_savedRecipes_</a>
+                            </li>
+                            
+                            <li th:if="${accountRole != 'CUSTOMER'}">
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
+                            </li>
+                            <li th:if="${accountRole == 'CHEF'}">
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a href="/logout" id="logout">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <!--<div th:text="${userDetails.getAuthorities()}">_autority_</div>
+        <div th:text="${userDetails.authorities[0]}">_autority_</div>-->
+
+        <div>
+            <h1>Ricette</h1>
+	        <div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
+	        <ul>
+                <li th:each="recipe : ${recipes}">
+                    <a th:href="@{'/all/recipePage' + '/' + ${recipe.id}}" th:text="${recipe.name}">_recipeName_</a>
+                    <span>(<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" th:text="#{edit}"></a>)</span>
+                    <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="removeButton" id="removeRecipeButton"><button type="submit" >Remove</button></a>
+                </li>
+            </ul>
+            <!--<span th:if="${param}">ERRORE</span>-->
+        </div>
+        <div><a href="/chef_admin/addRecipePage" th:text="#{addRecipe}">_addRecipe_</a></div>
+
+    </body>
+</html>

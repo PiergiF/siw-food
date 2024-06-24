@@ -46,6 +46,10 @@ public class IngredientService {
         this.ingredientRepository.deleteById(id);
     }
 
+    public List<Ingredient> findIngredientContainsQuery(String query){
+        return this.ingredientRepository.findIngredientContainsQuery(query);
+    }
+
     /*
     public Ingredient addIngredientToRecipe(Recipe recipe, String ingredientName, double amount, String unitUnit) {
         Unit unit = unitRepository.findByUnit(unitUnit)

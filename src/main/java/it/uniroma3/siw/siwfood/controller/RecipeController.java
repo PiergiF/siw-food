@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 
 import it.uniroma3.siw.siwfood.model.Quantity;
+import it.uniroma3.siw.siwfood.model.Administrator;
 import it.uniroma3.siw.siwfood.model.Chef;
 import it.uniroma3.siw.siwfood.model.Courses;
 import it.uniroma3.siw.siwfood.model.Credentials;
@@ -22,13 +23,14 @@ import it.uniroma3.siw.siwfood.model.Ingredient;
 import it.uniroma3.siw.siwfood.model.Recipe;
 import it.uniroma3.siw.siwfood.model.RecipeIngredient;
 import it.uniroma3.siw.siwfood.model.Unit;
+import it.uniroma3.siw.siwfood.service.AdministratorService;
 import it.uniroma3.siw.siwfood.service.ChefService;
 import it.uniroma3.siw.siwfood.service.CredentialsService;
 import it.uniroma3.siw.siwfood.service.IngredientService;
 import it.uniroma3.siw.siwfood.service.RecipeService;
 import it.uniroma3.siw.siwfood.service.UnitService;
-import it.uniroma3.siw.siwfood.service.UserService;
-import it.uniroma3.siw.siwfood.model.User;
+import it.uniroma3.siw.siwfood.service.CustomerService;
+import it.uniroma3.siw.siwfood.model.Customer;
 import it.uniroma3.siw.siwfood.repository.ChefRepository;
 import it.uniroma3.siw.siwfood.repository.QuantityRepository;
 import it.uniroma3.siw.siwfood.repository.RecipeRepository;
@@ -74,61 +76,84 @@ public class RecipeController {
     private ChefService chefService;
 
     @Autowired
-    private UserService userService;
+    private CustomerService customerService;
 
-    @GetMapping("/admin/allRecipesPage")
+    @Autowired
+    private AdministratorService administratorService;
+
+    @GetMapping("/all/allRecipesPage")
     public String getAllRecipesPage(Model model) {
         model.addAttribute("recipes", this.recipeRepository.findAll());
-        return "admin/allRecipesPage.html";
+        return "all/allRecipesPage.html";
     }
 
-    @GetMapping("/recipePage/{id}")
+    @GetMapping("/all/recipePage/{id}")
 	public String getRecipePage(@PathVariable("id") Long id, Model model) {
 		Recipe recipe = recipeService.findById(id);
         List<RecipeIngredient> recipeIngredients = recipeService.findRecipeIngredientsByRecipeId(id);
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeIngredients", recipeIngredients);
         model.addAttribute("photos", recipe.getImagesBase64());
-		return "recipePage.html";
+		return "all/recipePage.html";
 	}
 
-    @GetMapping("/savedRecipesPage/{id}/{role}")
+    @GetMapping("/all/coursePage/{course}")
+    public String getMethodName(@PathVariable Courses course, Model model) {
+        model.addAttribute("recipesCourse", recipeService.findAllByCourse(course));
+        model.addAttribute("course", course);
+        return "all/coursePage.html";
+    }
+    
+
+    @GetMapping("/logged/savedRecipesPage/{id}/{role}")
     public String getSavedRecipesPage(@PathVariable("id") Long personId, @PathVariable("role") String role, Model model) {
         
         List<Recipe> savedRecipes=null;
 
-        if(role.equals("CUSTOMER") || role.equals("ADMIN")){
-            User user = userService.findById(personId);
-            if(user!=null){
-                savedRecipes = userService.getSavedRecipes(user);
+        if(role.equals("CUSTOMER")){
+            Customer customer = customerService.findById(personId);
+            if(customer != null){
+                savedRecipes = customerService.getSavedRecipes(customer);
             }
         }else if(role.equals("CHEF")){
             Chef chef = chefService.findById(personId);
             if(chef!=null){
                 savedRecipes = chefService.getSavedRecipes(chef);
             }
-        }else{
+        }else if(role.equals("ADMINISTRATOR")){
+            Administrator administrator = administratorService.findById(personId);
+            if(administrator != null){
+                savedRecipes = administratorService.getSavedRecipes(administrator);
+            }
+        }
+        else{
             return "/error";
         }
         model.addAttribute("savedRecipes", savedRecipes);
-        return "savedRecipesPage.html";
+        return "logged/savedRecipesPage.html";
     }
 
     @PostMapping("/saveRecipesData/{rId}/{pId}/{role}")
     public String saveRecipesData(@PathVariable("rId") Long recipeId, @PathVariable("pId") Long personId, @PathVariable("role") String role) {
         Recipe recipe = recipeService.findById(recipeId);
 
-        if(role.equals("CUSTOMER") || role.equals("ADMIN")){
-            User user = userService.findById(personId);
-            if(user!=null){
-                userService.saveRecipeForUser(user, recipe);
-                return "redirect:/savedRecipesPage/" + user.getId() + "/" + role;
+        if(role.equals("CUSTOMER")){
+            Customer customer = customerService.findById(personId);
+            if(customer != null){
+                customerService.saveRecipeForCustomer(customer, recipe);
+                return "redirect:/logged/savedRecipesPage/" + customer.getId() + "/" + role;
             }
         }else if(role.equals("CHEF")){
             Chef chef = chefService.findById(personId);
             if(chef!=null){
                 chefService.saveRecipeForChef(chef, recipe);
-                return "redirect:/savedRecipesPage/" + chef.getId() + "/" + role;
+                return "redirect:/logged/savedRecipesPage/" + chef.getId() + "/" + role;
+            }
+        }else if(role.equals("ADMINISTRATOR")){
+            Administrator administrator = administratorService.findById(personId);
+            if(administrator != null){
+                administratorService.saveRecipeForAdministrator(administrator, recipe);
+                return "redirect:/logged/savedRecipesPage/" + administrator.getId() + "/" + role;
             }
         }
         return "/error";
@@ -140,17 +165,23 @@ public class RecipeController {
         
         Recipe recipe = recipeService.findById(recipeId);
 
-        if(role.equals("USER") || role.equals("ADMIN")){
-            User user = userService.findById(personId);
-            if(user!=null){
-                userService.removeRecipeForUser(user, recipe);
-                return "redirect:/savedRecipesPage/" + user.getId() + "/" + role;
+        if(role.equals("CUSTOMER")){
+            Customer customer = customerService.findById(personId);
+            if(customer != null){
+                customerService.removeRecipeForCustomer(customer, recipe);
+                return "redirect:/logged/savedRecipesPage/" + customer.getId() + "/" + role;
             }
         }else if(role.equals("CHEF")){
             Chef chef = chefService.findById(personId);
             if(chef!=null){
                 chefService.removeRecipeForChef(chef, recipe);
-                return "redirect:/savedRecipesPage/" + chef.getId() + "/" + role;
+                return "redirect:/logged/savedRecipesPage/" + chef.getId() + "/" + role;
+            }
+        }else if(role.equals("ADMINISTRATOR")){
+            Administrator administrator = administratorService.findById(personId);
+            if(administrator != null){
+                administratorService.removeRecipeForAdministrator(administrator, recipe);
+                return "redirect:/logged/savedRecipesPage/" + administrator.getId() + "/" + role;
             }
         }
         return "/error";
@@ -171,7 +202,7 @@ public class RecipeController {
         Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
         if(credentials.getRole().equals("CHEF")){
             model.addAttribute("chef", credentials.getChef());
-        }else if(credentials.getRole().equals("ADMIN")){
+        }else if(credentials.getRole().equals("ADMINISTRATOR")){
             model.addAttribute("chefs", chefService.findAll());
         }
         return "chef_admin/addRecipePage.html";
@@ -239,7 +270,7 @@ public class RecipeController {
                 );
                 recipeService.saveRecipeIngredient(recipeIngredient);
             }
-            return "redirect:/recipePage/" + recipe.getId();
+            return "redirect:/all/recipePage/" + recipe.getId();
         }else{
             return "/chef_admin/addRecipePage";
         }
@@ -352,7 +383,7 @@ public class RecipeController {
                 );
                 recipeService.saveRecipeIngredient(recipeIngredient);
             }
-            return "redirect:/recipePage/" + recipe.getId();
+            return "redirect:/all/recipePage/" + recipe.getId();
         }else{
             return "/chef_admin/addRecipePage";
         }
@@ -364,7 +395,7 @@ public class RecipeController {
         // Rimuovere gli ingredienti esistenti per questa ricetta
         recipeService.deleteRecipeIngredientsByRecipeId(recipeId);
         recipeService.deleteById(recipeId);
-        return "redirect:/admin/allRecipesPage";
+        return "redirect:/all/allRecipesPage";
     }
     
 

@@ -1,0 +1,233 @@
+<!--
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Settings-SiwFood</title>
+        <meta charset="UTF 8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+        <script th:inline="javascript" src="/javascript/script.js"></script>
+    </head>
+
+    <body>
+
+        <header class="header_navbar">
+
+            <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+
+            <form th:action="@{/search}" method="get">
+                <div class="header_search">
+                    <span> <img src="/images/search_image.svg" class="header_search_icon"/> </span>
+                    <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+                </div>
+            </form>
+
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+                <div class="header_account">
+                    <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                    <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+                </div>
+            </a>
+
+            <nav th:if="${accountRole != 'ROLE_ANONYMOUS' }">
+                <ul class="header_account_menu">
+                    <li>
+                        <div class="header_account">
+                        <span class="header_account_icon">
+                            <img src="/images/person_img.svg" alt="User Icon"/>
+                        </span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                        </div>
+                        <ul class="header_account_dropDownMenu">
+                            <li>
+                                <a th:href="@{'/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{savedRecipes}">_savedRecipes_</a>
+                            </li>
+                            
+                            <li th:if="${accountRole != 'CUSTOMER'}">
+                                <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
+                            </li>
+                            <li th:if="${accountRole == 'CHEF'}">
+                                <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                            </li>
+                            <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                                <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a href="/logout" id="logout">Logout</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <h1>Impostazioni:</h1>
+
+        <form th:action="@{/settingsData}" method="post">
+
+            <div>
+                <h5>Informazioni personali:</h5>
+                <label th:text="#{name}"> _name_</label><input type="text" th:value="${user.name}" name="name"/>
+                <label th:text="#{surname}"> _surname_</label><input type="text" th:value="${user.surname}" name="surname"/>
+                <label th:text="#{email}"> _email_</label><input type="email" th:value="${user.email}" name="email"/>
+                <label th:text="#{dateOfBirth}"> _dateOfBirth_</label><input type="date" th:value="${user.dateOfBirth}" name="dateOfBirth"/>
+            </div>
+            
+            <div>
+                <h5>Credenziali:</h5>
+                <span>Username:</span>
+                <span>
+                    <input type="hidden" th:field="${newCredentials.username}" required/>
+                    <input type="text" th:value="${credentials.username}" disabled/>
+                    <input type="hidden" name="changeUsername" value="false"/>
+                    <button type="button" onclick="changeUsernameClick(this.parentElement)">Change</button>
+                </span>
+                &nbsp &nbsp;
+                <span>Password:</span>
+                <span>
+                    <input type="hidden" th:field="${newCredentials.password}" required/>
+                    <input type="password" th:value="${credentials.password}" disabled/>
+                    <input type="hidden" name="changePassword" value="false"/>
+                    <button type="button" onclick="changePasswordClick(this.parentElement)">Change</button>
+                </span>
+
+            </div>
+            <div>
+                
+            </div>
+            <button type="submit">Salva Modifiche</button>
+        </form>
+
+    </body>
+</html>
+-->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Settings-SiwFood</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    <script th:inline="javascript" src="/javascript/script.js"></script>
+</head>
+
+<body class="backgroundColorSite">
+    <header class="header_navbar">
+        <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+        <form th:action="@{/search}" method="get">
+            <div class="header_search">
+                <span> <button type="submit" style="background-color: transparent; border: none;"> <img src="/images/search_image.svg" class="header_search_icon"/> </button> </span>
+                <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+            </div>
+        </form>
+        <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+            <div class="header_account">
+                <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
+                <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+            </div>
+        </a>
+        <nav th:if="${accountRole != 'ROLE_ANONYMOUS' }">
+            <ul class="header_account_menu">
+                <li>
+                    <div class="header_account">
+                        <span class="header_account_icon"><img src="/images/person_img.svg" alt="User Icon"/></span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                    </div>
+                    <ul class="header_account_dropDownMenu">
+                        <li>
+                            <a th:href="@{'/logged/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{savedRecipes}">_savedRecipes_</a>
+                        </li>
+                        <li th:if="${accountRole != 'CUSTOMER'}">
+                            <a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a>
+                        </li>
+                        <li th:if="${accountRole == 'CHEF'}">
+                            <a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a>
+                        </li>
+                        <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                            <a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a>
+                        </li>
+                        <li th:if="${accountRole == 'ADMINISTRATOR'}">
+                            <a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a href="/logout" id="logout">Logout</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container mt-5">
+        <h1 class="h3 mb-3 font-weight-normal text-center text-white">Impostazioni</h1>
+        <form th:action="@{/settingsData}" method="post">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="text-white">Informazioni personali:</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label th:text="#{name}" class="text-white"> _name_</label>
+                            <input type="text" th:value="${user.name}" name="name" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label th:text="#{surname}" class="text-white"> _surname_</label>
+                            <input type="text" th:value="${user.surname}" name="surname" class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label th:text="#{email}" class="text-white"> _email_</label>
+                            <input type="email" th:value="${user.email}" name="email" class="form-control"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label th:text="#{dateOfBirth}" class="text-white"> _dateOfBirth_</label>
+                            <input type="date" th:value="${user.dateOfBirth}" name="dateOfBirth" class="form-control"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="text-white">Credenziali:</h5>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label class="text-white">Username:</label>
+                            <div class="input-group">
+                                <input type="text" th:value="${credentials.username}" class="form-control-plaintext" disabled/>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changeUsernameClick(this.parentElement.parentElement)">Change</button>
+                                </div>
+                            </div>
+                            <input type="hidden" th:field="${newCredentials.username}" required/>
+                            <input type="hidden" name="changeUsername" value="false"/>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label class="text-white">Password:</label>
+                            <div class="input-group">
+                                <input type="password" th:value="${credentials.password}" class="form-control-plaintext" disabled/>
+                                <div class="input-group-append">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changePasswordClick(this.parentElement.parentElement)">Change</button>
+                                </div>
+                            </div>
+                            <input type="hidden" th:field="${newCredentials.password}" required/>
+                            <input type="hidden" name="changePassword" value="false"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-lg btn-primary btn-block custom-btn mt-4">Salva Modifiche</button>
+        </form>
+    </div>
+</body>
+</html>

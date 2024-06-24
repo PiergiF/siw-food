@@ -11,6 +11,9 @@ import it.uniroma3.siw.siwfood.model.Recipe;
 public interface ChefRepository extends JpaRepository<Chef,Long>{
 
     public boolean existsByNameAndSurname(String name, String surname);
+    
     @Query("SELECT r FROM Recipe r WHERE r.chef.id = :chefId")
     public List<Recipe> findAllByChefId(Long chefId);
+
+    List<Chef> findByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(String name, String surname);
 }

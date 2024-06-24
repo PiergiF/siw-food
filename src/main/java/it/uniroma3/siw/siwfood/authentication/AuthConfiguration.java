@@ -54,7 +54,7 @@ import static it.uniroma3.siw.siwfood.model.Credentials.ADMINISTRATOR_ROLE;
                 .authorizeHttpRequests()
 //                .requestMatchers("/**").permitAll()
                 // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                .requestMatchers(HttpMethod.GET,"/", "/loginPage","/registrationPage", "/registrationPage2", "/registrationPageGPT", "/savedRecipesPage/**", "/removeSavedRecipe/**", "/messages/**","/css/**", "/javascript/**", "/images/**", "favicon.ico").permitAll()
+                .requestMatchers(HttpMethod.GET,"/", "/loginPage","/registrationPage", "/search", "/all/**", "/messages/**", "/css/**", "/javascript/**", "/images/**", "favicon.ico").permitAll()
         		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
                 .requestMatchers(HttpMethod.POST,"/registrationData","/loginPage").permitAll()
                 .requestMatchers(HttpMethod.GET,"/chef_admin/**").hasAnyAuthority(CHEF_ROLE, ADMINISTRATOR_ROLE)

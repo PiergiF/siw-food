@@ -29,16 +29,15 @@ public class Chef {
     private String email;
     private LocalDate dateOfBirth;
 
-    @Column(length = 10000000)
-    private String imageBase64;
-    
-
     @OneToMany(mappedBy = "chef", fetch=FetchType.EAGER)
     private List<Recipe> recipes;
 
     @ManyToMany
     private List<Recipe> savedRecipes;
     
+
+    @Column(length = 10000000)
+    private String imageBase64;
 
     public Chef() {
     }

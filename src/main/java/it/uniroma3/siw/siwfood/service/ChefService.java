@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import it.uniroma3.siw.siwfood.model.Chef;
 import it.uniroma3.siw.siwfood.model.Quantity;
 import it.uniroma3.siw.siwfood.model.Recipe;
-import it.uniroma3.siw.siwfood.model.User;
+import it.uniroma3.siw.siwfood.model.Customer;
 //import it.uniroma3.siwfood.model.Image;
 import it.uniroma3.siw.siwfood.repository.ChefRepository;
 //import it.uniroma3.siwfood.repository.ImageRepository;
@@ -55,6 +55,10 @@ public class ChefService {
     public void removeRecipeForChef(Chef chef, Recipe recipe) {
         chef.getSavedRecipes().remove(recipe);
         chefRepository.save(chef);
+    }
+
+    public List<Chef> searchChefs(String query) {
+        return chefRepository.findByNameContainingIgnoreCaseOrSurnameContainingIgnoreCase(query, query);
     }
 
     /*
