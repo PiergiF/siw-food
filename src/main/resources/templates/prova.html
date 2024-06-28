@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>addRecipe-SiwFood</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    <script th:inline="javascript" src="/javascript/script.js"></script>
+</head>
+
+<body class="backgroundColorSite">
+
+    
+    <header class="header_navbar">
+        <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
+        <form th:action="@{/search}" method="get">
+            <div class="header_search">
+                <span><button type="submit" style="background-color: transparent; border: none;"><img src="/images/search_image.svg" class="header_search_icon"/></button></span>
+                <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
+            </div>
+        </form>
+        <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+            <div class="header_account">
+                <span class="header_account_icon"><img src="/images/person_img.svg"/></span>
+                <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
+            </div>
+        </a>
+        <nav th:if="${accountRole != 'ROLE_ANONYMOUS' }">
+            <ul class="header_account_menu">
+                <li>
+                    <div class="header_account">
+                        <span class="header_account_icon"><img src="/images/person_img.svg" alt="User Icon"/></span>
+                        <span class="header_account_text" th:text="${userDetails.username}">_username_</span>
+                    </div>
+                    <ul class="header_account_dropDownMenu">
+                        <li><a th:href="@{'/logged/settingsPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{settings}">_settings_</a></li>
+                        <li><a th:href="@{'/logged/savedRecipesPage/' + ${loggedId} + '/' + ${accountRole} }" th:text="#{savedRecipes}">_savedRecipes_</a></li>
+                        <li th:if="${accountRole != 'CUSTOMER'}"><a href="/chef_admin/allIngredientsPage" th:text="#{allIngredients}">_allIngredients_</a></li>
+                        <li th:if="${accountRole == 'CHEF'}"><a th:href="@{'/chef_admin/personalRecipesPage/' + ${loggedId}}" th:text="#{yourRecipes}">_yourRecipes_</a></li>
+                        <li th:if="${accountRole == 'ADMINISTRATOR'}"><a href="/all/allRecipesPage" th:text="#{allRecipes}">_allRecipes_</a></li>
+                        <li th:if="${accountRole == 'ADMINISTRATOR'}"><a href="/all/allChefsPage" th:text="#{allChefs}">_allChefs_</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a href="/logout" id="logout">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    
+    <div class="container mt-5">
+        <h1 class="h3 mb-3 font-weight-normal text-center text-white">Create Recipe</h1>
+        <form th:action="@{/chef_admin/recipeData}" th:object="${recipe}" method="POST" id="formNewRecipe" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name" th:text="#{recipeName}">_recipeName_</label>
+                <input type="text" id="name" name="name" th:field="${recipe.name}" class="form-control" required/>
+            </div>
+
+            <div class="form-group">
+                <label for="image" th:text="#{selectImage}">Select Image:</label>
+                <input type="file" id="image" name="images" multiple class="form-control-file" required>
+            </div>
+
+            <div th:switch="${accountRole}" class="form-group">
+                <label for="chef" th:text="#{chef} + ':'">_chef_</label>
+                <select th:case=" 'CHEF' " th:field="${recipe.chef}" class="form-control" disabled>
+                    <option th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}" selected>_ChefName&Surname_</option>
+                    <input type="hidden" id="chef" name="chef" th:value="${chef.id}"/>
+                </select>
+                <select th:case=" 'ADMINISTRATOR' " th:field="${recipe.chef}" class="form-control" required>
+                    <option value="" selected disabled>Seleziona uno chef</option>
+                    <option th:each="chef : ${chefs}" th:value="${chef.id}" th:text="${chef.name} + ' ' + ${chef.surname}">_ChefName&Surname_</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="courseRecipe" th:text="#{course} + ':'">_course_</label>
+                <select th:field="${recipe.course}" class="form-control" required>
+                    <option value="" selected disabled>Seleziona la portata</option>
+                    <option th:each="course : ${courses}" th:value="${course}" th:text="${course}"></option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label th:text="#{ingredients} + ':'">Ingredients:</label>
+                <div id="ingredientsContainer">
+                    <div id="ingredients" class="mb-3">
+                        <span>
+                            <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
+                            <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" class="form-control" required>
+                                <option value="" selected disabled>Seleziona un ingrediente</option>
+                                <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
+                                <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
+                            </select>
+                        </span>
+                        <label name="quantity" th:text="#{quantity} + ':'" class="ml-3">_Quantity:_</label>
+                        <input type="number" name="quantities" class="form-control d-inline-block" style="width: auto;" required/>
+
+                        <span class="ml-3">
+                            <label name="unit" th:text="#{unit} + ':'">_Unit:_</label>
+                            <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)" class="form-control" style="width: auto;" required><!--class="form-control"  style="width: auto;"-->
+                                <option value="" selected disabled>Seleziona un'unità</option>
+                                <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
+                                <option value="add" id="addUnitOption">_AggiungiUnit_</option>
+                            </select>
+                        </span>
+                        <button type="button" onclick="removeIngredientField(this)" class="btn btn-danger ml-3">Remove</button>
+                    </div>
+                </div>
+                <button type="button" onclick="addIngredientField()" class="btn btn-secondary">Add Ingredient</button>
+            </div>
+
+            <div class="form-group">
+                <label for="description" th:text="#{recipeDescription} + ':'">_recipeDescription_</label>
+                <textarea id="description" name="description" th:field="${recipe.description}" class="form-control"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Recipe</button>
+        </form>
+    </div>
+
+    
+    <footer class="footer mt-auto py-3">
+        <div class="container">
+            <span class="text-muted">Your footer content here.</span>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
+
+
+
+
+<label>Ingredients:</label>
+<div id="ingredientsContainer" class="ingredients-container">
+    <div id="ingredients" class="ingredient-row">
+        <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
+        <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" required>
+            <option value="" selected disabled>Seleziona un ingrediente</option>
+            <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
+            <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
+        </select>
+
+        <label name="quantity" th:text="#{quantity} + ':'">_Quantity:_</label>
+        <input type="number" name="quantities" required/>
+
+        <label name="unit" th:text="#{unit} + ':'">_Unit:_</label>
+        <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)" required>
+            <option value="" selected disabled>Seleziona un'unità</option>
+            <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
+            <option value="add" id="addUnitOption">_AggiungiUnit_</option>
+        </select>
+
+        <button type="button" onclick="removeIngredientField(this)">Remove</button>
+    </div>
+</div>
+
+<button type="button" onclick="addIngredientField()">Add Ingredient</button>
+<br/><br/>

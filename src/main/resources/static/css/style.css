@@ -235,6 +235,7 @@ body {
     }
 
 /*#### Courses homePage ####*/
+
     .courses-section {
         /*background-color: #343a40;*/
 
@@ -494,10 +495,64 @@ body.backgroundColorSite {
     color: white !important;
 }
 
+/*#### saved and personal recipe ####*/
+
+/*
+    .pagesRecipe-icon {
+        /*min-height: 200px; /* Set a minimum height for the images */
+        /*max-height: 200px; /* Ensure all images are the same height */
+        /*object-fit: cover; /* Ensure images cover the entire area */
+    /*}
+    .pagesRecipe-card {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
+    }
+    .btn-group-custom {
+        margin-top: auto; /* Ensure buttons are at the bottom of the card */
+    /*}*/
+
+    /*### per lo spazio dei bottoni nella pagina delle ricette personali dello chef###*/
+        .btn-spacing {
+            margin-right: 5px; /* Adjust the space as needed */
+        }
 
 
 
 /*#### Add & Modify recipe ####*/
 .disabledChefChoise{
     color: black;
+}
+
+/*#### Settings ####*/
+.settings-chefImage {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    margin-left: 20px;
+}
+
+
+
+
+
+
+
+.ingredients-container {
+    display: flex;
+    flex-direction: column;
+}
+.ingredient-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+.ingredient-row label,
+.ingredient-row select,
+.ingredient-row input {
+    margin-right: 10px;
+}
+.ingredient-row button {
+    margin-left: 10px;
 }

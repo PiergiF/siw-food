@@ -5,9 +5,11 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
 
         <header class="header_navbar">
 
@@ -20,7 +22,7 @@
                 </div>
             </form>
 
-            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}">
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}" style="text-decoration: none;">
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
@@ -68,7 +70,7 @@
             </nav>
         </header>
 
-        <div class="chefInformations" th:if="${chef}">
+        <!--<div class="chefInformations" th:if="${chef}">
             <h1 th:text="#{chef.details}">_chefDetails</h1>
             <div>
                 <span th:text="${chef.name} + ' ' + ${chef.surname}">_nameAndSurname_</span>
@@ -85,6 +87,35 @@
                 </div>
             </div>
             <div th:unless="${chef}" th:text="#{dosent.exist}">_dosentExist_</div>
+        </div>-->
+
+        <div class="container mt-5" th:if="${chef}">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text=" ${chef.name} + ' ' + ${chef.surname} ">_name&surnameChef_</h1>
+
+            <div class="mb-4 text-center">
+                <img th:src=" 'data:image/;base64,' + ${chef.imageBase64}" alt="Chef Image">
+            </div>
+
+            <div class="mb-4">
+                <span th:text="#{dateOfBirth} + ': ' + ${chef.dateOfBirth}">_dateOfBirth_</span>
+                <!--<span th:text="#{dateOfBirth} + ': ' + ${#temporals.format(localDate, 'dd-MM-yyyy')}">_dateOfBirth_</span>-->
+            </div>
+
+            <div class="mb-4">
+                <span th:unless="${chef.email == null || chef.email == ''}" th:text="${chef.email}">_email_</span>
+            </div>
+
+            <div class="mb-4">
+                <h5 class="font-weight-bold" th:text="#{recipes} + ':' ">_recipes_</h5>
+                <ul class="list-unstyled">
+                    <li th:each="recipe : ${chef.recipes}"><a th:href="@{'/all/recipePage/' + ${recipe.id}}" th:text="${recipe.name}" style="color: rgb(223,205,54);"></a></li>
+                </ul>
+            </div>
+
+            <div th:unless="${chef}" class="alert alert-warning" role="alert">
+                <span th:text="#{dosent.exist}">_dosentExist_</span>
+            </div>
+
         </div>
     </body>
 </html>

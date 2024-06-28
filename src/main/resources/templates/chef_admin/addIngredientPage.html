@@ -5,9 +5,11 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+    
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
 
         <header class="header_navbar">
 
@@ -67,7 +69,8 @@
                 </ul>
             </nav>
         </header>
-
+        
+        <!--
         <h1>Create Ingredient</h1>
         <div class="form-group">
             <form th:action="@{/chef_admin/ingredientData}" th:object="${newIngredient}" method="POST" id="formNewIngredient">
@@ -79,5 +82,19 @@
         </div>
         <div th:if="${duplicateError != null}"><span th:text="${duplicateError}"></span></div>
         <div th:if="${genericError != null}"><span>Errore nell'inserimento dell'ingrediente</span></div>
+        -->
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{addIngredientInDatabase}">_addIngredientInDatabase_</h1>
+            <form th:action="@{/chef_admin/ingredientData}" th:object="${newIngredient}" method="POST" id="formNewIngredient">
+                <div class="form-group">
+                    <label for="name" th:text="#{ingredientName} + ':'">_name_</label>
+                    <input type="text" th:field="${newIngredient.name}" class="form-control" th:placeholder="#{ingredientName}" required/>
+                    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+                <button type="submit" class="btn btn-primary custom-btn" th:text="#{addIngredient}">_addIngredient_</button>
+            </form>
+        </div>
+
     </body>
 </html>

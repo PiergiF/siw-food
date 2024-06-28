@@ -110,14 +110,15 @@
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Settings-SiwFood</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
     <script th:inline="javascript" src="/javascript/script.js"></script>
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
 <body class="backgroundColorSite">
@@ -129,7 +130,7 @@
                 <input type="search" name="query" class="header_search_input" th:placeholder="#{header.search}">
             </div>
         </form>
-        <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+        <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }" style="text-decoration: none;">
             <div class="header_account">
                 <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                 <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
@@ -170,7 +171,7 @@
 
     <div class="container mt-5">
         <h1 class="h3 mb-3 font-weight-normal text-center text-white">Impostazioni</h1>
-        <form th:action="@{/settingsData}" method="post">
+        <form th:action="@{/settingsData}" method="post" enctype = 'multipart/form-data';>
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="text-white">Informazioni personali:</h5>
@@ -197,6 +198,24 @@
                 </div>
             </div>
 
+            <div class="row" th:if="${accountRole == 'CHEF'}">
+                <div class="col-md-12">
+                    <h5 class="text-white">Foto da chef:</h5>
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label for="chefImage" class="text-white">Cambia Foto da chef:</label>
+                            <input type="file" class="form-control-file" id="chefImage" name="chefImage"/>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <label class="text-white" th:text="#{setting.actualImage} + ':' ">_setting.actualImage_</label><br>
+                            <img th:src=" 'data:image/;base64,' + ${user.imageBase64}" class="settings-chefImage" alt="actualChefImage"/><!--id="actualChefImage"-->
+                            <!--<input type="hidden" name="removeImage" value="false"/>-->
+                            <!--<button type="button" class="btn btn-secondary btn-sm" onclick="settingsChangeImageChef(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="col-md-12">
                     <h5 class="text-white">Credenziali:</h5>
@@ -204,9 +223,9 @@
                         <div class="form-group col-md-6">
                             <label class="text-white">Username:</label>
                             <div class="input-group">
-                                <input type="text" th:value="${credentials.username}" class="form-control-plaintext" disabled/>
+                                <input type="text" th:value="${credentials.username}" class="form-control-plaintext text-white" disabled/>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changeUsernameClick(this.parentElement.parentElement)">Change</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changeUsernameClick(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>
                                 </div>
                             </div>
                             <input type="hidden" th:field="${newCredentials.username}" required/>
@@ -215,9 +234,9 @@
                         <div class="form-group col-md-6">
                             <label class="text-white">Password:</label>
                             <div class="input-group">
-                                <input type="password" th:value="${credentials.password}" class="form-control-plaintext" disabled/>
+                                <input type="password" th:value="${credentials.password}" class="form-control-plaintext text-white" disabled/>
                                 <div class="input-group-append">
-                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changePasswordClick(this.parentElement.parentElement)">Change</button>
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="changePasswordClick(this.parentElement.parentElement)" th:text="#{edit}">_edit_</button>
                                 </div>
                             </div>
                             <input type="hidden" th:field="${newCredentials.password}" required/>

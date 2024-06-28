@@ -42,7 +42,7 @@ public class IngredientController {
     @GetMapping("/chef_admin/ingredientPage/{id}")
     public String getIngredientPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("ingredient", ingredientService.findById(id));
-        return "chef_admin/ingredientPage.html";
+        return "chef_admin/allIngredientsPage.html";
     }
     
 

@@ -5,9 +5,14 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -67,7 +72,7 @@
         <!--<div th:text="${userDetails.getAuthorities()}">_autority_</div>
         <div th:text="${userDetails.authorities[0]}">_autority_</div>-->
 
-        <div>
+        <!--<div>
             <h1>Ingredienti:</h1>
 	        <div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
 	        <ul>
@@ -75,10 +80,96 @@
                     <a th:href="@{'/chef_admin/ingredientPage/' + ${ingredient.id}}" th:text="${ingredient.name}">_ingredientName_</a>
                     <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeIngredient/' + ${ingredient.id}}" class="removeButton" id="removeIngredientButton"><button type="submit" >Remove</button></a>
                 </li>
+            </ul>-->
+            <!--<span th:if="${param}">ERRORE</span> commento interno-->
+        <!--</div>-->
+
+        <!--<div class="courses-section">
+            <span th:text="#{ingredients} + ':'">_Ingredients_</span>
+            <div th:if="${ingredients==null || ingredients.isEmpty()}">Non ci sono ingredienti nel sistema</div>
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-2 col-md-4 col-sm-6" th:each="ingredient : ${ingredients}">
+                        <a th:href="@{'/chef_admin/ingredientPage/' + ${ingredient.id}}" th:text="${ingredient.name}" class="btn course-btn">_ingredientName_</a>
+                        <button type="submit" class="btn btn-danger" th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeIngredient/' + ${ingredient.id}}" th:text="#{remove}">Remove</button>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <!--<div><a href="/chef_admin/addIngredientPage" th:text="#{addIngredient}">_addIngredient_</a></div>-->
+
+
+        <!--<div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Ingredienti</h1>
+            <div th:if="${ingredients == null || ingredients.isEmpty()}" class="alert alert-warning text-center">
+                Non ci sono ingredienti nel sistema
+            </div>
+            <ul class="list-group">
+                <li th:each="ingredient : ${ingredients}" class="list-group-item d-flex justify-content-between align-items-center">
+                    <a th:href="@{'/chef_admin/ingredientPage/' + ${ingredient.id}}" th:text="${ingredient.name}" class="text-dark">_ingredientName_</a>
+                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeIngredient/' + ${ingredient.id}}" class="btn btn-danger btn-sm">Remove</a>
+                </li>
             </ul>
-            <!--<span th:if="${param}">ERRORE</span>-->
+            <div class="mt-3">
+                <a href="/chef_admin/addIngredientPage" class="btn btn-primary" th:text="#{addIngredient}">_addIngredient_</a>
+            </div>
+        </div>-->
+
+        <!--<div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Ingredienti</h1>
+            <div th:if="${ingredients == null || ingredients.isEmpty()}" class="alert alert-warning text-center">
+                Non ci sono ingredienti nel sistema
+            </div>
+            
+            <div class="row">
+                <div th:each="ingredient : ${ingredients}" class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${ingredient.name}">_ingredientName_</h5>
+                            <div class="mt-auto">
+                                <a th:href="@{'/chef_admin/ingredientPage/' + ${ingredient.id}}" class="btn btn-primary btn-sm">Dettagli</a>
+                                <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeIngredient/' + ${ingredient.id}}" class="btn btn-danger btn-sm ml-2">Remove</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mt-3 text-center">
+                <a href="/chef_admin/addIngredientPage" class="btn btn-primary" th:text="#{addIngredient}">Aggiungi Ingrediente</a>
+            </div>
+        </div>-->
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{ingredients} + ':'">_Ingredients_</h1>
+            <div class="courses-section">
+                <div class="container">
+                    <div class="row text-center">
+                        <div th:if="${ingredients==null || ingredients.isEmpty()}" class="text-white">
+                            <span>Non ci sono ingredienti nel sistena</span>
+                            <a href="/chef_admin/addIngredientPage" style="color: rgb(223,205,54);">Aggiungi un ingrediente</a> <!--th:text="#{personalRecipe.createRecipe}"-->
+                        </div>
+                        <!--<div class="pagesRecipe-card">-->
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="ingredient : ${ingredients}">
+                                <!--<a th:href="@{'/all/recipePage/' + ${recipe.id} }"><img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>-->
+                                <!--<a th:href="@{'/chef_admin/ingredientPage/' + ${ingredient.id} }" class="btn course-btn btn-block mt-2" th:text="${ingredient.name}" >_recipeName_</a>-->
+                                <span th:text="${ingredient.name}">_ingredientName_</span>
+                                <!--<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn course-btn btn-block mt-2" th:text="#{edit}">_edit_</a>
+                                <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="btn btn-danger btn-block mt-2" id="removeRecipeButton" th:text="#{remove}">_remove_</a>-->
+                                <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
+                                    <!--<a th:href="@{'/chef_admin/editRecipePage/' + ${ingredient.id}}" class="btn btn-primary btn-sm btn-spacing" th:text="#{edit}">_edit_</a>-->
+                                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeIngredient/' + ${ingredient.id}}" class="btn btn-danger btn-sm" id="removeRecipeButton" th:text="#{remove}">_remove_</a>
+                                </div>
+                            </div>
+                        <!--</div>-->
+                    </div>
+                    <div class="mt-3 text-center">
+                        <a href="/chef_admin/addIngredientPage" class="btn btn-primary custom-btn" th:text="#{addIngredient}">_AggiungiIngrediente_</a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div><a href="/chef_admin/addIngredientPage" th:text="#{addIngredient}">_addIngredient_</a></div>
 
     </body>
 </html>

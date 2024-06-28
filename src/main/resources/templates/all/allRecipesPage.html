@@ -5,9 +5,11 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -19,7 +21,7 @@
                 </div>
             </form>
 
-            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }">
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS' }" style="text-decoration: none;">
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
@@ -67,6 +69,7 @@
         <!--<div th:text="${userDetails.getAuthorities()}">_autority_</div>
         <div th:text="${userDetails.authorities[0]}">_autority_</div>-->
 
+        <!--
         <div>
             <h1>Ricette</h1>
 	        <div th:if="${recipes==null || recipes.isEmpty()}">Non ci sono ricette nel sistema</div>
@@ -76,10 +79,41 @@
                     <span>(<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" th:text="#{edit}"></a>)</span>
                     <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="removeButton" id="removeRecipeButton"><button type="submit" >Remove</button></a>
                 </li>
-            </ul>
-            <!--<span th:if="${param}">ERRORE</span>-->
-        </div>
+            </ul>-->
+            <!--<span th:if="${param}">ERRORE</span> commento interno-->
+        <!--</div>
         <div><a href="/chef_admin/addRecipePage" th:text="#{addRecipe}">_addRecipe_</a></div>
+        -->
+
+
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text=" #{recipes}">_recipes_</h1>
+            <div th:if="${ recipes == null || recipes.isEmpty() }" class="alert alert-warning text-center" th:text=" #{recipes.none} ">_recipes.none_</div>
+            <div class="courses-section">
+                <div class="container">
+                    <div class="row text-center">
+                        <!--<div class="pagesRecipe-card">-->
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="recipe : ${recipes}">
+                                <a th:href="@{'/all/recipePage/' + ${recipe.id} }"><img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>
+                                <a th:href="@{'/all/recipePage/' + ${recipe.id} }" class="btn course-btn btn-block mt-2" th:text="${recipe.name}" >_recipeName_</a>
+                                <!--<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn course-btn btn-block mt-2" th:text="#{edit}">_edit_</a>
+                                <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="btn btn-danger btn-block mt-2" id="removeRecipeButton" th:text="#{remove}">_remove_</a>-->
+                                <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
+                                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn btn-primary btn-sm btn-spacing" th:text="#{edit}">_edit_</a>
+                                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="btn btn-danger btn-sm" id="removeRecipeButton" th:text="#{remove}">_remove_</a>
+                                </div>
+                            </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-5" th:if="${accountRole == 'CHEF' || accountRole == 'ADMINISTRATOR' }">
+                <a href="/chef_admin/addRecipePage" class="btn btn-primary custom-btn"th:text="#{addRecipe}">_addRecipe_</a>
+            </div>
+
+        </div>
 
     </body>
 </html>

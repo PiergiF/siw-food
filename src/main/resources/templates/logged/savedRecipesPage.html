@@ -102,12 +102,14 @@
                     <div class="row text-center">
                         <div th:if="${savedRecipes==null || savedRecipes.isEmpty()}"  class="text-white">
                             <span th:text="#{savedRecipe.none} + ':' ">_savedRecipe.none_</span>
-                            <a href="/all/allRecipesPage" th:text="#{savedRecipe.findRecipe}" style="color: rgb(223,205,54);"></a>
+                            <a href="/all/allRecipesPage" th:text="#{savedRecipe.findRecipe}" style="color: rgb(223,205,54);">_savedRecipe.findRecipe_</a>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="savedRecipe : ${savedRecipes}">
-                            <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }"><img th:src=" 'data:image/;base64,' + ${savedRecipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>
-                            <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }" class="btn course-btn btn-block mt-2" th:text="${savedRecipe.name}" >_recipe_</a>
-                            <a th:href="@{'/removeSavedRecipe/' + ${savedRecipe.id} + '/' + ${loggedId} + '/' + ${accountRole}}" class="btn btn-danger btn-block mt-2 removeButton" id="removeRecipeButton" th:text="#{remove}">_remove_</a>
+                            <!--<div class="pagesRecipe-card">-->
+                                <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }"><img th:src=" 'data:image/;base64,' + ${savedRecipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>
+                                <a th:href="@{'/all/recipePage/' + ${savedRecipe.id} }" class="btn course-btn btn-block mt-2" th:text="${savedRecipe.name}" >_recipe_</a>
+                                <a th:href="@{'/removeSavedRecipe/' + ${savedRecipe.id} + '/' + ${loggedId} + '/' + ${accountRole}}" class="btn btn-danger btn-block mt-2" id="removeRecipeButton" th:text="#{remove}">_remove_</a>
+                            <!--</div>-->
                         </div>
                     </div>
                 </div>

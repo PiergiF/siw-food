@@ -7,9 +7,10 @@
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
         <script th:inline="javascript" src="/javascript/script.js"></script>
         
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite"> <!--class="login-background"-->
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -69,48 +70,73 @@
             </nav>
         </header>
 
-        <div class="upload-container">
-            <form th:action="@{/admin/creationData}" method="POST" enctype="multipart/form-data">
+        <div class="container mt-5"> <!--class="upload-container"--> <!--class="loginRegistrationDiv"-->
+            <form th:action="@{/admin/creationData}" method="post" class="form-signup" enctype="multipart/form-data">
+
+                <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{creation.title}">_CreationTitle_</h1>
 
                 <div class="form-group">
-                    <label th:text="#{name}">_name_</label> 
-                    <span><input class="inputCreation" type="text" name="name" th:placeholder="#{form.namePlaceholder}" /></span>
-                    <span><input class="inputCreation" type="text" name="surname" th:placeholder="#{form.surnamePlaceholder}" /></span>
+                    <!--<label th:text="#{name}">_name_</label> -->
+                    <!--<span><input class="inputCreation" type="text" name="name" th:placeholder="#{form.namePlaceholder}" /></span>-->
+                    <label class="sr-only" th:text="#{registration.insertName}">Name</label>
+                    <input type="text" name="name" class="form-control mb-3 inputCreation" th:placeholder="#{form.namePlaceholder}"/>
+
+                    <!--<span><input class="inputCreation" type="text" name="surname" th:placeholder="#{form.surnamePlaceholder}" /></span>-->
+                </div>
+                <div>
+                    <label class="sr-only">Surname</label>
+                    <input type="text" name="surname" class="form-control mb-3 inputCreation" th:placeholder="#{form.surnamePlaceholder}"/>
                 </div>
 
                 <div class="form-group">
-                    <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
-                    <span><input class="inputCreation" type="date" name="dateOfBirth" /></span>
+                    <label class="sr-only" th:text="#{email}">_Email_</label>
+                    <input type="email" name="email" class="form-control mb-3" th:placeholder="#{email}"/>
                 </div>
 
                 <div class="form-group">
-                    <label th:text="#{email}">_Email_</label>
-                    <input type="email" th:placeholder="#{email}" name="email"/>
+                    <label th:text="#{dateOfBirth} + ':' " style="color: white;">_dateOfBirth_</label>
+                    <input type="date" name="dateOfBirth" class="form-control mb-3 inputCreation" th:placeholder="#{dateOfBirth}" />
                 </div>
 
                 <div>
-                    <label th:text="#{insertUsername}">_Username</label>
-                    <input type="text" th:placeholder="#{form.usernamePlaceholder}" th:field="${newCredentials.username}" required/>
-                    <span th:if="${#fields.hasErrors('newCredentials.username')}" th:errors="${newCredentials.username}"></span>
+                    <label class="sr-only" th:text="#{username}">_Username</label>
+                    <input type="text" class="form-control mb-3" th:placeholder="#{form.usernamePlaceholder}" th:field="${newCredentials.username}" required autofocus/>
+                    <span th:if="${#fields.hasErrors('newCredentials.username')}" th:errors="${newCredentials.username}" th:style="'color:red'"></span>
                 </div>
     
                 <div>
-                    <label th:text="#{insertPassword}">_insertPassword_</label>
-                    <input type="password" th:placeholder="#{form.passwordPlaceholder}" th:field="${newCredentials.password}" required/>
-                    <span th:if="${#fields.hasErrors('newCredentials.password')}" th:errors="${newCredentials.password}"></span>
+                    <label class="sr-only" th:text="#{password}">_insertPassword_</label>
+                    <input type="password" class="form-control mb-3" th:placeholder="#{form.passwordPlaceholder}" th:field="${newCredentials.password}" required/>
+                    <span th:if="${#fields.hasErrors('newCredentials.password')}" th:errors="${newCredentials.password}" th:style="'color:red'"></span>
                 </div>
 
-                <div id="chooseRoleCreation">
-                    <label>Registra:</label>
-                    <label th:text="#{customer}">_customer_</label> <input type="radio" name="role" value="CUSTOMER" checked onclick="updateCreationForm(this)"/>
-                    <label th:text="#{chef}">_chef_</label> <input type="radio" name="role" value="CHEF" onclick="updateCreationForm(this)"/>
-                    <label th:text="#{admin}">_admin_</label> <input type="radio" name="role" value="ADMINISTRATOR" onclick="updateCreationForm(this)"/>
+                <div class="mb-3" id="chooseRoleCreation">
+                    <label class="d-block text-white">Registra:</label>
+
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="customerRole" name="role" value="CUSTOMER" class="custom-control-input" checked onclick="updateCreationForm(this)"/>
+                        <label class="custom-control-label text-white" for="customerRole" th:text="#{customer}">_customer_</label>
+                    </div>
+
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="chefRole" name="role" value="CHEF" class="custom-control-input" onclick="updateCreationForm(this)"/>
+                        <label class="custom-control-label text-white" for="chefRole" th:text="#{chef}">_chef_</label>
+                    </div>
+
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="administratorRole" name="role" value="ADMINISTRATOR" class="custom-control-input" onclick="updateCreationForm(this)"/>
+                        <label class="custom-control-label text-white" for="administratorRole" th:text="#{admin}">_admin_</label>
+                    </div>
+                    <!--<label th:text="#{customer}">_customer_</label> <input type="radio" name="role" value="CUSTOMER" checked onclick="updateCreationForm(this)"/>-->
+                    <!--<label th:text="#{chef}">_chef_</label> <input type="radio" name="role" value="CHEF" onclick="updateCreationForm(this)"/>-->
+                    <!--<label th:text="#{admin}">_admin_</label> <input type="radio" name="role" value="ADMINISTRATOR" onclick="updateCreationForm(this)"/>-->
                 </div>
                 
-                <button type="submit" id="creationButton">Crea</button>
+                <button type="submit" id="creationButton" class="btn btn-lg btn-primary btn-block custom-btn">Crea</button>
 
             </form>
             <p th:if="${failImage}">Errore immagine</p>
+        </div>
             <!--
             <h1>Aggiungi uno Chef</h1>
             <form th:action="@{/admin/addChefData}" method="POST" enctype="multipart/form-data">
@@ -162,6 +188,5 @@
             </form>
             <p th:if="${failImage}">Errore immagine</p>
             -->
-        </div>
     </body>
 </html>

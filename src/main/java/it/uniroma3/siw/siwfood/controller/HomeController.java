@@ -1,6 +1,8 @@
 package it.uniroma3.siw.siwfood.controller;
 
+import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import it.uniroma3.siw.siwfood.model.Administrator;
 import it.uniroma3.siw.siwfood.model.Chef;
@@ -109,9 +112,10 @@ public class HomeController {
                                 @Valid @ModelAttribute("newCredentials") Credentials newCredentials, BindingResult newCredentialsBindingResult,
                                 @RequestParam("changePassword") String changePassword, @RequestParam("changeUsername") String changeUsername,
                                 @RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "surname") String surname,
-                                @RequestParam(required = false, value = "email") String email, @RequestParam(required = false, value = "dateOfBirth") LocalDate dateOfBirth)
-                                //@ModelAttribute("user") Customer cuUser, @ModelAttribute("user") Chef cUser, @ModelAttribute("user") Administrator aUser)
+                                @RequestParam(required = false, value = "email") String email, @RequestParam(required = false, value = "dateOfBirth") LocalDate dateOfBirth,
+                                @RequestParam(required = false, value = "chefImage") MultipartFile chefImage) //@RequestParam("removeImage") String remove, 
     {
+        //@ModelAttribute("user") Customer cuUser, @ModelAttribute("user") Chef cUser, @ModelAttribute("user") Administrator aUser)
         
     //passwordEncoder.matches cripta la password inserita e verifica se è uguale a quella già criptata sul database
         if(!nCredentialsBindingResult.hasErrors() && !newCredentialsBindingResult.hasErrors()) {
@@ -130,12 +134,27 @@ public class HomeController {
                 customerService.saveCustomer(customer);
             }
             else if(role.equals("CHEF")){
-                Chef chef = credentials.getChef();
-                chef.setName(name);
-                chef.setSurname(surname);
-                chef.setEmail(email);
-                chef.setDateOfBirth(dateOfBirth);
-                chefService.saveChef(chef);
+                Chef existingChef = credentials.getChef();
+                existingChef.setName(name);
+                existingChef.setSurname(surname);
+                existingChef.setEmail(email);
+                existingChef.setDateOfBirth(dateOfBirth);
+
+                //System.out.println("1111AOOOOOO");
+                //System.out.println(file);
+                if(!chefImage.isEmpty()){
+                //if(remove.equals("true")){
+                    System.out.println("AOOOOOO");
+                    try {
+                        byte[] byteFoto = chefImage.getBytes();
+                        existingChef.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));
+                    }catch (IOException e) {
+                        //model.addAttribute("message", "Chef upload failed!");
+                        return "redirect:/logged/settingsPage/" + existingChef.getId() + "/" + role ;
+                    }
+                }
+
+                chefService.saveChef(existingChef);
             }
             else if(role.equals("ADMINISTRATOR")){
                 Administrator administrator = credentials.getAdministrator();

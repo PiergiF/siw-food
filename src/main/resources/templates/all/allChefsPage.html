@@ -5,9 +5,11 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -19,7 +21,7 @@
                 </div>
             </form>
 
-            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}">
+            <a href="/loginPage" th:if="${accountRole == 'ROLE_ANONYMOUS'}" style="text-decoration: none;">
                 <div class="header_account">
                     <span class="header_account_icon"> <img src="/images/person_img.svg"/> </span>
                     <span class="header_account_text" th:text="#{header.account.login}">_Login_</span>
@@ -67,6 +69,7 @@
         <!--<div th:text="${userDetails.getAuthorities()}">_autority_</div>
         <div th:text="${userDetails.authorities[0]}">_autority_</div>-->
 
+        <!--
         <div>
             <h1>Chef</h1>
 	        <div th:if="${chefs==null || chefs.isEmpty()}">Non ci sono chef nel sistema</div>
@@ -80,10 +83,41 @@
                             <a th:href="@{'/admin/removeTotalChef/' + ${chef.id}}" class="removeButton" id="removeChefButton"><button type="submit" >Remove all</button></a>
                         </span>
                 </li>
-            </ul>
-            <!--<span th:if="${param}">ERRORE</span>-->
-        </div>
+            </ul>-->
+            <!--<span th:if="${param}">ERRORE</span> commento interno-->
+        <!--</div>
         <div th:if="${accountRole == 'ADMINISTRATOR'}"><a href="/admin/creationPage" th:text="#{addChef}">_add Chef_</a></div>
+        -->
+
+    <!--<div class="container mt-5">-->
+        <h1 class="h3 mb-3 font-weight-normal text-center text-white">Chef</h1>
+        <div th:if="${ chefs==null || chefs.isEmpty() }" class="alert alert-warning text-center" th:text=" #{chefs.none} ">_recipes.none_</div>
+        <div class="courses-section">
+            <div class="container">
+                <div class="row text-center">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="chef : ${chefs}">
+                        <!--<div class="course-icon mx-auto"></div>-->
+                        <div class="chef-card">
+                            <a th:href="@{'/all/chefPage' + '/' + ${chef.id}}">
+                                <img th:src=" 'data:image/;base64,' + ${chef.imageBase64} " class="course-icon mx-auto" style="width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"/>
+                            </a>
+                            <!--<h2>Heading</h2>
+                            <p>Some representative placeholder content for the first column.</p>-->
+                            <div class="chef-info">
+                                <a th:href="@{'/all/chefPage' + '/' + ${chef.id}}" class="btn course-btn" th:text="${chef.name} + ' ' + ${chef.surname}" >_name&surnameChef_</a> <!--style="color: white;"-->
+                                <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/admin/editChefPage/' + ${chef.id}}" class="btn btn-primary btn-sm btn-spacing" th:text="#{edit}">_edit_</a>
+
+                                <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
+                                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/admin/removeCredentialsChef/' + ${chef.id}}" class="btn btn-danger btn-sm btn-spacing" style="background-color: orange;">Rimuovi accesso</a>
+                                    <a th:if="${accountRole == 'ADMINISTRATOR'}" th:href="@{'/admin/removeTotalChef/' + ${chef.id}}" class="btn btn-danger btn-sm" id="removeChefButton" th:text="#{remove}">_remove_</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!--</div>-->
 
     </body>
 </html>

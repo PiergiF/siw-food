@@ -5,9 +5,14 @@
         <meta charset="UTF 8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
+   
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <!--<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>-->
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
 
         <header class="header_navbar">
 
@@ -68,14 +73,114 @@
                 </ul>
             </nav>
         </header>
-
+        <!--
         <h3 th:text="${course}">_course</h3>
-        <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" th:text=" 'non sono presenti ' + ${course} + ' nel sistema.' "></div> <!--th:text=" #{recipesCourse.null} "-->
-        <div>
+        <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" th:text=" 'non sono presenti ' + ${course} + ' nel sistema.' "></div>--> <!--th:text=" #{recipesCourse.null} " commento interno-->
+        <!--<div>
             <ul th:unless="${ recipesCourse == null || recipesCourse.isEmpty() }">
                 <li th:each="recipe : ${recipesCourse}"><a th:href="@{'/all/recipePage/' + ${recipe.id} }" th:text="${recipe.name}"></a></li>
             </ul>
         </div>
+        -->
+        <!--
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="${course}">_course</h1>
+            
+            <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti ' + ${course} + ' nel sistema.'"></div>
+            
+            <div class="row" th:unless="${ recipesCourse == null || recipesCourse.isEmpty() }">
+                <div th:each="recipe : ${recipesCourse}" class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${recipe.name}"></h5>
+                            <a th:href="@{'/all/recipePage/' + ${recipe.id}}" class="btn btn-primary mt-auto">Vedi dettagli</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="text-center mt-5">
+                <a href="/" class="btn btn-secondary">Torna alla home</a>
+            </div>
+        </div>
+        -->
+
+        <!--
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{ ${course} }">_course</h1>
+            
+            <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti ' + #{ ${course} } + ' nel sistema.'"></div>
+            
+            <div class="row justify-content-center" th:unless="${ recipesCourse == null || recipesCourse.isEmpty() }">
+                <div th:each="recipe : ${recipesCourse}" class="col-md-4 mb-4">
+                    
+                        <img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]} " class="card-img-top" alt="Image of ${recipe.name}" style="max-height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title" th:text="${recipe.name}"></h5>
+                            <div class="mt-auto">
+                                <a th:href="@{'/all/recipePage/' + ${recipe.id}}" class="btn btn-primary mb-2">Vedi dettagli</a>
+                            </div>
+                        </div>
+                    
+                </div>
+            </div>
+    
+            
+            <div class="text-center mt-5">
+                <a href="/" class="btn btn-secondary">Torna alla home</a>
+            </div>
+        </div>
+        -->
+
+
+
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{ ${course} }">_course</h1>
+            <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti ' + #{ ${course} } + ' nel sistema.'"></div>
+            <div class="courses-section">
+                <div class="container">
+                    <div class="row text-center">
+                        <!--<div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti ' + #{ ${course} } + ' nel sistema.'"></div>-->
+                        <!--<div class="pagesRecipe-card">-->
+                            <div class="col-lg-4 col-md-6 col-sm-12 mb-4" th:each="recipe : ${recipesCourse}">
+                                <a th:href="@{'/all/recipePage/' + ${recipe.id} }"><img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]} " class="img-fluid course-icon mx-auto"/></a>
+                                <a th:href="@{'/all/recipePage/' + ${recipe.id} }" class="btn course-btn btn-block mt-2" th:text="${recipe.name}" >_recipeName_</a>
+                                <!--<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn course-btn btn-block mt-2" th:text="#{edit}">_edit_</a>
+                                <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="btn btn-danger btn-block mt-2" id="removeRecipeButton" th:text="#{remove}">_remove_</a>-->
+                                <div class="btn-group btn-block mt-2"> <!--btn-block mt-2 btn-group-custom-->
+                                    <!--<a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn btn-primary btn-sm btn-spacing" th:text="#{edit}">_edit_</a>
+                                    <a th:href="@{'/chef_admin/removeRecipe/' + ${recipe.id}}" class="btn btn-danger btn-sm" id="removeRecipeButton" th:text="#{remove}">_remove_</a>-->
+                                </div>
+                            </div>
+                        <!--</div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+
+        <!--
+        <div class="container mt-5">
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="${course}">_course</h1>
+            
+            <div th:if="${ recipesCourse == null || recipesCourse.isEmpty() }" class="alert alert-warning text-center" th:text="'Non sono presenti ' + ${course} + ' nel sistema.'"></div>
+            
+            <div class="row" th:unless="${ recipesCourse == null || recipesCourse.isEmpty() }">
+                <div th:each="recipe : ${recipesCourse}" class="col-md-4 mb-4">
+                    <div class="card h-100 text-center">
+                        <img th:src=" 'data:image/;base64,' + ${recipe.imagesBase64[0]} " class="card-img-top rounded-circle mx-auto mt-3" alt="Image of ${recipe.name}" style="width: 150px; height: 150px; object-fit: cover;">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${recipe.name}"></h5>
+                            <p class="card-text" th:text="${recipe.description}">Some representative placeholder content for the three columns of text below the carousel. This is the first column.</p>
+                            <a th:href="@{'/all/recipePage/' + ${recipe.id}}" class="btn btn-primary">Vedi dettagli</a>
+                            <a th:href="@{'/chef_admin/editRecipePage/' + ${recipe.id}}" class="btn btn-warning">Modifica</a>
+                            <a th:href="@{'/chef_admin/deleteRecipe/' + ${recipe.id}}" class="btn btn-danger">Rimuovi</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        -->
 
     </body>
 </html>

@@ -6,9 +6,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" type="text/css" href="/css/style.css?version=3"/>
         <script th:inline="javascript" src="/javascript/script.js"></script>
+
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     </head>
 
-    <body>
+    <body class="backgroundColorSite">
         <header class="header_navbar">
 
             <a href="/"><img src="/images/logo.svg" class="header_logo" alt="Logo"/></a>
@@ -68,12 +70,12 @@
             </nav>
         </header>
 
-        <div class="upload-container">
+        <!--<div class="upload-container">
             <h1>Modifica uno Chef</h1>
 
-            <form th:action="@{'/admin/editChefData/' + ${chef.id}}" method="POST" th:object="${chef}" enctype="multipart/form-data">
+            <form th:action="@{'/admin/editChefData/' + ${chef.id}}" method="POST" th:object="${chef}" >--> <!--enctype="multipart/form-data" precedente-->
                 
-                <div id="imageSpace">
+                <!--<div id="imageSpace">
                     <img th:src=" 'data:image/;base64,' + ${chef.imageBase64}" alt="Chef Image"/>
                     <input type="hidden" name="removeImage" value="false"/>
                     <button type="button" onclick="removeImageFromChef(this.parentElement)">Remove</button>
@@ -81,35 +83,84 @@
 
                 <div class="form-group">
                     <label th:text="#{name}">_name_</label> 
-                    <span><input type="text" th:field="${chef.name}" required/></span>
-                    <!--<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>-->
-                </div>
+                    <span><input type="text" th:field="${chef.name}" required/></span>-->
+                    <!--<span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span> commento precedente-->
+                <!--</div>
 
                 <div class="form-group">
                     <label th:text="#{surname}">_surname_</label>
-                    <span><input type="text" th:field="${chef.surname}" required/></span>
-                    <!--<span th:if="${#fields.hasErrors('chef.surname')}" th:errors="${chef.surname}"></span>-->
-                </div>
+                    <span><input type="text" th:field="${chef.surname}" required/></span>-->
+                    <!--<span th:if="${#fields.hasErrors('chef.surname')}" th:errors="${chef.surname}"></span> commento precedente-->
+                <!--</div>
 
                 <div class="form-group">
                     <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
-                    <span><input type="date" name="dateOfBirth" id="dateOfBirth" th:value="${chef.dateOfBirth}" required/></span> <!-- th:value="${chef.dateOfBirth}" th:value="${#temporals.format(chef.dateOfBirth, 'yyyy-MM-dd')}"  th:value="${#dates.format(chef.dateOfBirth, 'yyyy-MM-dd')}"-->
-                    <!--<span th:if="${#fields.hasErrors('chef.dateOfBirth')}" th:errors="${chef.dateOfBirth}"></span>-->
-                </div>
+                    <span><input type="date" name="dateOfBirth" id="dateOfBirth" th:value="${chef.dateOfBirth}" required/></span>--> <!-- th:value="${chef.dateOfBirth}" th:value="${#temporals.format(chef.dateOfBirth, 'yyyy-MM-dd')}"  th:value="${#dates.format(chef.dateOfBirth, 'yyyy-MM-dd')}" commento precedente-->
+                    <!--<span th:if="${#fields.hasErrors('chef.dateOfBirth')}" th:errors="${chef.dateOfBirth}"></span> commento precedente-->
+                <!--</div>
 
-                <!--<b th:text="${#temporals.format(chef.dateOfBirth, 'yyyy-MM-dd')}"></b> non serve sono test-->
                 <b th:text="${chef.dateOfBirth}"></b>
 
                 <div class="form-group">
                     <label th:text="#{email}">_Email_</label>
-                    <input type="text" th:placeholder="#{email}" th:field="${chef.email}"/>
-                    <!--<span th:if="${#fields.hasErrors('chef.email')}" th:errors="${chef.email}"></span>-->
-                </div>
+                    <input type="text" th:placeholder="#{email}" th:field="${chef.email}"/>-->
+                    <!--<span th:if="${#fields.hasErrors('chef.email')}" th:errors="${chef.email}"></span> commento precedente-->
+                <!--</div>
 
                 <div>
                     <span><button type="submit">Conferma</button></span>
                 </div>
             </form>
         </div>
+        -->
+
+
+
+        <div class="container mt-5">
+            <!--<div class="card">-->
+                <!--<div class="card-header text-center">-->
+                    <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="#{editChef}">_editChef_</h1>
+                <!--</div>-->
+                <div class="card-body">
+                    <form th:action="@{'/admin/editChefData/' + ${chef.id}}" method="POST" th:object="${chef}" enctype="multipart/form-data">
+                        <div class="text-center mb-4">
+                            <img th:src="'data:image/;base64,' + ${chef.imageBase64}" alt="Chef Image" class="img-thumbnail" style="width: 100px; height: 100px; object-fit: cover;"/>
+                            <input type="hidden" name="removeImage" value="false"/>
+                            <div><!--class="btn-group btn-block mt-2"-->
+                                <button type="button" class="btn btn-danger mt-2" onclick="removeImageFromChef(this.parentElement.parentElement)">Remove</button>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label th:text="#{name}">_name_</label>
+                                <input type="text" th:field="${chef.name}" class="form-control" required/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label th:text="#{surname}">_surname_</label>
+                                <input type="text" th:field="${chef.surname}" class="form-control" required/>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label th:text="#{dateOfBirth}">_dateOfBirth_</label>
+                                <input type="date" th:field="${chef.dateOfBirth}" class="form-control" required/>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label th:text="#{email}">_Email_</label>
+                                <input type="text" th:field="${chef.email}" class="form-control"/>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary custom-btn">Conferma</button>
+                        </div>
+                    </form>
+                </div>
+            <!--</div>-->
+        </div>
+
+
     </body>
 </html>

@@ -94,6 +94,31 @@ public class RecipeController {
         model.addAttribute("recipe", recipe);
         model.addAttribute("recipeIngredients", recipeIngredients);
         model.addAttribute("photos", recipe.getImagesBase64());
+
+        UserDetails userDetails = GlobalController.getUserDetails();
+        if(userDetails!=null){
+            Credentials credentials = credentialsService.getCredentials(userDetails.getUsername());
+            String role = credentials.getRole();
+            List<Recipe> savedRecipes=null;
+            if(role.equals("CUSTOMER")){
+                Customer customer = customerService.findById(credentials.getCustomer().getId());
+                savedRecipes = customerService.getSavedRecipes(customer);
+            }else if(role.equals("CHEF")){
+                Chef chef = chefService.findById(credentials.getChef().getId());
+                savedRecipes = chefService.getSavedRecipes(chef);
+            }else if(role.equals("ADMINISTRATOR")){
+                Administrator administrator = administratorService.findById(credentials.getAdministrator().getId());
+                savedRecipes = administratorService.getSavedRecipes(administrator);
+            }
+            if((savedRecipes != null) && (!savedRecipes.contains(recipe))){
+                model.addAttribute("canSave", true);
+                System.out.println("AOOOOOOOOO");
+            }else{
+                model.addAttribute("canSave", false);
+            }
+        }else{
+            model.addAttribute("canSave", false);
+        }
 		return "all/recipePage.html";
 	}
 
@@ -279,6 +304,7 @@ public class RecipeController {
     @GetMapping("/chef_admin/personalRecipesPage/{id}")
     public String getMethodName(@PathVariable("id") Long id, Model model) {
         model.addAttribute("recipes", recipeService.findAllByChefId(id));
+        model.addAttribute("chef", chefService.findById(id));
         return "chef_admin/personalRecipesPage.html";
     }
     

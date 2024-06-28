@@ -11,7 +11,7 @@ function removeIngredientField(button) {
         formContainer.removeChild(button.parentElement);
     }
     else{
-        alert("You must have at least one ingredient.");
+        alert("È necessario avere almeno un ingrediente.");
     }
 }
 
@@ -22,22 +22,31 @@ function addNewIngredient(select){
         input.type = 'text';
         input.name = 'ingredientsName';
         //input.id = 'unitInput';
+        input.className = 'form-control d-inline-block';
+        input.style = 'width: auto;';
         input.placeholder = 'Inserisci nuovo ingrediente';
 
         // Replace the select with the input
         //select.parentElement.replaceChild(input, select);
 
         //crea bottone per tornare alla lista a cascata
+
+        //const divButton = document.createElement('div');
+        //divButton.className = 'input-group-append';
+
         const backButton = document.createElement('button');
         backButton.type = 'button';
-        backButton.id = 'backButton';
+        backButton.id = 'backButtonIngredient';
+        backButton.className = 'btn btn-secondary btn-sm';
         backButton.textContent = 'Indietro';
         backButton.onclick = function() {
-            changeToSelect(input, select);
+            changeToSelect(input, select, 'ingredient');
         };
-        //input.parentElement.appendChild(backButton);
+        //divButton.appendChild(backButton);
+        //input.parentElement.appendChild(backButton); precedente
         const parent = select.parentElement;
         parent.replaceChild(input, select);
+        //parent.appendChild(divButton);
         parent.appendChild(backButton);
     }
 }
@@ -50,14 +59,17 @@ function addNewUnit(select){
         input.type = 'text';
         input.name = 'unitsName';
         //input.id = 'unitInput';
+        input.className = 'form-control d-inline-block';
+        input.style = 'width: auto;';
         input.placeholder = 'Inserisci nuova unità';
 
         const backButton = document.createElement('button');
         backButton.type = 'button';
-        backButton.id = 'backButton';
+        backButton.id = 'backButtonUnit';
+        backButton.className = 'btn btn-secondary btn-sm';
         backButton.textContent = 'Indietro';
         backButton.onclick = function() {
-            changeToSelect(input, select);
+            changeToSelect(input, select,'unit');
         };
         //input.parentElement.appendChild(backButton);
         const parent = select.parentElement;
@@ -72,10 +84,17 @@ function addNewUnit(select){
 }
 
 
-function changeToSelect(input, select) {
+function changeToSelect(input, select, field) {
     const parent = input.parentElement;
     parent.replaceChild(select, input);
-    const backButton = document.getElementById('backButton');
+    var backButton;
+    if(field == 'ingredient'){
+        backButton = document.getElementById('backButtonIngredient');
+    }else if(field == 'unit'){
+        backButton = document.getElementById('backButtonUnit');
+    }
+    //const backButton = document.getElementById('backButton');
+    //alert(backButtons.length);
     if (backButton) {
         parent.removeChild(backButton);
     }
@@ -164,7 +183,7 @@ function updateCreationForm(radioInput){
     
     //let inputImageCreation = iIC.cloneNode(true);
 
-    const form = radioInput.parentElement.parentElement;
+    const form = radioInput.parentElement.parentElement.parentElement;
 
     if(radioInput.value === 'CUSTOMER'){
         for(i=0; i< listClass.length;i++){
@@ -224,6 +243,9 @@ function updateCreationForm(radioInput){
 
 function removeImageFromChef(divImage){
 
+    const form = divImage.parentElement;
+    form.enctype = 'multipart/form-data';
+
     while (divImage.firstChild) {
         divImage.removeChild(divImage.firstChild);
     }
@@ -249,9 +271,36 @@ function removeImageFromRecipe(button, index){
     inputHidden.type = 'hidden';
     inputHidden.name = 'removeImageIndexes';
     inputHidden.value = index;
-    button.parentElement.parentElement.appendChild(inputHidden);
 
-    button.parentElement.remove();
+    button.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.appendChild(inputHidden);
+
+    //button.parentElement.remove();
+    const carouselItem = button.closest('.carousel-item' + index);
+    //const removeImage = courosel.closest(index);
+    carouselItem.remove();
+
+    // Rimuovi il corrispondente indicatore
+    const indicator = document.querySelector(`.carousel-indicators [data-slide-to="${index}"]`);
+    if (indicator) {
+        indicator.remove();
+    }
+
+    // Trova il carosello e i suoi elementi
+    const carousel = document.querySelector('#imageCarousel .carousel-inner');
+    const items = carousel.querySelectorAll('.carousel-item');
+
+    // Se ci sono elementi rimasti nel carosello
+    if (items.length > 0) {
+        // Se l'elemento rimosso era l'elemento attivo
+        if (carouselItem.classList.contains('active')) {
+            // Rendi attivo il primo elemento rimasto
+            items[0].classList.add('active');
+        }
+    } else {
+        // Se non ci sono elementi rimasti, disabilita i controlli del carosello
+        document.querySelector('.carousel-control-prev').style.display = 'none';
+        document.querySelector('.carousel-control-next').style.display = 'none';
+    }
 }
 
 /*
@@ -314,6 +363,42 @@ function changeUsernameClick(divInputUsername){
     changeUsernameBox.className = 'form-control';
     divUsername.removeChild(divInputUsername);
 }
+
+/*
+function settingsChangeImageChef(divContainer){
+    const secondDiv = divContainer.lastElementChild;
+    const form = divContainer.parentElement.parentElement.parentElement;
+
+    form.enctype = 'multipart/form-data';
+
+    alert(divContainer);
+    const divInput = document.createElement('div');
+    divInput.className = 'col-md-6';
+
+    const labelInput = document.createElement('label');
+    labelInput.className = 'text-white';
+    labelInput.textContent = 'Cambia foto:';
+
+    const inputHidden = document.createElement('input');
+    inputHidden.type = 'hidden';
+    inputHidden.name = 'removeImage';
+    inputHidden.value = 'true';
+
+    const inputImage = document.createElement('input');
+    inputImage.type = 'file';
+    inputImage.name = 'chefImage';
+    inputImage.id = 'chefImage';
+    inputImage.required = true;
+
+    divContainer.removeChild(secondDiv);
+
+    divInput.appendChild(labelInput);
+    divInput.appendChild(inputImage);
+    divInput.appendChild(inputHidden);
+    divContainer.appendChild(divInput);
+}
+*/
+
 
 /*
 function changeUsernameClick(spanUsername){

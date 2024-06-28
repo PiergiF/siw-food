@@ -22,7 +22,6 @@ import it.uniroma3.siw.siwfood.model.Credentials;
 import it.uniroma3.siw.siwfood.repository.ChefRepository;
 import it.uniroma3.siw.siwfood.service.ChefService;
 import it.uniroma3.siw.siwfood.service.CredentialsService;
-import it.uniroma3.siw.siwfood.service.FileUploadUtil;
 import it.uniroma3.siw.siwfood.service.RecipeService;
 import jakarta.validation.Valid;
 
