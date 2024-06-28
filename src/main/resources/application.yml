@@ -1,3 +1,14 @@
 logging:
   level:
     '[org.springframework.security]': TRACE
+
+
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: Ov23liOiMh0MdfCLSOIM
+            clientSecret: 06e72687c388452412d390ab58484a8419667695

@@ -77,12 +77,14 @@ public class AuthController {
     }
 
     //prova estetica gpt
+    /*
     @GetMapping(value = "/registrationPageGPT")
     public String getRegistrationPageGPT(Model model) {
         model.addAttribute("customer", new Customer());
 		model.addAttribute("credentials", new Credentials());
         return "registrationPageGPT.html";
     }
+    */
 
     /*
     @PostMapping("/registrationData")

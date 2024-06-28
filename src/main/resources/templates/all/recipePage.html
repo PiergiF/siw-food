@@ -177,8 +177,8 @@
 
                 <div class="mb-4"> <!--card-->
                     <!--<div class="card-header">-->
-                        <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }" class="text-decoration-none">
-                            <h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3>
+                        <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }" class="text-decoration-none custom-link" >
+                            <h2 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" >_recipeChef_</h2>
                         </a>
                     <!--</div>-->
                 </div>

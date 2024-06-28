@@ -56,7 +56,7 @@ import static it.uniroma3.siw.siwfood.model.Credentials.ADMINISTRATOR_ROLE;
                 .authorizeHttpRequests()
 //                .requestMatchers("/**").permitAll()
                 // chiunque (autenticato o no) può accedere alle pagine index, login, register, ai css e alle immagini
-                .requestMatchers(HttpMethod.GET,"/", "/loginPage","/registrationPage", "/search", "/all/**", "/messages/**", "/css/**", "/javascript/**", "/images/**", "favicon.ico").permitAll()
+                .requestMatchers(HttpMethod.GET,"/", "/loginPage", "/oauth2/**", "/registrationPage", "/search", "/all/**", "/messages/**", "/css/**", "/javascript/**", "/images/**", "favicon.ico", "/rest/**").permitAll()
         		// chiunque (autenticato o no) può mandare richieste POST al punto di accesso per login e register 
                 //.requestMatchers(HttpMethod.POST,"/settingsData").hasAnyAuthority(CUSTOMER_ROLE, CHEF_ROLE, ADMINISTRATOR_ROLE)
                 .requestMatchers(HttpMethod.POST,"/registrationData","/loginPage").permitAll()
@@ -67,9 +67,11 @@ import static it.uniroma3.siw.siwfood.model.Credentials.ADMINISTRATOR_ROLE;
         		// tutti gli utenti autenticati possono accere alle pagine rimanenti 
                 .anyRequest().authenticated()
 
-                //.and()
-                //.oauth2Login(withDefaults())
-                //.defaultSuccessUrl("/", true)
+                .and()
+                .oauth2Login()
+                .loginPage("/loginPage")
+                .defaultSuccessUrl("/", true)
+                .failureUrl("/loginPage?error=true")
 
                 // LOGIN: qui definiamo il login
                 .and().formLogin()
