@@ -151,8 +151,8 @@ public class AuthController {
             //userService.saveUser(user);
             //credentials.setUser(user);
             credentialsService.saveCredentials(credentials, role);
-            model.addAttribute("RegistrationCompleted", true); //non funziona perché c'è il redirect di mezzo
-            return "redirect:/loginPage";
+            //model.addAttribute("RegistrationCompleted", true); //non funziona perché c'è il redirect di mezzo
+            return "redirect:/loginPage?registration=true";
         }
         return "registrationPage.html";
     }

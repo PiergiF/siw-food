@@ -5,6 +5,12 @@
     src: url(/fonts/spagheti-script-font/Spagheti-lgxX0.otf) format('opentype');
 }
 
+/*
+.title-recipe-font{
+    font-family: "spagheti";
+}
+*/
+
 /*#### Global elements ####*/
 /*
 a{
