@@ -144,7 +144,6 @@ public class HomeController {
                 //System.out.println(file);
                 if(!chefImage.isEmpty()){
                 //if(remove.equals("true")){
-                    System.out.println("AOOOOOO");
                     try {
                         byte[] byteFoto = chefImage.getBytes();
                         existingChef.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));

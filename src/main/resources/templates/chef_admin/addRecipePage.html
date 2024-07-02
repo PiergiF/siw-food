@@ -13,7 +13,7 @@
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-        <!--fac simile commento interno-->
+        <!--fac simile-->
         <div class="referenceForJSClone">
             <div id="ingredientsContainerReference">
                 <!--<div id="ingredientsReference">
@@ -165,7 +165,7 @@
                     <label for="courseRecipe" th:text="#{course} + ':' ">_course_</label>
                     <select th:field="${recipe.course}" class="form-control" required>
                         <option value="" selected disabled>Seleziona la portata</option>
-                        <option th:each="course : ${courses}" th:value="${course}" th:text="${course}"></option>
+                        <option th:each="course : ${courses}" th:value="${course}" th:text="#{ 'singular.' + ${course} }"></option>
                     </select>
                 </div>
 

@@ -115,7 +115,7 @@
         </header>
 
         <div class="container mt-5">
-            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Edit Recipe</h1>
+            <h1 class="h3 mb-3 font-weight-normal text-center text-white">Modifica Ricetta</h1>
             <form th:action="@{'/chef_admin/recipeEditData/' + ${recipe.id}}" th:object="${recipe}" method="POST" id="formEditRecipe" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="name" th:text="#{recipeName}">_recipeName_</label>

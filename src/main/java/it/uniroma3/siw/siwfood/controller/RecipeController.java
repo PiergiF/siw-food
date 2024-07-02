@@ -338,7 +338,7 @@ public class RecipeController {
              // Recupera la ricetta esistente dal database
             Recipe existingRecipe = recipeService.findById(id);
             if (existingRecipe == null) {
-                // Gestisci il caso in cui la ricetta non esiste
+                // Gestisce il caso in cui la ricetta non esiste
                 return "redirect:/errorPage";
             }
             // Aggiorna i dettagli della ricetta

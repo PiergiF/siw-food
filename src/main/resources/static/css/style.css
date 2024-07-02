@@ -179,7 +179,7 @@ body {
 
             border-radius: 8px; /* Bordi arrotondati */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombra */
-            display: none; /* Nasconde il menu */
+            display: none; /* Nasconde il menu */ /*se rimosso avviene l'animazione, ma parte quando si passa dov'e' nascosto*/
             opacity: 0; /* Imposta opacità a 0 per animazione */
             transition: opacity 0.3s ease, transform 0.3s ease; /* Animazione di transizione */
             transform: translateY(-10px); /* Sposta leggermente verso l'alto per animazione */
