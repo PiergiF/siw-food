@@ -6,7 +6,6 @@ function addIngredientField() {
 
 function removeIngredientField(button) {
     const formContainer = document.getElementById('ingredientsContainer');
-    //if(!(formContainer.childElementCount == 1)){
     if(formContainer.childElementCount > 1){
         formContainer.removeChild(button.parentElement);
     }
@@ -26,14 +25,7 @@ function addNewIngredient(select){
         input.style = 'width: auto;';
         input.placeholder = 'Inserisci nuovo ingrediente';
 
-        // Replace the select with the input
-        //select.parentElement.replaceChild(input, select);
-
         //crea bottone per tornare alla lista a cascata
-
-        //const divButton = document.createElement('div');
-        //divButton.className = 'input-group-append';
-
         const backButton = document.createElement('button');
         backButton.type = 'button';
         backButton.id = 'backButtonIngredient';
@@ -42,11 +34,8 @@ function addNewIngredient(select){
         backButton.onclick = function() {
             changeToSelect(input, select, 'ingredient');
         };
-        //divButton.appendChild(backButton);
-        //input.parentElement.appendChild(backButton); precedente
         const parent = select.parentElement;
         parent.replaceChild(input, select);
-        //parent.appendChild(divButton);
         parent.appendChild(backButton);
     }
 }
@@ -71,15 +60,11 @@ function addNewUnit(select){
         backButton.onclick = function() {
             changeToSelect(input, select,'unit');
         };
-        //input.parentElement.appendChild(backButton);
+
         const parent = select.parentElement;
         parent.replaceChild(input, select);
         parent.appendChild(backButton);
 
-        
-
-        // Replace the select with the input
-        //select.parentElement.replaceChild(input, select);
     }
 }
 
@@ -93,12 +78,11 @@ function changeToSelect(input, select, field) {
     }else if(field == 'unit'){
         backButton = document.getElementById('backButtonUnit');
     }
-    //const backButton = document.getElementById('backButton');
-    //alert(backButtons.length);
+
     if (backButton) {
         parent.removeChild(backButton);
     }
-    select.value = ''; // Reset the select value
+    select.value = ''; // Resetta il valore del select
 }
 
 function updateRegistrationForm(radioInput){
@@ -120,7 +104,7 @@ function updateRegistrationForm(radioInput){
         form.removeChild(chooseRoleRegistration);
         form.removeChild(registrationButton);
         form.removeChild(loginLink);
-        //form.removeChild(form.lastChild);
+
         form.appendChild(chooseRoleRegistration);
         form.appendChild(registrationButton);
         form.appendChild(loginLink);
@@ -178,10 +162,6 @@ function updateCreationForm(radioInput){
     var creationButton = document.getElementById('creationButton');
 
     var chooseRoleCreation = document.getElementById('chooseRoleCreation');
-
-    //var iIC = document.getElementById('inputImageCreation');
-    
-    //let inputImageCreation = iIC.cloneNode(true);
 
     const form = radioInput.parentElement.parentElement.parentElement;
 
@@ -274,9 +254,7 @@ function removeImageFromRecipe(button, index){
 
     button.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.appendChild(inputHidden);
 
-    //button.parentElement.remove();
     const carouselItem = button.closest('.carousel-item' + index);
-    //const removeImage = courosel.closest(index);
     carouselItem.remove();
 
     // Rimuovi il corrispondente indicatore
@@ -303,48 +281,6 @@ function removeImageFromRecipe(button, index){
     }
 }
 
-/*
-function changePasswordClick(spanPassword){ //pw
-
-    alert(spanPassword.parentElement.lastElementChild);
-    spanPassword.parentElement.removeChild(spanPassword.parentElement.lastElementChild);
-    const fc = document.getElementById('password');
-
-    let changePasswordBox = fc.cloneNode();
-    changePasswordBox.type = 'password';
-
-    while (spanPassword.firstChild) {
-        spanPassword.removeChild(spanPassword.firstChild);
-    }
-
-    //const changePasswordBox = document.getElementById('changePasswordBox');
-    /*
-    const changePasswordBox = document.createElement('input');
-    changePasswordBox.type = 'password';
-    changePasswordBox.name = 'password';
-    changePasswordBox.id = 'password';
-    changePasswordBox.value = '';
-    changePasswordBox.required = true;
-    changePasswordBox.disabled = false;
-    */
-
-    /*
-    while (spanPassword.firstChild) {
-        spanPassword.removeChild(spanPassword.firstChild);
-    }
-    */
-/*
-    const inputHidden = document.createElement('input');
-    inputHidden.type = 'hidden';
-    inputHidden.name = 'changePassword';
-    inputHidden.value = 'true';
-
-    spanPassword.appendChild(changePasswordBox);
-    spanPassword.appendChild(inputHidden);
-    
-}
-*/
-
 function changePasswordClick(divInputPassword){ 
     const divPassword = divInputPassword.parentElement;
     divPassword.lastElementChild.value = 'true';
@@ -363,219 +299,3 @@ function changeUsernameClick(divInputUsername){
     changeUsernameBox.className = 'form-control';
     divUsername.removeChild(divInputUsername);
 }
-
-/*
-function settingsChangeImageChef(divContainer){
-    const secondDiv = divContainer.lastElementChild;
-    const form = divContainer.parentElement.parentElement.parentElement;
-
-    form.enctype = 'multipart/form-data';
-
-    alert(divContainer);
-    const divInput = document.createElement('div');
-    divInput.className = 'col-md-6';
-
-    const labelInput = document.createElement('label');
-    labelInput.className = 'text-white';
-    labelInput.textContent = 'Cambia foto:';
-
-    const inputHidden = document.createElement('input');
-    inputHidden.type = 'hidden';
-    inputHidden.name = 'removeImage';
-    inputHidden.value = 'true';
-
-    const inputImage = document.createElement('input');
-    inputImage.type = 'file';
-    inputImage.name = 'chefImage';
-    inputImage.id = 'chefImage';
-    inputImage.required = true;
-
-    divContainer.removeChild(secondDiv);
-
-    divInput.appendChild(labelInput);
-    divInput.appendChild(inputImage);
-    divInput.appendChild(inputHidden);
-    divContainer.appendChild(divInput);
-}
-*/
-
-
-/*
-function changeUsernameClick(spanUsername){
-    alert("sarai disconnesso");
-    
-    const fc = document.getElementById('username');
-    let changeUsernameBox = fc.cloneNode();
-    changeUsernameBox.type = 'text';
-
-    while (spanUsername.firstChild) {
-        spanUsername.removeChild(spanUsername.firstChild);
-    }
-    
-    const inputHidden = document.createElement('input');
-    inputHidden.type = 'hidden';
-    inputHidden.name = 'changeUsername';
-    inputHidden.value = 'true';
-
-    spanUsername.appendChild(changeUsernameBox);
-    spanUsername.appendChild(inputHidden);
-}
-    */
-    
-            /*
-            //ascolta solo la prima riga perché hanno tutti lo stesso nome della classe
-            document.addEventListener('DOMContentLoaded', (event) => {
-                const unitSelect = document.getElementById('unitSelect');
-                const addUnitOption = document.getElementById('addUnitOption');
-    
-                unitSelect.addEventListener('change', function() {
-                    if (this.value === 'add') {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.name = 'unitsName';
-                        //input.id = 'unitInput';
-                        input.placeholder = 'Inserisci nuova unità';
-    
-                        // Replace the select with the input
-                        this.parentNode.replaceChild(input, this);
-    
-                        // Optionally, focus the new input field
-                        //input.focus();
-                    }
-                });
-    
-                const ingredientSelect = document.getElementById('ingredientSelect');
-                const addIngredientOption = document.getElementById('addIngredientOption');
-    
-                ingredientSelect.addEventListener('change', function() {
-                    if (this.value === 'add') {
-                        const input = document.createElement('input');
-                        input.type = 'text';
-                        input.name = 'ingredientsName';
-                        //input.id = 'ingredientInput';
-                        input.placeholder = 'Inserisci nuovo ingrediente';
-                        //input.required = true;
-                        
-                        this.parentNode.replaceChild(input, this);
-                    }
-                });
-    
-    
-            });
-            */
-    
-            /*
-            function newUnit(newUnit){
-                //const unitSelect = document.getElementById('unitSelect');
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.name = 'unit';
-                input.id = 'unitInput';
-                input.placeholder = 'Inserisci nuova unità';
-    
-                newUnit.parentNode.replaceChild(input, newUnit);
-    
-                input.focus();
-            }
-            */
-    
-
-
-
-/*
-document.addEventListener('DOMContentLoaded', (event) => {
-    const unitSelect = document.getElementById('unitSelect');
-    const addUnitOption = document.getElementById('addUnitOption');
-
-    unitSelect.addEventListener('change', function() {
-        if (this.value === 'aggiungi') {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.name = 'unit';
-            input.id = 'unitInput';
-            input.placeholder = 'Inserisci nuova unità';
-
-            // Replace the select with the input
-            this.parentNode.replaceChild(input, this);
-
-            // Optionally, focus the new input field
-            input.focus();
-        }
-    });
-});
-
-
-
-var ingredientCount = 1;
-
-        function addIngredient() {
-            var container = document.getElementById("ingredients");
-
-            var newDiv = document.createElement("div");
-            newDiv.className = "ingredient";
-
-            var nameLabel = document.createElement("label");
-            nameLabel.setAttribute("for", "ingredient" + ingredientCount + "Name");
-            nameLabel.textContent = "Ingredient Name:";
-            newDiv.appendChild(nameLabel);
-
-            var nameInput = document.createElement("input");
-            nameInput.type = "text";
-            nameInput.id = "ingredient" + ingredientCount + "Name";
-            nameInput.name = "ingredient" + ingredientCount + "Name";
-            newDiv.appendChild(nameInput);
-
-            var amountLabel = document.createElement("label");
-            amountLabel.setAttribute("for", "ingredient" + ingredientCount + "Amount");
-            amountLabel.textContent = "Amount:";
-            newDiv.appendChild(amountLabel);
-
-            var amountInput = document.createElement("input");
-            amountInput.type = "number";
-            amountInput.id = "ingredient" + ingredientCount + "Amount";
-            amountInput.name = "ingredient" + ingredientCount + "Amount";
-            newDiv.appendChild(amountInput);
-
-            /*
-            var unitLabel = document.createElement("label");
-            unitLabel.setAttribute("for", "ingredient" + ingredientCount + "Unit");
-            unitLabel.textContent = "Unit:";
-            newDiv.appendChild(unitLabel);
-
-            var unitSelect = document.createElement("select");
-            unitSelect.id = "ingredient" + ingredientCount + "Unit";
-            unitSelect.name = "ingredient" + ingredientCount + "Unit";
-            */
-/*
-            var unitSelect = document.createElement("select");
-            unitSelect.setAttribute("for", "ingredient" + ingredientCount + "Unit");
-            unitSelect.textContent = "Unit:";
-            newDiv.appendChild(unitSelect);
-
-            var unitOption = document.createElement("option");
-            unitOption.id = "ingredient" + ingredientCount + "Unit";
-            unitOption.name = "ingredient" + ingredientCount + "Unit";
-
-            /* Assuming units are passed to the view as a list of strings (unit names) */
-            /* This part may vary depending on how the units are passed to the view */
- //           var units = /*[[${units}]];*/ [];
- /*           units.forEach(function(unit) {
-                var option = document.createElement("option");
-                option.value = unit;
-                option.textContent = unit;
-                unitSelect.appendChild(option);
-            });
-
-            newDiv.appendChild(unitSelect);
-
-            container.appendChild(newDiv);
-
-            ingredientCount++;
-        }
-
-        function addUnit() {
-            var UnitInput = document.createElement("input");
-            UnitInput.type = "text";
-            newDiv.appendChild(UnitInput);
-        }
-        */

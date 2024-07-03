@@ -3,9 +3,7 @@ package it.uniroma3.siw.siwfood.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,7 +29,6 @@ import it.uniroma3.siw.siwfood.service.RecipeService;
 import it.uniroma3.siw.siwfood.service.UnitService;
 import it.uniroma3.siw.siwfood.service.CustomerService;
 import it.uniroma3.siw.siwfood.model.Customer;
-import it.uniroma3.siw.siwfood.repository.ChefRepository;
 import it.uniroma3.siw.siwfood.repository.QuantityRepository;
 import it.uniroma3.siw.siwfood.repository.RecipeRepository;
 import it.uniroma3.siw.siwfood.repository.UnitRepository;
@@ -43,7 +40,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -212,8 +208,6 @@ public class RecipeController {
         return "/error";
     }
     
-       //per prendere tutti i valori della enum
-    //Courses[] e = Courses.values();
 
     @GetMapping("/chef_admin/addRecipePage")
     public String getAddRecipePage(Model model) {
@@ -233,7 +227,6 @@ public class RecipeController {
         return "chef_admin/addRecipePage.html";
     }
 
-    //giusto
     @PostMapping("/chef_admin/recipeData")
     public String createRecipe(@Valid @ModelAttribute Recipe recipe, BindingResult result,
                                 @RequestParam("ingredientsName") List<String> listIngredients,
@@ -264,7 +257,6 @@ public class RecipeController {
                 RecipeIngredient recipeIngredient = new RecipeIngredient();
                 recipeIngredient.setRecipe(savedRecipe);
 
-                //recipeIngredient.setIngredient(ingredientService.findByName(listIngredients.get(i).getName()));
                 String ingredientName = listIngredients.get(i);
                 recipeIngredient.setIngredient(ingredientService.findByName(listIngredients.get(i))
                 .orElseGet(() ->{
@@ -284,7 +276,6 @@ public class RecipeController {
                     })
                 );
 
-                //recipeIngredient.setUnit(unitService.findByName(listUnits.get(i).getName()));
                 String unitName = listUnits.get(i);
                 recipeIngredient.setUnit(unitService.findByName(listUnits.get(i))
                 .orElseGet(() -> {
@@ -335,7 +326,7 @@ public class RecipeController {
         }
         if((listIngredients.size() == listUnits.size()) && (listIngredients.size() == listQuantities.size()) && (listUnits.size() == listQuantities.size())){
 
-             // Recupera la ricetta esistente dal database
+            // Recupera la ricetta esistente dal database
             Recipe existingRecipe = recipeService.findById(id);
             if (existingRecipe == null) {
                 // Gestisce il caso in cui la ricetta non esiste
@@ -371,7 +362,7 @@ public class RecipeController {
 
             Recipe updatedRecipe = recipeService.save(existingRecipe);
 
-            // Rimuovere gli ingredienti esistenti per questa ricetta
+            // Rimuove gli ingredienti esistenti per questa ricetta
             recipeService.deleteRecipeIngredientsByRecipeId(id);
 
             for (int i=0; i<listIngredients.size();i++) {
@@ -418,102 +409,10 @@ public class RecipeController {
     @GetMapping("/chef_admin/removeRecipe/{id}")
     public String deleteRecipe(@PathVariable("id") Long recipeId) {
         
-        // Rimuovere gli ingredienti esistenti per questa ricetta
+        // Rimuove gli ingredienti esistenti per questa ricetta
         recipeService.deleteRecipeIngredientsByRecipeId(recipeId);
         recipeService.deleteById(recipeId);
         return "redirect:/all/allRecipesPage";
     }
-    
 
-
-    
-    /*
-    @PostMapping("/chef_admin/recipeData")
-    public String addRecipe(@ModelAttribute Recipe recipe, @RequestParam Map<String, String> params) {
-        Recipe savedRecipe = recipeRepository.save(recipe);
-        
-        // Assume params contains ingredient details (simplified for this example)
-        // e.g., ingredient1Name, ingredient1Amount, ingredient1Unit
-        for (int i = 0; ; i++) {
-            String nameKey = "ingredient" + i + "Name";
-            String amountKey = "ingredient" + i + "Amount";
-            String unitKey = "ingredient" + i + "Unit";
-            
-            if (!params.containsKey(nameKey)) break;
-
-            String name = params.get(nameKey);
-            double amount = Double.parseDouble(params.get(amountKey));
-            String unit = params.get(unitKey);
-
-            ingredientService.addIngredientToRecipe(savedRecipe, name, amount, unit);
-        }
-
-        //return "redirect:/admin/allRecipesPage.html";
-        return "redirect:/recipePage/" + recipe.getId();
-    }
-
-    
-    @ModelAttribute("units2")
-    public List<Unit> getUnits() {
-        return (List<Unit>)unitRepository.findAll();
-    }
-    */
-    
-    
-    
-
-    //prova a caso
-    /*
-    @GetMapping("/chef_admin/addRecipePage")
-    public String getAddRecipePage(Model model) {
-        model.addAttribute("recipe", new Recipe());
-        model.addAttribute("ingredient1", new Ingredient());
-        model.addAttribute("ingredient2", new Ingredient());
-        model.addAttribute("amount1", new Quantity());
-        model.addAttribute("amount2", new Quantity());
-        model.addAttribute("unit1", new UnitOfMeasurament());
-        model.addAttribute("unit2", new UnitOfMeasurament());
-        return "chef_admin/addRecipePage.html";
-    }
-    
-    @PostMapping("/chef_admin/recipeData")
-    public String addRecipe(@ModelAttribute("recipe") Recipe recipe, @ModelAttribute("ingredient1") Ingredient ingredient1,
-                            @ModelAttribute("ingredient2") Ingredient ingredient2, @ModelAttribute("amount1") Quantity amount1, 
-                            @ModelAttribute("amount2") Quantity amount2, @ModelAttribute("unit1") UnitOfMeasurament unit1,
-                            @ModelAttribute("unit2") UnitOfMeasurament unit2, Model model) {
-        List<Ingredient> ingredients = new LinkedList<Ingredient>();
-        ingredients.add(ingredient1);
-        ingredients.add(ingredient2);
-        recipe.setIngredients(ingredients);
-        List<Quantity> amounts = new LinkedList<Quantity>();
-        amounts.add(amount1);
-        amounts.add(amount2);
-        recipe.setAmounts(amounts);
-        List<UnitOfMeasurament> units = new LinkedList<UnitOfMeasurament>();
-        units.add(unit1);
-        units.add(unit2);
-        recipe.setUnits(units);
-        List<UnitOfMeasurament> units1 = new LinkedList<UnitOfMeasurament>();
-        units1.add(unit1);
-        amount1.setUnit(units1);
-        List<UnitOfMeasurament> units2 = new LinkedList<UnitOfMeasurament>();
-        units2.add(unit2);
-        amount2.setUnit(units2);
-        List<Quantity> amounts1 = new LinkedList<Quantity>();
-        amounts1.add(amount1);
-        unit1.setAmounts(amounts1);
-        List<Quantity> amounts2 = new LinkedList<Quantity>();
-        amounts2.add(amount2);
-        unit2.setAmounts(amounts2);
-        List<Quantity> amounts11 = new LinkedList<Quantity>();
-        amounts11.add(amount1);
-        ingredient1.setAmounts(amounts11);
-        List<Quantity> amounts22 = new LinkedList<Quantity>();
-        amounts22.add(amount2);
-        ingredient2.setAmounts(amounts22);
-
-        
-        return "/recipePage.html";
-    }
-    */
 }

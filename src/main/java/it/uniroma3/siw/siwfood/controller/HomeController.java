@@ -6,11 +6,8 @@ import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -34,7 +31,6 @@ import it.uniroma3.siw.siwfood.service.RecipeService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 
@@ -113,9 +109,8 @@ public class HomeController {
                                 @RequestParam("changePassword") String changePassword, @RequestParam("changeUsername") String changeUsername,
                                 @RequestParam(required = false, value = "name") String name, @RequestParam(required = false, value = "surname") String surname,
                                 @RequestParam(required = false, value = "email") String email, @RequestParam(required = false, value = "dateOfBirth") LocalDate dateOfBirth,
-                                @RequestParam(required = false, value = "chefImage") MultipartFile chefImage) //@RequestParam("removeImage") String remove, 
+                                @RequestParam(required = false, value = "chefImage") MultipartFile chefImage) 
     {
-        //@ModelAttribute("user") Customer cuUser, @ModelAttribute("user") Chef cUser, @ModelAttribute("user") Administrator aUser)
         
     //passwordEncoder.matches cripta la password inserita e verifica se è uguale a quella già criptata sul database
         if(!nCredentialsBindingResult.hasErrors() && !newCredentialsBindingResult.hasErrors()) {
@@ -140,10 +135,7 @@ public class HomeController {
                 existingChef.setEmail(email);
                 existingChef.setDateOfBirth(dateOfBirth);
 
-                //System.out.println("1111AOOOOOO");
-                //System.out.println(file);
                 if(!chefImage.isEmpty()){
-                //if(remove.equals("true")){
                     try {
                         byte[] byteFoto = chefImage.getBytes();
                         existingChef.setImageBase64(Base64.getEncoder().encodeToString(byteFoto));
@@ -163,35 +155,6 @@ public class HomeController {
                 administrator.setDateOfBirth(dateOfBirth);
                 administratorService.saveAdministrator(administrator);
             }
-
-            /*
-            if(role.equals("CUSTOMER")){
-                Customer customer = credentials.getCustomer();
-                Customer c = (Customer) cuUser;
-                customer.setName(c.getName());
-                customer.setSurname(c.getSurname());
-                customer.setEmail(c.getEmail());
-                customer.setDateOfBirth(c.getDateOfBirth());
-                customerService.saveCustomer(customer);
-            }else if(role.equals("CHEF")){
-                Chef chef = credentials.getChef();
-                Chef c = (Chef) cUser;
-                chef.setName(c.getName());
-                chef.setSurname(c.getSurname());
-                chef.setEmail(c.getEmail());
-                chef.setDateOfBirth(c.getDateOfBirth());
-                chefService.saveChef(chef);
-            }else if(role.equals("ADMINISTRATOR")){
-                Administrator administrator = credentials.getAdministrator();
-                Administrator a = (Administrator) aUser;
-                administrator.setName(a.getName());
-                administrator.setSurname(a.getSurname());
-                administrator.setEmail(a.getEmail());
-                administrator.setDateOfBirth(a.getDateOfBirth());
-                administratorService.saveAdministrator(administrator);
-            }
-            */
-            //credentials.setUsername(nCredentials.getUsername());
 
             if(changePassword.equals("true")){
                 credentials.setPassword(newCredentials.getPassword());
