@@ -24,29 +24,29 @@
         <div class="referenceForJSClone">
             <div id="ingredientsContainerReference">
                 <div id="ingredientsReference">
-                    
+
                     <span>
-                        <label name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label>
-                        <select name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)">
-                            <option selected disabled>Seleziona un ingrediente</option>
+                        <!--<label  name="ingredientName" th:text="#{ingredientName} + ':'">_ingredientName_</label> commento interno--><!--class="control-label" commento interno-->
+                        <select class="form-control d-inline-block" name="ingredientsName" id="ingredientSelect" onchange="addNewIngredient(this)" style="width: auto;" required>
+                            <option value="" selected disabled>Seleziona un ingrediente</option>
                             <option th:each="ingredient : ${ingredients}" th:value="${ingredient.name}" th:text="${ingredient.name}"></option>
                             <option value="add" id="addIngredientOption">_AggiungiIngredient_</option>
                         </select>
                     </span>
 
-                    <label>Quantity:</label>
-                    <input type="number" name="quantities" required/>
+                    <!--<label name="quantity" th:text="#{quantity} + ':'">_Quantity:_</label> commento interno-->
+                    <input type="number" name="quantities" class="form-control d-inline-block" th:placeholder="#{quantity}" style="width: auto;" required/>
 
                     <span>
-                        <label>Unit:</label>
-                        <select name="unitsName" id="unitSelect" onchange="addNewUnit(this)">
-                            <option selected disabled>Seleziona un'unità</option>
+                        <!--<label name="unit" th:text="#{unit} + ':'">_Unit:_</label> commento interno-->
+                        <select class="form-control d-inline-block" name="unitsName" id="unitSelect" onchange="addNewUnit(this)" style="width: auto;" required>
+                            <option value="" selected disabled>Seleziona un'unità</option>
                             <option th:each="unit : ${units}" th:value="${unit.name}" th:text="${unit.name}"></option>
                             <option value="add" id="addUnitOption">_AggiungiUnit_</option>
                         </select>
                     </span>
 
-                    <button type="button" onclick="removeIngredientField(this)">Remove</button>
+                    <button type="button" class="btn btn-danger" onclick="removeIngredientField(this)" th:text="#{removeIngredient}">_Remove_</button> <!--btn-block mt-2 commenti interno-->
                 </div>
             </div>
         </div>

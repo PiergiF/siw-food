@@ -302,14 +302,20 @@ public class RecipeController {
 
     @GetMapping("/chef_admin/editRecipePage/{id}")
     public String getEditRecipePage(@PathVariable("id") Long id, Model model) {
-        List<RecipeIngredient> recipeIngredients = recipeService.findRecipeIngredientsByRecipeId(id);
-        model.addAttribute("recipe", recipeService.findById(id));
-        model.addAttribute("recipeIngredients", recipeIngredients);
-        model.addAttribute("ingredients", ingredientService.findAll());
-        model.addAttribute("units", unitService.findAll());
-        model.addAttribute("chefs", chefService.findAll());
-        model.addAttribute("courses", Courses.values());
-        return "chef_admin/editRecipePage.html";
+        Recipe existingRecipe = this.recipeService.findById(id);
+        if((model.getAttribute("accountRole").equals("ADMINISTRATOR")) || (model.getAttribute("accountRole").equals("CHEF") && existingRecipe.getChef().getId() == model.getAttribute("loggedId"))){
+            List<RecipeIngredient> recipeIngredients = recipeService.findRecipeIngredientsByRecipeId(id);
+            model.addAttribute("recipe", recipeService.findById(id));
+            model.addAttribute("recipeIngredients", recipeIngredients);
+            model.addAttribute("ingredients", ingredientService.findAll());
+            model.addAttribute("units", unitService.findAll());
+            model.addAttribute("chefs", chefService.findAll());
+            model.addAttribute("courses", Courses.values());
+            return "chef_admin/editRecipePage.html";
+        }
+        else{
+            return "redirect:/";
+        }
     }
 
     @PostMapping("/chef_admin/recipeEditData/{id}")
@@ -318,91 +324,95 @@ public class RecipeController {
                             @RequestParam("unitsName") List<String> listUnits,
                             @RequestParam("quantities") List<String> listQuantities,
                             @RequestParam("newImages") MultipartFile[] newFiles,
-                            @RequestParam(required = false, value = "removeImageIndexes") List<Integer> removeImageIndexes)
+                            @RequestParam(required = false, value = "removeImageIndexes") List<Integer> removeImageIndexes, Model model)
     {
 
         if (result.hasErrors()) {
             return "/chef_admin/editRecipePage/" + id;
         }
-        if((listIngredients.size() == listUnits.size()) && (listIngredients.size() == listQuantities.size()) && (listUnits.size() == listQuantities.size())){
+        // Recupera la ricetta esistente dal database
+        Recipe existingRecipe = recipeService.findById(id);
+        if((model.getAttribute("accountRole").equals("ADMINISTRATOR")) || (model.getAttribute("accountRole").equals("CHEF") && existingRecipe.getChef().getId() == model.getAttribute("loggedId"))){
+            if((listIngredients.size() == listUnits.size()) && (listIngredients.size() == listQuantities.size()) && (listUnits.size() == listQuantities.size())){
 
-            // Recupera la ricetta esistente dal database
-            Recipe existingRecipe = recipeService.findById(id);
-            if (existingRecipe == null) {
-                // Gestisce il caso in cui la ricetta non esiste
-                return "redirect:/errorPage";
-            }
-            // Aggiorna i dettagli della ricetta
-            existingRecipe.setName(recipe.getName());
-            existingRecipe.setChef(recipe.getChef());
-            existingRecipe.setDescription(recipe.getDescription());
-            existingRecipe.setCourse(recipe.getCourse());
-
-            //rimuovi immagini
-            if(removeImageIndexes != null){
-                for(int index : removeImageIndexes){
-                    existingRecipe.getImagesBase64().remove(index);
+                if (existingRecipe == null) {
+                    // Gestisce il caso in cui la ricetta non esiste
+                    return "redirect:/errorPage";
                 }
-            }
+                // Aggiorna i dettagli della ricetta
+                existingRecipe.setName(recipe.getName());
+                existingRecipe.setChef(recipe.getChef());
+                existingRecipe.setDescription(recipe.getDescription());
+                existingRecipe.setCourse(recipe.getCourse());
 
-            //aggiungi immagini
-            if(newFiles != null){
-                for(MultipartFile newFile : newFiles){
-                    if(!newFile.isEmpty()){
-                        try{
-                            byte[] byteFoto = newFile.getBytes();
-                            existingRecipe.getImagesBase64().add(Base64.getEncoder().encodeToString(byteFoto));
-                        }catch(IOException e){
-                            //model.addAttribute("message", "Recipe upload failed!");
-                            return "chef_admin/addRecipePage.html";
+                //rimuovi immagini
+                if(removeImageIndexes != null){
+                    for(int index : removeImageIndexes){
+                        existingRecipe.getImagesBase64().remove(index);
+                    }
+                }
+
+                //aggiungi immagini
+                if(newFiles != null){
+                    for(MultipartFile newFile : newFiles){
+                        if(!newFile.isEmpty()){
+                            try{
+                                byte[] byteFoto = newFile.getBytes();
+                                existingRecipe.getImagesBase64().add(Base64.getEncoder().encodeToString(byteFoto));
+                            }catch(IOException e){
+                                //model.addAttribute("message", "Recipe upload failed!");
+                                return "chef_admin/addRecipePage.html";
+                            }
                         }
                     }
                 }
-            }
 
-            Recipe updatedRecipe = recipeService.save(existingRecipe);
+                Recipe updatedRecipe = recipeService.save(existingRecipe);
 
-            // Rimuove gli ingredienti esistenti per questa ricetta
-            recipeService.deleteRecipeIngredientsByRecipeId(id);
+                // Rimuove gli ingredienti esistenti per questa ricetta
+                recipeService.deleteRecipeIngredientsByRecipeId(id);
 
-            for (int i=0; i<listIngredients.size();i++) {
-                RecipeIngredient recipeIngredient = new RecipeIngredient();
-                recipeIngredient.setRecipe(updatedRecipe);
+                for (int i=0; i<listIngredients.size();i++) {
+                    RecipeIngredient recipeIngredient = new RecipeIngredient();
+                    recipeIngredient.setRecipe(updatedRecipe);
 
-                //Gestisce l'ingrediente
-                String ingredientName = listIngredients.get(i);
-                recipeIngredient.setIngredient(ingredientService.findByName(listIngredients.get(i))
-                .orElseGet(() ->{
-                    Ingredient newIngredient = new Ingredient();
-                    newIngredient.setName(ingredientName);
-                    return ingredientService.save(newIngredient);
-                })
-                );
-                
-                //Gestisce la quantità
-                double amount = Double.parseDouble(listQuantities.get(i));
-                recipeIngredient.setQuantity( quantityRepository.findByAmount(amount)
-                    .orElseGet(() -> {
-                        Quantity newQuantity = new Quantity();
-                        newQuantity.setAmount(amount);
-                        return quantityRepository.save(newQuantity);
+                    //Gestisce l'ingrediente
+                    String ingredientName = listIngredients.get(i);
+                    recipeIngredient.setIngredient(ingredientService.findByName(listIngredients.get(i))
+                    .orElseGet(() ->{
+                        Ingredient newIngredient = new Ingredient();
+                        newIngredient.setName(ingredientName);
+                        return ingredientService.save(newIngredient);
                     })
-                );
+                    );
+                    
+                    //Gestisce la quantità
+                    double amount = Double.parseDouble(listQuantities.get(i));
+                    recipeIngredient.setQuantity( quantityRepository.findByAmount(amount)
+                        .orElseGet(() -> {
+                            Quantity newQuantity = new Quantity();
+                            newQuantity.setAmount(amount);
+                            return quantityRepository.save(newQuantity);
+                        })
+                    );
 
-                // Gestisce l'unità
-                String unitName = listUnits.get(i);
-                recipeIngredient.setUnit(unitService.findByName(listUnits.get(i))
-                .orElseGet(() -> {
-                    Unit newUnit = new Unit();
-                    newUnit.setName(unitName);
-                    return unitService.save(newUnit);
-                })
-                );
-                recipeService.saveRecipeIngredient(recipeIngredient);
+                    // Gestisce l'unità
+                    String unitName = listUnits.get(i);
+                    recipeIngredient.setUnit(unitService.findByName(listUnits.get(i))
+                    .orElseGet(() -> {
+                        Unit newUnit = new Unit();
+                        newUnit.setName(unitName);
+                        return unitService.save(newUnit);
+                    })
+                    );
+                    recipeService.saveRecipeIngredient(recipeIngredient);
+                }
+                return "redirect:/all/recipePage/" + recipe.getId();
+            }else{
+                return "/chef_admin/addRecipePage";
             }
-            return "redirect:/all/recipePage/" + recipe.getId();
         }else{
-            return "/chef_admin/addRecipePage";
+            return "redirect:/";
         }
     }
     

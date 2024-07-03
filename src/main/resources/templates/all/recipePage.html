@@ -76,53 +76,10 @@
             </nav>
         </header>
 
-        <!--
-        <div class="recipeInformations" th:if="${recipe}">--> <!--th:if="${chef}">  che volevo fare?  commento interno--> 
-            <!--<h1 th:text="${recipe.details}"></h1> come sopra. che avevo copiato dalla pagina dello chef?-->
-            <!--<div>
-                <h1 th:text="${recipe.name}">_recipeName_</h1>
-                <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }"><h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3></a>
-
-                
-
-                <ul>
-                    <li th:each="ri : ${recipeIngredients}">
-                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
-                        <span th:text="${ri.quantity.amount}">Quantity</span> 
-                        <span th:text="${ri.unit.name}">Unit</span>
-                    </li>
-                </ul>
-
-                <div th:unless="${#strings.isEmpty(recipe.description)}">
-                    <b th:text="#{recipeDescription}">_recipeDescription_</b>
-                    <p th:text="${recipe.description}">_recipeDescription_</p>
-                </div>
-
-                <div>
-                    <b th:text="#{course}">_course_</b>
-                    <span th:text="${recipe.course}">_courseName_</span>--> <!--ci va .name? commento interno-->
-                <!--</div>
-
-                <div class="recipe-image">
-                    <img th:each="photo : ${photos}" th:src=" 'data:image/;base64,' + ${photo}" alt="Recipe Image">
-                </div>
-
-            </div>
-            <div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>
-        </div>
-
-        <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post" th:if="${accountRole != 'ROLE_ANONYMOUS' && canSave }">
-            <button type="submit" value="saveButton" class="saveButton">Salva ricetta</button>
-        </form>
-
-        <div th:if="${!canSave}" th:text="#{recipePage.saved}">_recipePage.saved_</div>
-        -->
-
         <div class="container mt-5" th:if="${recipe}">
-            <!--<h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="${recipe.name}">_RecipeName_</h1>-->
 
             <!-- Recipe Name with Favorite Star -->
-            <div class="d-flex " style="justify-content: center;"> <!--class="mb-4 d-flex align-items-center"-->
+            <div class="d-flex " style="justify-content: center;">
                 <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="${recipe.name}">_RecipeName_</h1>
                 <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post" th:if="${accountRole != 'ROLE_ANONYMOUS' && canSave }">
                     <button type="submit" value="saveButton" style=" color: white; background: transparent; border: none;"><i th:classappend="${accountRole != 'ROLE_ANONYMOUS' && canSave } ? 'far fa-star' "></i></button> <!-- class="btn btn-primary" class="fas fa-star text-warning-->
@@ -131,185 +88,63 @@
                 <form th:action="@{'/removeSavedRecipe/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="get" th:if="${accountRole != 'ROLE_ANONYMOUS' && !canSave }">
                     <button type="submit" value="removeButton" style="  background: transparent; border: none;"><i th:classappend="${accountRole != 'ROLE_ANONYMOUS' && !canSave } ? 'fas fa-star text-warning' " ></i></button> <!--class="far fa-star"-->
                 </form>
-                <!--<a th:href="@{'/toggleFavorite/' + ${recipe.id}}" class="favorite-icon">
-                    <i th:classappend="${isFavorite} ? 'fas fa-star text-warning' : 'far fa-star'"></i>
-                </a>-->
+            </div>
+                
+            <div class="form-group">
+                <div id="imageCarousel" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#imagesCarousel" data-slide-to="0" class="active"></li>
+                        <li th:each="base64, iterStat : ${recipe.imagesBase64}" th:if="${iterStat.index > 0}" data-target="#imageCarousel" th:data-slide-to="${iterStat.index}"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div th:each="base64, iterStat : ${recipe.imagesBase64}" th:class="'carousel-item ' + (${iterStat.index} == 0 ? 'active carousel-item' : 'carousel-item' )" th:data-index="${iterStat.index}">
+                            <img th:src=" 'data:image/;base64,' + ${base64}" class="d-block w-100" alt="Recipe Image"/>
+                        </div>
+                    </div>
+                    <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </div>
             </div>
 
-                <!--
-                <div class="form-group">
-                    <label for="name" th:text="#{recipeName}">_recipeName_</label>
-                    <input type="text" id="name" name="name" th:field="${recipe.name}" class="form-control"/>
-                </div>
-                -->
-                
-                <div class="form-group">
-                    <!--<h3 th:text="#{images} + ':' ">_Immagini_</h3>-->
-                    <div id="imageCarousel" class="carousel slide" data-ride="carousel"> <!-- class="image-preview" -->
-                        <ol class="carousel-indicators">
-                            <li data-target="#imagesCarousel" data-slide-to="0" class="active"></li>
-                            <li th:each="base64, iterStat : ${recipe.imagesBase64}" th:if="${iterStat.index > 0}" data-target="#imageCarousel" th:data-slide-to="${iterStat.index}"></li>
-                        </ol>
-                        <div class="carousel-inner">
-                            <div th:each="base64, iterStat : ${recipe.imagesBase64}" th:class="'carousel-item ' + (${iterStat.index} == 0 ? 'active carousel-item' : 'carousel-item' )" th:data-index="${iterStat.index}">
-                                <img th:src=" 'data:image/;base64,' + ${base64}" class="d-block w-100" alt="Recipe Image"/>
-                                <!--<div class="carousel-caption d-none d-md-block">
-                                    <button type="button" class="btn btn-danger" th:onclick=" 'removeImageFromRecipe(this, ' + ${iterStat.index} + ')' " th:text="#{remove}">_Remove_</button>
-                                </div>-->
-                            </div>
-                        </div>
-                        <a class="carousel-control-prev" href="#imageCarousel" role="button" data-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="carousel-control-next" href="#imageCarousel" role="button" data-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                    </div>
-                </div>
+            <!-- Informazioni sullo chef-->
 
-                <!--
-                <div class="form-group">
-                    <label for="image" th:text="#{selectImages} + ':' ">_SelectImages_</label>
-                    <input type="file" id="images" name="newImages" class="form-control-file" multiple>
-                </div>
-                -->
+            <div class="mb-4">
+                <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }" class="text-decoration-none custom-link" >
+                    <h2 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" >_recipeChef_</h2>
+                </a>
+            </div>
 
-                <!-- Informazioni sullo chef-->
-
-                <div class="mb-4"> <!--card-->
-                    <!--<div class="card-header">-->
-                        <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }" class="text-decoration-none custom-link" >
-                            <h2 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}" >_recipeChef_</h2>
-                        </a>
-                    <!--</div>-->
-                </div>
-
-                <!--<div>
-                    <a th:href="@{'/all/chefPage/' + ${recipe.chef.id} }"><h3 th:text="${recipe.chef.name} + ' ' + ${recipe.chef.surname}">_recipeChef_</h3></a>
-                </div>-->
-
-                <!-- Lista degli ingredienti -->
-
-                <!--<div class="mb-4">--> <!--card-->
-                    <!--<div class="card-header">
-                        <h5 th:text="#{ingredients}">_Ingredients_</h5>
-                    </div>
-                    <ul class="list-group">--> <!--list-group-flush-->
-                        <!--<li th:each="ri : ${recipeIngredients}" class="list-group-item">
-                            <span th:text="${ri.ingredient.name}">_Ingredient_</span>: 
-                            <span th:text="${ri.quantity.amount}">_Quantity_</span> 
-                            <span th:text="${ri.unit.name}">_Unit_</span>
-                        </li>
-                    </ul>
-                </div>-->
-
-                <div class="mb-4">
-                    <h5 class="font-weight-bold" th:text="#{ingredients}">_Ingredients_</h5>
-                    <ul class="list-unstyled">
-                        <li th:each="ri : ${recipeIngredients}">
-                            <span class="font-weight-bold" th:text="${ri.ingredient.name}">Ingredient</span>: 
-                            <span th:text="${ri.quantity.amount}">Quantity</span> 
-                            <span th:text="${ri.unit.name}">Unit</span>
-                        </li>
-                    </ul>
-                </div>
-
-                
-                <!--<ul>
+            <div class="mb-4">
+                <h5 class="font-weight-bold" th:text="#{ingredients}">_Ingredients_</h5>
+                <ul class="list-unstyled">
                     <li th:each="ri : ${recipeIngredients}">
-                        <span th:text="${ri.ingredient.name}">Ingredient</span>: 
+                        <span class="font-weight-bold" th:text="${ri.ingredient.name}">Ingredient</span>: 
                         <span th:text="${ri.quantity.amount}">Quantity</span> 
                         <span th:text="${ri.unit.name}">Unit</span>
                     </li>
-                </ul>-->
+                </ul>
+            </div>
 
-                <!-- Descrizione ricetta -->
+            <div th:unless="${#strings.isEmpty(recipe.description)}" class="mb-4">
+                <h5 class="font-weight-bold" th:text="#{recipeDescription}">_recipeDescription_</h5>
+                <p th:text="${recipe.description}">_recipeDescription_</p>
+            </div>
 
-                <!--<div th:unless="${#strings.isEmpty(recipe.description)}" class="mb-4">--> <!--card-->
-                    <!--<div class="card-header">
-                        <h5 th:text="#{recipeDescription}">_recipeDescription_</h5>
-                    </div>
-                    <div class="card-body">
-                        <p th:text="${recipe.description}">_recipeDescription_</p>
-                    </div>
-                </div>-->
+            <div class="mb-4">
+                <h5 class="font-weight-bold" th:text="#{course}">_course_</h5>
+                <span th:text="${recipe.course}">_courseName_</span>
+            </div>
 
-                <!--<div th:unless="${#strings.isEmpty(recipe.description)}">
-                    <b th:text="#{recipeDescription}">_recipeDescription_</b>
-                    <p th:text="${recipe.description}">_recipeDescription_</p>
-                </div>-->
-                <div th:unless="${#strings.isEmpty(recipe.description)}" class="mb-4">
-                    <h5 class="font-weight-bold" th:text="#{recipeDescription}">_recipeDescription_</h5>
-                    <p th:text="${recipe.description}">_recipeDescription_</p>
-                </div>
-
-                <!-- Portata -->
-
-                <!--<div class="mb-4">--> <!--card-->
-                    <!--<div class="card-header">
-                        <b th:text="#{course}">_course_</b>
-                    </div>
-                    <div class="card-body">
-                        <span th:text="${recipe.course}">_courseName_</span>--> <!--ci va .name? commento interno-->
-                    <!--</div>
-                </div>-->
-
-                <!--<div>
-                    <b th:text="#{course}">_course_</b>
-                    <span th:text="${recipe.course}">_courseName_</span>--> <!--ci va .name? commento interno-->
-                <!--</div>-->
-
-                <div class="mb-4">
-                    <h5 class="font-weight-bold" th:text="#{course}">_course_</h5>
-                    <span th:text="${recipe.course}">_courseName_</span> <!--ci va .name? commento interno-->
-                </div>
-
-                <!-- Ricetta non trovata -->
-                <div th:unless="${recipe}" class="alert alert-warning" role="alert">
-                    <span th:text="#{dosent.exist}">_dosentExist_</span>
-                </div>
-
-                <!--<div th:unless="${recipe}" th:text="#{dosent.exist}">_dosentExist_</div>-->
-
-                <!-- Bottone salva ricetta -->
-                <!--<div th:if="${accountRole != 'ROLE_ANONYMOUS' && canSave }" class="text-center">
-                    <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post">
-                        <button type="submit" value="saveButton" class="btn btn-primary">Salva ricetta</button>
-                    </form>
-                </div>-->
-                
-                <!--<form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post" th:if="${accountRole != 'ROLE_ANONYMOUS' && canSave }">
-                    <button type="submit" value="saveButton" class="saveButton">Salva ricetta</button>
-                </form>-->
-
-                <!-- Messaggio ricetta salvata -->
-                <!--<div th:if="${ accountRole != 'ROLE_ANONYMOUS' && !canSave}" class="alert alert-success text-center" role="alert">
-                    <span th:text="#{recipePage.saved}">_recipePage.saved_</span>
-                </div>-->
-        
-                <!--<div th:if="${!canSave}" th:text="#{recipePage.saved}">_recipePage.saved_</div>-->
-
-
-                <!--prova stella-->
-
-                <!-- Recipe Name with Favorite Star -->
-                <!--<div class="mb-4 d-flex align-items-center">
-                    <h1 class="h3 mb-3 font-weight-normal text-center text-white" th:text="${recipe.name}">_RecipeName_</h1>
-                    <form th:action="@{'/saveRecipesData/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="post" th:if="${accountRole != 'ROLE_ANONYMOUS' && canSave }">
-                        <button type="submit" value="saveButton" style=" color: white; background: transparent; border: none;"><i th:classappend="${accountRole != 'ROLE_ANONYMOUS' && canSave } ? 'far fa-star' "></i></button>--> <!-- class="btn btn-primary" class="fas fa-star text-warning-->
-                    <!--</form>
-
-                    <form th:action="@{'/removeSavedRecipe/' + ${recipe.id} + '/' + ${loggedId} + '/' + ${accountRole} }" method="get" th:if="${accountRole != 'ROLE_ANONYMOUS' && !canSave }">
-                        <button type="submit" value="saveButton" class="btn btn-primary"><i th:classappend="${accountRole != 'ROLE_ANONYMOUS' && !canSave } ? 'fas fa-star text-warning' " ></i></button>--> <!--class="far fa-star"-->
-                    <!--</form>-->
-                    <!--<a th:href="@{'/toggleFavorite/' + ${recipe.id}}" class="favorite-icon">
-                        <i th:classappend="${isFavorite} ? 'fas fa-star text-warning' : 'far fa-star'"></i>
-                    </a>-->
-                <!--</div>-->
-
-            <!--</div>-->
+            <!-- Ricetta non trovata -->
+            <div th:unless="${recipe}" class="alert alert-warning" role="alert">
+                <span th:text="#{dosent.exist}">_dosentExist_</span>
+            </div>
         </div>
     </body>
 </html>
