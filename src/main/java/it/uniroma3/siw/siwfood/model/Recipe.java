@@ -35,7 +35,7 @@ public class Recipe {
     
     private Courses course;
 
-    @Column(length = 10000)
+    @Column(length = 100000)
     private String description;
     
     @Column(length = 10000000)
